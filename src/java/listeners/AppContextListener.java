@@ -23,7 +23,7 @@ public class AppContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         ServletContext stx = sce.getServletContext();
-        String dburl = stx.getInitParameter("DBURL"); //parametri connessione al database salvati n web.xml
+        String dburl = stx.getInitParameter("DBURL"); //parametri connessione al database salvati in web.xml
         String user = stx.getInitParameter("DBUSER");
         String password = stx.getInitParameter("DBPWD");
 
