@@ -55,6 +55,7 @@ public class RegistrationServlet extends HttpServlet {
             try {
                 if(manager.checkNewEmail(email1)){
                     userID = manager.registerUser(username, email1, password1);
+                    System.out.println(userID);
                 }
                 else {
                     System.out.println("Email already used");
