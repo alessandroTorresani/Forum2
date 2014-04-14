@@ -12,6 +12,9 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>finesdcfgvhbje</h1>
+        <h1>Index</h1>
+        <form action ="registration.jsp" method ="POST">
+            <input type="submit" value ="Sign up"/>
+        </form>
     </body>
 </html>

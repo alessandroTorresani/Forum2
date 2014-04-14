@@ -9,7 +9,10 @@ package db;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Logger;
 
 /**
@@ -46,4 +49,43 @@ public class DBManager  implements Serializable {
         }
     }
     
+    public boolean checkNewEmail(String email) throws SQLException{
+        int resultLenght = 0;
+        PreparedStatement stm = con.prepareStatement("SELECT email  FROM users WHERE email= ?");
+        try{
+            stm.setString(1, email);
+            ResultSet rs = stm.executeQuery();
+            try{
+                while(rs.next()){
+                    resultLenght++;
+                }
+            } finally {
+                rs.close();
+            }
+        } finally {
+            stm.close();
+        }
+        return resultLenght == 0;
+    }
+    
+    public int registerUser(String username, String email,String password) throws SQLException{
+         PreparedStatement stm = con.prepareStatement("INSERT INTO users ( username,password,email) VALUES (?,?,?)",Statement.RETURN_GENERATED_KEYS) ;
+         int userID = 0;
+         try{
+             stm.setString(1, username);
+             stm.setString(2, password);
+             stm.setString(3, email);
+             stm.executeUpdate();
+             ResultSet rs = stm.getGeneratedKeys();
+             try{
+                 while(rs.next()){
+                     userID = rs.getInt(1);                 }
+             } finally {
+                 rs.close();
+             }
+         } finally {
+             stm.close();
+         }
+         return userID;
+    }
 }

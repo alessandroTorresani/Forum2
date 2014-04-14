@@ -20,9 +20,17 @@
         <servlet-name>Login</servlet-name>
         <servlet-class>servlets.LoginServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Registration</servlet-name>
+        <servlet-class>servlets.RegistrationServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Registration</servlet-name>
+        <url-pattern>/Registration</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
