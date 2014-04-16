@@ -11,9 +11,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
-    <body>
+    <body>  
         <h1>Index</h1>
-        <form action ="registration.jsp" method ="POST">
+        <form action ="registration.jsp" method ="post">
             <input type="submit" value ="Sign up"/>
         </form>
     </body>

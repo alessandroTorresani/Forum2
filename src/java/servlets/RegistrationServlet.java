@@ -5,10 +5,14 @@
  */
 package servlets;
 
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import db.DBManager;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -44,20 +48,38 @@ public class RegistrationServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
-        String email1 = request.getParameter("email1");
-        String email2 = request.getParameter("email2");
-        String password1 = request.getParameter("password1");
-        String password2 = request.getParameter("password2");
-        String username = request.getParameter("username");
-        int userID;
+        String email1 = null;
+        String email2 = null;
+        String password1 = null;
+        String password2 = null;
+        String username = null;
+        int userID = 4;
+        MultipartRequest multi = new MultipartRequest(request, request.getServletContext().getRealPath("/") + "\\Avatars", 10 * 1024 * 1024, "ISO-8859-1", new DefaultFileRenamePolicy());
+        Enumeration params = multi.getParameterNames();
+        while (params.hasMoreElements()) { // gestione parametri
+            String name = (String) params.nextElement();
+            String value = multi.getParameter(name);
 
-        if ((password1.equals(password2)) && (email1.equals(email2)) && (email1.matches(EMAIL_REGEX))) {
+            if (name.equals("username")) {
+                username = value;
+            } else if (name.equals("password2")) {
+                password2 = value;
+            } else if (name.equals("password1")) {
+                password1 = value;
+            } else if (name.equals("email2")) {
+                email2 = value;
+            } else if (name.equals("email1")) {
+                email1 = value;
+            }
+
+        }
+
+      /*  if ((password1.equals(password2)) && (email1.equals(email2)) && (email1.matches(EMAIL_REGEX))) {
             try {
-                if(manager.checkNewEmail(email1)){
+                if (manager.checkNewEmail(email1)) {
                     userID = manager.registerUser(username, email1, password1);
                     System.out.println(userID);
-                }
-                else {
+                } else {
                     System.out.println("Email already used");
                 }
             } catch (SQLException ex) {
@@ -66,9 +88,28 @@ public class RegistrationServlet extends HttpServlet {
             }
         } else {
             System.out.println("Errore inserimento dati");
-        }
-    }
+        }*/
 
+        Enumeration files = multi.getFileNames(); //gestione file
+        while (files.hasMoreElements()) {
+            String name = (String) files.nextElement();
+            String filename = multi.getFilesystemName(name);
+            String originalFilename = multi.getOriginalFileName(name);
+            String type = multi.getContentType(name);
+            File f = multi.getFile(name);
+            out.println("name: " + name);
+            out.println("filename: " + filename);
+            out.println("originalFilename: " + originalFilename);
+            out.println("type: " + type);
+            if ((f!=null)&&(type.startsWith("image"))){
+                System.out.println(f.toString());
+                System.out.println(f.getName());
+                File filetmp = new File(request.getServletContext().getRealPath("/")+userID);
+                //f.renameTo(filetmp);
+            }
+        }
+
+    }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

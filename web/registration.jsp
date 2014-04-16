@@ -13,12 +13,13 @@
     </head>
     <body>
         <h1>Registration page</h1>
-        <form action ="Registration" method ="POST">
+        <form action ="Registration" method ="POST" enctype="multipart/form-data">
             Username: <input type="text" name="username"/>
             Email: <input type="text" name="email1"/>
             Confirm-email: <input type="text" name="email2"/>
             Password: <input type="password" name="password1"/>
             Confirm-password: <input type="password" name="password2"/>
+            Avatar: <input type="file" name="avatar" size="50" />
             <input type="submit" value ="SUBMIT"/>
         </form>
     </body>
