@@ -11,6 +11,8 @@ import db.DBManager;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.logging.Level;
@@ -53,10 +55,11 @@ public class RegistrationServlet extends HttpServlet {
         String password1 = null;
         String password2 = null;
         String username = null;
-        int userID = 4;
+        int userID = 0;
+
         MultipartRequest multi = new MultipartRequest(request, request.getServletContext().getRealPath("/") + "\\Avatars", 10 * 1024 * 1024, "ISO-8859-1", new DefaultFileRenamePolicy());
         Enumeration params = multi.getParameterNames();
-        while (params.hasMoreElements()) { // gestione parametri
+        while (params.hasMoreElements()) { // parameter management
             String name = (String) params.nextElement();
             String value = multi.getParameter(name);
 
@@ -74,7 +77,7 @@ public class RegistrationServlet extends HttpServlet {
 
         }
 
-      /*  if ((password1.equals(password2)) && (email1.equals(email2)) && (email1.matches(EMAIL_REGEX))) {
+        if ((password1.equals(password2)) && (email1.equals(email2)) && (email1.matches(EMAIL_REGEX))) {
             try {
                 if (manager.checkNewEmail(email1)) {
                     userID = manager.registerUser(username, email1, password1);
@@ -88,24 +91,19 @@ public class RegistrationServlet extends HttpServlet {
             }
         } else {
             System.out.println("Errore inserimento dati");
-        }*/
+        }
 
-        Enumeration files = multi.getFileNames(); //gestione file
+        Enumeration files = multi.getFileNames(); //file management
         while (files.hasMoreElements()) {
             String name = (String) files.nextElement();
             String filename = multi.getFilesystemName(name);
             String originalFilename = multi.getOriginalFileName(name);
             String type = multi.getContentType(name);
             File f = multi.getFile(name);
-            out.println("name: " + name);
-            out.println("filename: " + filename);
-            out.println("originalFilename: " + originalFilename);
-            out.println("type: " + type);
-            if ((f!=null)&&(type.startsWith("image"))){
-                System.out.println(f.toString());
-                System.out.println(f.getName());
-                File filetmp = new File(request.getServletContext().getRealPath("/")+userID);
-                //f.renameTo(filetmp);
+            Path source = f.toPath(); //path to the uploaded file
+            if ((userID > 0) && (f != null) && (type.startsWith("image"))) {
+                Files.move(source, source.resolveSibling("" + userID + ".jpg")); // copy the file with a new name
+                f.delete(); // delete source file
             }
         }
 
