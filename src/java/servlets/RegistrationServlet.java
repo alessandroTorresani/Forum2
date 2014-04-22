@@ -56,57 +56,66 @@ public class RegistrationServlet extends HttpServlet {
         String password2 = null;
         String username = null;
         int userID = 0;
+        MultipartRequest multi = null;
 
-        MultipartRequest multi = new MultipartRequest(request, request.getServletContext().getRealPath("/") + "\\Avatars", 10 * 1024 * 1024, "ISO-8859-1", new DefaultFileRenamePolicy());
-        Enumeration params = multi.getParameterNames();
-        while (params.hasMoreElements()) { // parameter management
-            String name = (String) params.nextElement();
-            String value = multi.getParameter(name);
+        try {
+            multi = new MultipartRequest(request, request.getServletContext().getRealPath("/") + "\\Avatars", 10 * 1024 * 1024, "ISO-8859-1", new DefaultFileRenamePolicy());
+        } catch (Exception ex) {
+            System.out.println(ex.toString());
+        }
+        if (multi != null) {
+            Enumeration params = multi.getParameterNames();
+            while (params.hasMoreElements()) { // parameter management
+                String name = (String) params.nextElement();
+                String value = multi.getParameter(name);
 
-            if (name.equals("username")) {
-                username = value;
-            } else if (name.equals("password2")) {
-                password2 = value;
-            } else if (name.equals("password1")) {
-                password1 = value;
-            } else if (name.equals("email2")) {
-                email2 = value;
-            } else if (name.equals("email1")) {
-                email1 = value;
+                if (name.equals("username")) {
+                    username = value;
+                } else if (name.equals("password2")) {
+                    password2 = value;
+                } else if (name.equals("password1")) {
+                    password1 = value;
+                } else if (name.equals("email2")) {
+                    email2 = value;
+                } else if (name.equals("email1")) {
+                    email1 = value;
+                }
+
             }
 
-        }
-
-        if ((password1.equals(password2)) && (email1.equals(email2)) && (email1.matches(EMAIL_REGEX))) {
-            try {
-                if (manager.checkNewEmail(email1)) {
-                    userID = manager.registerUser(username, email1, password1);
-                    System.out.println(userID);
-                } else {
-                    System.out.println("Email already used");
+            if ((username!=null) && (password1!=null) && (password2!=null) && (email1!=null) && (email2!=null) && (password1.equals(password2)) && (email1.equals(email2)) && (email1.matches(EMAIL_REGEX))) {
+                try {
+                    if (manager.checkNewEmail(email1)) {
+                        userID = manager.registerUser(username, email1, password1);
+                    } else {
+                        System.out.println("Email already used");
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(RegistrationServlet.class.getName()).log(Level.SEVERE, ex.toString(), ex);
+                    throw new ServletException(ex);
                 }
-            } catch (SQLException ex) {
-                Logger.getLogger(RegistrationServlet.class.getName()).log(Level.SEVERE, ex.toString(), ex);
-                throw new ServletException(ex);
+            } else {
+                System.out.println("Errore inserimento dati");
+            }
+
+            if (userID > 0) {
+                Enumeration files = multi.getFileNames(); //file management
+                while (files.hasMoreElements()) {
+                    String name = (String) files.nextElement();
+                    String filename = multi.getFilesystemName(name);
+                    String originalFilename = multi.getOriginalFileName(name);
+                    String type = multi.getContentType(name);
+                    File f = multi.getFile(name);
+                    if ((f != null) && (type.startsWith("image"))) {
+                        Path source = f.toPath(); //path to the uploaded file
+                        Files.move(source, source.resolveSibling("" + userID + ".jpg")); // copy the file with a new name
+                        f.delete(); // delete source file
+                    }
+                }
             }
         } else {
-            System.out.println("Errore inserimento dati");
+            out.println("No information inserted, please retry");
         }
-
-        Enumeration files = multi.getFileNames(); //file management
-        while (files.hasMoreElements()) {
-            String name = (String) files.nextElement();
-            String filename = multi.getFilesystemName(name);
-            String originalFilename = multi.getOriginalFileName(name);
-            String type = multi.getContentType(name);
-            File f = multi.getFile(name);
-            Path source = f.toPath(); //path to the uploaded file
-            if ((userID > 0) && (f != null) && (type.startsWith("image"))) {
-                Files.move(source, source.resolveSibling("" + userID + ".jpg")); // copy the file with a new name
-                f.delete(); // delete source file
-            }
-        }
-
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
