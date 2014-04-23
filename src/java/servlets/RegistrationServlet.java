@@ -17,6 +17,8 @@ import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -80,15 +82,22 @@ public class RegistrationServlet extends HttpServlet {
                 } else if (name.equals("email1")) {
                     email1 = value;
                 }
-
             }
 
-            if ((username!=null) && (password1!=null) && (password2!=null) && (email1!=null) && (email2!=null) && (password1.equals(password2)) && (email1.equals(email2)) && (email1.matches(EMAIL_REGEX))) {
+            if ((username != null) && (password1 != null) && (password2 != null) && (email1 != null) && (email2 != null) && (password1.equals(password2)) && (email1.equals(email2)) && (email1.matches(EMAIL_REGEX))) {
                 try {
                     if (manager.checkNewEmail(email1)) {
                         userID = manager.registerUser(username, email1, password1);
                     } else {
                         System.out.println("Email already used");
+                        Enumeration files = multi.getFileNames();
+                        while (files.hasMoreElements()) {
+                            String name = (String) files.nextElement();
+                            File f = multi.getFile(name);
+                            if (f != null) {
+                                f.delete(); //multi has aleady uploaded the file, so it must be deleted
+                            }
+                        }
                     }
                 } catch (SQLException ex) {
                     Logger.getLogger(RegistrationServlet.class.getName()).log(Level.SEVERE, ex.toString(), ex);
@@ -106,10 +115,18 @@ public class RegistrationServlet extends HttpServlet {
                     String originalFilename = multi.getOriginalFileName(name);
                     String type = multi.getContentType(name);
                     File f = multi.getFile(name);
-                    if ((f != null) && (type.startsWith("image"))) {
-                        Path source = f.toPath(); //path to the uploaded file
-                        Files.move(source, source.resolveSibling("" + userID + ".jpg")); // copy the file with a new name
-                        f.delete(); // delete source file
+                    if (f != null) {
+                        if (type.startsWith("image")) {
+                            Path source = f.toPath(); //path to the uploaded file
+                            Files.move(source, source.resolveSibling("" + userID + ".jpg")); // copy the file with a new name
+                            f.delete();  // delete source file
+                            ServletContext sc = getServletContext();
+                            RequestDispatcher rd = sc.getRequestDispatcher("/index.jsp");
+                            rd.forward(request, response);
+                        }
+                        else {
+                            f.delete(); //if is not an image, it must be deleted
+                        }
                     }
                 }
             }

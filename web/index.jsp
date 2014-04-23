@@ -13,7 +13,7 @@
     </head>
     <body>  
         <h1>Forum</h1>
-        <form action ="registration.jsp" method ="post">
+        <form action ="registration.jsp" method ="get">
             <input type="submit" value ="Sign up"/>
         </form>
     </body>

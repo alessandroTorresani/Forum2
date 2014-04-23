@@ -39,6 +39,8 @@ public class AppContextListener implements ServletContextListener {
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        DBManager.shutdown();      // chiudo il database
+        DBManager manager = (DBManager) sce.getServletContext().getAttribute("dbmanager");
+        manager.shutdown();
+        //DBManager.shutdown();      // chiudo il database
     } 
 }
