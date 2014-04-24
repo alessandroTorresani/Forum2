@@ -61,7 +61,7 @@ public class RegistrationServlet extends HttpServlet {
         MultipartRequest multi = null;
 
         try {
-            multi = new MultipartRequest(request, request.getServletContext().getRealPath("/") + File.separator + "Avatars", 10 * 1024 * 1024, "ISO-8859-1", new DefaultFileRenamePolicy());
+            multi = new MultipartRequest(request, request.getServletContext().getRealPath("/") + File.separator +"Avatars", 10 * 1024 * 1024, "ISO-8859-1", new DefaultFileRenamePolicy());
         } catch (Exception ex) {
             System.out.println(ex.toString());
         }
