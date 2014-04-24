@@ -79,7 +79,8 @@ public class DBManager  implements Serializable {
              ResultSet rs = stm.getGeneratedKeys();
              try{
                  while(rs.next()){
-                     userID = rs.getInt(1);                 }
+                     userID = rs.getInt(1);                 
+                 }
              } finally {
                  rs.close();
              }
