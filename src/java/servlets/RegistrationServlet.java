@@ -61,7 +61,7 @@ public class RegistrationServlet extends HttpServlet {
         MultipartRequest multi = null;
 
         try {
-            multi = new MultipartRequest(request, request.getServletContext().getRealPath("/") + "\\Avatars", 10 * 1024 * 1024, "ISO-8859-1", new DefaultFileRenamePolicy());
+            multi = new MultipartRequest(request, request.getServletContext().getRealPath("/") + File.separator + "Avatars", 10 * 1024 * 1024, "ISO-8859-1", new DefaultFileRenamePolicy());
         } catch (Exception ex) {
             System.out.println(ex.toString());
         }
@@ -84,7 +84,8 @@ public class RegistrationServlet extends HttpServlet {
                 }
             }
 
-            if ((username != null) && (password1 != null) && (password2 != null) && (email1 != null) && (email2 != null) && (password1.equals(password2)) && (email1.equals(email2)) && (email1.matches(EMAIL_REGEX))) {
+            if ((username != null) && (password1 != null) && (password2 != null) && (password1.length() > 0) && (password2.length() > 0) && (email1 != null) && (email2 != null) && (password1.equals(password2))
+                    && (email1.equals(email2)) && (email1.matches(EMAIL_REGEX))) {
                 try {
                     if (manager.checkNewEmail(email1)) {
                         userID = manager.registerUser(username, email1, password1);
@@ -98,6 +99,10 @@ public class RegistrationServlet extends HttpServlet {
                                 f.delete(); //multi has aleady uploaded the file, so it must be deleted
                             }
                         }
+                        request.setAttribute("Result", "Sorry, email already used");
+                        ServletContext sc = getServletContext();
+                        RequestDispatcher rd = sc.getRequestDispatcher("/registrationResult.jsp");
+                        rd.forward(request, response);
                     }
                 } catch (SQLException ex) {
                     Logger.getLogger(RegistrationServlet.class.getName()).log(Level.SEVERE, ex.toString(), ex);
@@ -105,6 +110,11 @@ public class RegistrationServlet extends HttpServlet {
                 }
             } else {
                 System.out.println("Errore inserimento dati");
+                request.setAttribute("Result", "There are some errors in the inserted data, please retry");
+                ServletContext sc = getServletContext();
+                RequestDispatcher rd = sc.getRequestDispatcher("/registrationResult.jsp");
+                rd.forward(request, response);
+
             }
 
             if (userID > 0) {
@@ -120,20 +130,36 @@ public class RegistrationServlet extends HttpServlet {
                             Path source = f.toPath(); //path to the uploaded file
                             Files.move(source, source.resolveSibling("" + userID + ".jpg")); // copy the file with a new name
                             f.delete();  // delete source file
+
+                            request.setAttribute("Result", "Your registration was successful");
                             ServletContext sc = getServletContext();
-                            RequestDispatcher rd = sc.getRequestDispatcher("/index.jsp");
+                            RequestDispatcher rd = sc.getRequestDispatcher("/registrationResult.jsp");
+                            rd.forward(request, response);
+                        } else {
+                            f.delete(); //if is not an image, it must be deleted
+
+                            request.setAttribute("Result", "Your registration was successful");
+                            ServletContext sc = getServletContext();
+                            RequestDispatcher rd = sc.getRequestDispatcher("/registrationResult.jsp");
                             rd.forward(request, response);
                         }
-                        else {
-                            f.delete(); //if is not an image, it must be deleted
-                        }
+                    } else {
+                        request.setAttribute("Result", "Your registration was successful");
+                        ServletContext sc = getServletContext();
+                        RequestDispatcher rd = sc.getRequestDispatcher("/registrationResult.jsp");
+                        rd.forward(request, response);
                     }
                 }
             }
         } else {
             out.println("No information inserted, please retry");
+            request.setAttribute("Result", "You inserted wrong or empty data, pleasy retry");
+            ServletContext sc = getServletContext();
+            RequestDispatcher rd = sc.getRequestDispatcher("/registrationResult.jsp");
+            rd.forward(request, response);
         }
     }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
