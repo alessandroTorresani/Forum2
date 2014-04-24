@@ -114,7 +114,6 @@ public class RegistrationServlet extends HttpServlet {
                 ServletContext sc = getServletContext();
                 RequestDispatcher rd = sc.getRequestDispatcher("/registrationResult.jsp");
                 rd.forward(request, response);
-
             }
 
             if (userID > 0) {
