@@ -31,6 +31,8 @@ public class RegistrationServlet extends HttpServlet {
 
     private DBManager manager;
     private String EMAIL_REGEX = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    private String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
+    private String USERNAME_REGEX ="^[a-z0-9._-]{2,25}$";
     static Logger log = Logger.getLogger(RegistrationServlet.class.getName());
 
     public void init() throws ServletException {
