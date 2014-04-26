@@ -60,7 +60,6 @@ public class RegistrationServlet extends HttpServlet {
         int userID = 0;
         MultipartRequest multi = null;
         ServletContext sc = getServletContext();
-        log.warn("prova1");
 
         try {
             multi = new MultipartRequest(request, request.getServletContext().getRealPath("/") + File.separator +"Avatars", 10 * 1024 * 1024, "ISO-8859-1", new DefaultFileRenamePolicy());
@@ -86,13 +85,13 @@ public class RegistrationServlet extends HttpServlet {
                 }
             }
 
-            if ((username != null) && (password1 != null) && (password2 != null) && (password1.length() > 0) && (password2.length() > 0) && (email1 != null) && (email2 != null) && (password1.equals(password2))
+            if ((username != null) && (password1 != null) && (password2 != null) && (username.length() > 0) && (password1.length() > 0) && (password2.length() > 0) && (email1 != null) && (email2 != null) && (password1.equals(password2))
                     && (email1.equals(email2)) && (email1.matches(EMAIL_REGEX))) {
                 try {
                     if (manager.checkNewEmail(email1)) {
                         userID = manager.registerUser(username, email1, password1);
                     } else {
-                        System.out.println("Email already used");
+                        log.warn("Email already used");
                         Enumeration files = multi.getFileNames();
                         while (files.hasMoreElements()) {
                             String name = (String) files.nextElement();
@@ -110,7 +109,7 @@ public class RegistrationServlet extends HttpServlet {
                     throw new ServletException(ex);
                 }
             } else {
-                log.warn("Errore inserimento dati");
+                log.warn("Inserted data is wrong, something missing or passwords/emails do not coincide");
                 request.setAttribute("Result", "There are some errors in the inserted data, please retry");
                 RequestDispatcher rd = sc.getRequestDispatcher("/registrationResult.jsp");
                 rd.forward(request, response);
