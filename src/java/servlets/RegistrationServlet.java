@@ -31,8 +31,8 @@ public class RegistrationServlet extends HttpServlet {
 
     private DBManager manager;
     private String EMAIL_REGEX = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-    private String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
-    private String USERNAME_REGEX ="^[a-z0-9._-]{2,25}$";
+    private String PASSWORD_REGEX = "((?=.*[a-z]).{3,20})";
+    private String USERNAME_REGEX = "^[a-z0-9_-]{3,15}$";
     static Logger log = Logger.getLogger(RegistrationServlet.class.getName());
 
     public void init() throws ServletException {
@@ -64,7 +64,7 @@ public class RegistrationServlet extends HttpServlet {
         ServletContext sc = getServletContext();
 
         try {
-            multi = new MultipartRequest(request, request.getServletContext().getRealPath("/") + File.separator +"Avatars", 10 * 1024 * 1024, "ISO-8859-1", new DefaultFileRenamePolicy());
+            multi = new MultipartRequest(request, request.getServletContext().getRealPath("/") + File.separator + "Avatars", 10 * 1024 * 1024, "ISO-8859-1", new DefaultFileRenamePolicy());
         } catch (Exception ex) {
             log.error(ex.toString());
         }
@@ -75,7 +75,7 @@ public class RegistrationServlet extends HttpServlet {
                 String value = multi.getParameter(name);
 
                 if (name.equals("username")) {
-                    username = value;   
+                    username = value;
                 } else if (name.equals("password2")) {
                     password2 = value;
                 } else if (name.equals("password1")) {
@@ -87,8 +87,9 @@ public class RegistrationServlet extends HttpServlet {
                 }
             }
 
-            if ((username != null) && (password1 != null) && (password2 != null) && (username.length() > 0) && (password1.length() > 0) && (password2.length() > 0) && (email1 != null) && (email2 != null) && (password1.equals(password2))
-                    && (email1.equals(email2)) && (email1.matches(EMAIL_REGEX))) {
+            if ((username != null) && (password1 != null) && (password2 != null) && (username.matches(USERNAME_REGEX))
+                    && (password1.matches(PASSWORD_REGEX)) && (password2.matches(PASSWORD_REGEX)) && (password1.equals(password2))
+                    && (email1 != null) && (email2 != null) && (email1.matches(EMAIL_REGEX)) && (email2.matches(EMAIL_REGEX)) && (email1.equals(email2))) {
                 try {
                     if (manager.checkNewEmail(email1)) {
                         userID = manager.registerUser(username, email1, password1);
@@ -151,7 +152,7 @@ public class RegistrationServlet extends HttpServlet {
         } else {
             out.println("No information inserted, please retry");
             request.setAttribute("Result", "You inserted wrong or empty data, pleasy retry");
-            
+
             RequestDispatcher rd = sc.getRequestDispatcher("/registrationResult.jsp");
             rd.forward(request, response);
         }
