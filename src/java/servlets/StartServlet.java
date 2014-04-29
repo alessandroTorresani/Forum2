@@ -3,29 +3,27 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package servlets;
 
 import db.DBManager;
-import db.User;
+import db.Group;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 
 /**
  *
  * @author Alessandro
  */
-public class LoginServlet extends HttpServlet {
-    
+public class StartServlet extends HttpServlet {
+
     private DBManager manager;
     static Logger log = Logger.getLogger(RegistrationServlet.class.getName());
 
@@ -46,23 +44,16 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        HttpSession session = request.getSession();
-        User user = null;
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        System.out.println(email + password);
+        ServletContext sc = getServletContext();
+        List <Group> publicGroups = null;
         try {
-            user = manager.authenticate(request.getParameter("email"), request.getParameter("password"));
-        } catch (SQLException ex){
+            publicGroups = manager.getPublicGroups();
+        } catch (Exception ex){
             log.error(ex.toString());
         }
-        if (user!=null){
-            session.setAttribute("user", user);
-            log.info("login corretto");
-        }
-        response.sendRedirect(request.getContextPath()+"/");
-        
-        
+        request.setAttribute("publicGroups", publicGroups);
+        RequestDispatcher rd = sc.getRequestDispatcher("/index.jsp");
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

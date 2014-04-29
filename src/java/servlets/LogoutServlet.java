@@ -3,14 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package servlets;
 
-import db.DBManager;
 import db.User;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -18,20 +15,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.apache.log4j.Logger;
 
 /**
  *
  * @author Alessandro
  */
-public class LoginServlet extends HttpServlet {
-    
-    private DBManager manager;
-    static Logger log = Logger.getLogger(RegistrationServlet.class.getName());
-
-    public void init() throws ServletException {    // inizializza il DBManager dagli attributi di Application
-        this.manager = (DBManager) super.getServletContext().getAttribute("dbmanager");
-    }
+public class LogoutServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -47,22 +36,12 @@ public class LoginServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
-        User user = null;
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        System.out.println(email + password);
-        try {
-            user = manager.authenticate(request.getParameter("email"), request.getParameter("password"));
-        } catch (SQLException ex){
-            log.error(ex.toString());
-        }
-        if (user!=null){
-            session.setAttribute("user", user);
-            log.info("login corretto");
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
+            session.removeAttribute("user"); // elimino l'attributo user
+            session.invalidate(); // invalido la session
         }
         response.sendRedirect(request.getContextPath()+"/");
-        
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -16,6 +16,9 @@
         <description>listener</description>
         <listener-class>listeners.AppContextListener</listener-class>
     </listener>
+    <welcome-file-list>
+        <welcome-file>Start</welcome-file>
+    </welcome-file-list>
     <servlet>
         <servlet-name>Login</servlet-name>
         <servlet-class>servlets.LoginServlet</servlet-class>
@@ -24,6 +27,14 @@
         <servlet-name>Registration</servlet-name>
         <servlet-class>servlets.RegistrationServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Start</servlet-name>
+        <servlet-class>servlets.StartServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Logout</servlet-name>
+        <servlet-class>servlets.LogoutServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -31,6 +42,14 @@
     <servlet-mapping>
         <servlet-name>Registration</servlet-name>
         <url-pattern>/Registration</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Start</servlet-name>
+        <url-pattern>/Start</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/Logout</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

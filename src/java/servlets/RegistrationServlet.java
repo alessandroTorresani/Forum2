@@ -87,9 +87,59 @@ public class RegistrationServlet extends HttpServlet {
                 }
             }
 
-            if ((username != null) && (password1 != null) && (password2 != null) && (username.matches(USERNAME_REGEX))
-                    && (password1.matches(PASSWORD_REGEX)) && (password2.matches(PASSWORD_REGEX)) && (password1.equals(password2))
-                    && (email1 != null) && (email2 != null) && (email1.matches(EMAIL_REGEX)) && (email2.matches(EMAIL_REGEX)) && (email1.equals(email2))) {
+            boolean usernameCheck = false,
+                    pass1Check = false,
+                    pass2Check = false,
+                    email1Check = false,
+                    email2Check = false,
+                    equalPass = false,
+                    equalEmail = false,
+                    isAllRight = false;
+
+            if ((username != null) && (password1 != null) && (password2 != null) && (email1 != null) && (email2 != null)) {
+                if (usernameCheck = username.matches(USERNAME_REGEX)) {
+                    request.setAttribute("usernameCheck", true);
+                } else {
+                    request.setAttribute("usernameCheck", false);
+                }
+                if (pass1Check = password1.matches(PASSWORD_REGEX)) {
+                    request.setAttribute("pass1Check", true);
+                } else {
+                    request.setAttribute("pass1Check", false);
+                }
+                if (pass2Check = password2.matches(PASSWORD_REGEX)) {
+                    request.setAttribute("pass2Check", true);
+                } else {
+                    request.setAttribute("pass2Check", false);
+                }
+                if (email1Check = email1.matches(EMAIL_REGEX)) {
+                    request.setAttribute("email1Check", true);
+                } else {
+                    request.setAttribute("email1Check", false);
+                }
+                if (email2Check = email2.matches(EMAIL_REGEX)) {
+                    request.setAttribute("email2Check", true);
+                } else {
+                    request.setAttribute("email2Check", false);
+                }
+                if ((pass1Check == true) && (pass2Check == true) && (equalPass = password1.equals(password2))) {
+                    request.setAttribute("equalPass", true);
+                } else {
+                    request.setAttribute("equalPass", false);
+                }
+                if ((email1Check == true) && (email2Check == true) && (equalEmail = email1.equals(email2))) {
+                    request.setAttribute("equalEmail", true);
+                } else {
+                    request.setAttribute("equalEmail", false);
+                }
+                isAllRight = usernameCheck && pass1Check && pass2Check && email1Check && email2Check && equalEmail && equalPass;
+                System.out.println("prova "+("ciao".equals("oaic")));
+            }
+
+            /*if ((isAllRight)&&(username != null) && (password1 != null) && (password2 != null) && (username.matches(USERNAME_REGEX))
+             && (password1.matches(PASSWORD_REGEX)) && (password2.matches(PASSWORD_REGEX)) && (password1.equals(password2))
+             && (email1 != null) && (email2 != null) && (email1.matches(EMAIL_REGEX)) && (email2.matches(EMAIL_REGEX)) && (email1.equals(email2)))*/
+            if (isAllRight) {
                 try {
                     if (manager.checkNewEmail(email1)) {
                         userID = manager.registerUser(username, email1, password1);
@@ -138,14 +188,15 @@ public class RegistrationServlet extends HttpServlet {
                         } else {
                             f.delete(); //if is not an image, it must be deleted
 
-                            request.setAttribute("Result", "Your registration was successful");
+                            request.setAttribute("Result", "Your registration was successful, but you upload an invalid image for avatar");
                             RequestDispatcher rd = sc.getRequestDispatcher("/registrationResult.jsp");
                             rd.forward(request, response);
                         }
                     } else {
                         request.setAttribute("Result", "Your registration was successful");
-                        RequestDispatcher rd = sc.getRequestDispatcher("/registrationResult.jsp");
-                        rd.forward(request, response);
+                        response.sendRedirect(request.getContextPath()+"/registrationResult.jsp");
+                        /*RequestDispatcher rd = sc.getRequestDispatcher("/registrationResult.jsp");
+                        rd.forward(request, response);*/
                     }
                 }
             }
