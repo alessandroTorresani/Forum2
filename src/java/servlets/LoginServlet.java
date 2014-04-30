@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package servlets;
 
 import db.DBManager;
@@ -11,6 +10,9 @@ import db.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -25,7 +27,7 @@ import org.apache.log4j.Logger;
  * @author Alessandro
  */
 public class LoginServlet extends HttpServlet {
-    
+
     private DBManager manager;
     static Logger log = Logger.getLogger(RegistrationServlet.class.getName());
 
@@ -50,19 +52,20 @@ public class LoginServlet extends HttpServlet {
         User user = null;
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        System.out.println(email + password);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); 
+        Date date = new Date();
+        
         try {
-            user = manager.authenticate(request.getParameter("email"), request.getParameter("password"));
-        } catch (SQLException ex){
+            user = manager.authenticate(email, password);
+        } catch (SQLException ex) {
             log.error(ex.toString());
         }
-        if (user!=null){
+        if (user != null) {
             session.setAttribute("user", user);
-            log.info("login corretto");
+            log.info("login corretto, user:" + user.getEmail() + " at: " + dateFormat.format(date));
         }
-        response.sendRedirect(request.getContextPath()+"/");
-        
-        
+        response.sendRedirect(request.getContextPath() + "/");
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

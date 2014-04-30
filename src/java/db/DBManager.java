@@ -63,6 +63,7 @@ public class DBManager  implements Serializable {
                     User user = new User(); // se la query va a buon fine creo un'istanza della classe user
                     user.setUsername(rs.getString("username"));
                     user.setUserId(rs.getInt("user_id"));
+                    user.setEmail(rs.getString("email"));
                     return user;
 
                 } else {
