@@ -61,7 +61,7 @@
                  
             </c:when>
             <c:otherwise>
-                <form action ="/Start" method ="get">
+                <form action ="Start" method ="get">
                     <input type="submit" value ="Return to home"/>
                 </c:otherwise>
             </c:choose>

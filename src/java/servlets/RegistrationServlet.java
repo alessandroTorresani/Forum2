@@ -194,9 +194,8 @@ public class RegistrationServlet extends HttpServlet {
                         }
                     } else {
                         request.setAttribute("Result", "Your registration was successful");
-                        response.sendRedirect(request.getContextPath()+"/registrationResult.jsp");
-                        /*RequestDispatcher rd = sc.getRequestDispatcher("/registrationResult.jsp");
-                        rd.forward(request, response);*/
+                        RequestDispatcher rd = sc.getRequestDispatcher("/registrationResult.jsp");
+                        rd.forward(request, response);
                     }
                 }
             }
