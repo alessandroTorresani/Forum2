@@ -20,7 +20,10 @@
         <% HttpSession servletSession = request.getSession();
                User user = (User) servletSession.getAttribute("user");
                if (user != null){
-                   %> <p> Hi <%=user.getUsername()%> </p> <%
+                   %> <p> Hi <%=user.getUsername() + " "%><%if(user.getLastLogin() == null){
+                       %> <c:out value=", this is you first login" /><% }else {  %><%=user.getLastLogin()%><%
+                   }
+                   %> </p> <%
                }%>
         <form action ="registration.jsp" method ="get">
             <input type="submit" value ="Sign up"/>

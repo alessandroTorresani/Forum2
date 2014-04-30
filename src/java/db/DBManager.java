@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package db;
 
 import java.io.Serializable;
@@ -21,7 +20,7 @@ import java.util.logging.Logger;
  *
  * @author Alessandro
  */
-public class DBManager  implements Serializable {
+public class DBManager implements Serializable {
 
     private transient Connection con;
     private String url;
@@ -50,8 +49,8 @@ public class DBManager  implements Serializable {
             Logger.getLogger(DBManager.class.getName()).info(ex.getMessage());
         }
     }
-    
-    public User authenticate(String email, String password) throws SQLException {
+
+    public User authenticate(String email, String password, String loginDate) throws SQLException {
 
         PreparedStatement stm = con.prepareStatement("SELECT * FROM users WHERE email = ? AND password = ?");
         try {
@@ -60,10 +59,12 @@ public class DBManager  implements Serializable {
             ResultSet rs = stm.executeQuery();
             try {
                 if (rs.next()) {
-                    User user = new User(); // se la query va a buon fine creo un'istanza della classe user
-                    user.setUsername(rs.getString("username"));
+                    User user = new User();
                     user.setUserId(rs.getInt("user_id"));
+                    user.setUsername(rs.getString("username"));
                     user.setEmail(rs.getString("email"));
+                    user.setIsModerator(rs.getBoolean("is_moderator"));
+                    user.setLastLogin(rs.getString("last_login"));
                     return user;
 
                 } else {
@@ -78,15 +79,27 @@ public class DBManager  implements Serializable {
             stm.close();
         }
     }
-    
-    public boolean checkNewEmail(String email) throws SQLException{
+
+    public void setLoginDate(int userId, String loginDate) throws SQLException {
+       
+        PreparedStatement stm = con.prepareStatement("UPDATE users SET last_login = ?  WHERE user_id = ?");
+        try {
+            stm.setString(1, loginDate);
+            stm.setInt(2, userId);
+            stm.executeUpdate();
+        } finally {
+            stm.close();
+        }
+    }
+
+    public boolean checkNewEmail(String email) throws SQLException {
         int resultLenght = 0;
         PreparedStatement stm = con.prepareStatement("SELECT email  FROM users WHERE email= ?");
-        try{
+        try {
             stm.setString(1, email);
             ResultSet rs = stm.executeQuery();
-            try{
-                while(rs.next()){
+            try {
+                while (rs.next()) {
                     resultLenght++;
                 }
             } finally {
@@ -97,52 +110,52 @@ public class DBManager  implements Serializable {
         }
         return resultLenght == 0;
     }
-    
-    public int registerUser(String username, String email,String password) throws SQLException{
-         PreparedStatement stm = con.prepareStatement("INSERT INTO users ( username,password,email) VALUES (?,?,?)",Statement.RETURN_GENERATED_KEYS) ;
-         int userID = 0;
-         try{
-             stm.setString(1, username);
-             stm.setString(2, password);
-             stm.setString(3, email);
-             stm.executeUpdate();
-             ResultSet rs = stm.getGeneratedKeys();
-             try{
-                 while(rs.next()){
-                     userID = rs.getInt(1);                 
-                 }
-             } finally {
-                 rs.close();
-             }
-         } finally {
-             stm.close();
-         }
-         return userID;
+
+    public int registerUser(String username, String email, String password) throws SQLException {
+        PreparedStatement stm = con.prepareStatement("INSERT INTO users ( username,password,email) VALUES (?,?,?)", Statement.RETURN_GENERATED_KEYS);
+        int userID = 0;
+        try {
+            stm.setString(1, username);
+            stm.setString(2, password);
+            stm.setString(3, email);
+            stm.executeUpdate();
+            ResultSet rs = stm.getGeneratedKeys();
+            try {
+                while (rs.next()) {
+                    userID = rs.getInt(1);
+                }
+            } finally {
+                rs.close();
+            }
+        } finally {
+            stm.close();
+        }
+        return userID;
     }
-    
-    public List<Group> getPublicGroups() throws SQLException{
-         List<Group> groups = new ArrayList<Group>();
-         PreparedStatement stm = con.prepareStatement("SELECT * FROM groups WHERE is_private = ?");
-         try {
-             stm.setBoolean(1, false);
-             ResultSet rs = stm.executeQuery();
-             try {
-                 while(rs.next()){
-                     Group g = new Group();
-                     g.setGroupId(rs.getInt("group_id"));
-                     g.setAdminId(rs.getInt("administrator_id"));
-                     g.setCreationDate(rs.getString("creation_date"));
-                     g.setGroupName(rs.getString("groupname"));
-                     g.setIsClosed(rs.getBoolean("is_closed"));
-                     g.setIsPrivate(false);
-                     groups.add(g);
-                 }
-             } finally {
-                 rs.close();
-             }
-         } finally {
-             stm.close();
-         }
-         return groups;
+
+    public List<Group> getPublicGroups() throws SQLException {
+        List<Group> groups = new ArrayList<Group>();
+        PreparedStatement stm = con.prepareStatement("SELECT * FROM groups WHERE is_private = ?");
+        try {
+            stm.setBoolean(1, false);
+            ResultSet rs = stm.executeQuery();
+            try {
+                while (rs.next()) {
+                    Group g = new Group();
+                    g.setGroupId(rs.getInt("group_id"));
+                    g.setAdminId(rs.getInt("administrator_id"));
+                    g.setCreationDate(rs.getString("creation_date"));
+                    g.setGroupName(rs.getString("groupname"));
+                    g.setIsClosed(rs.getBoolean("is_closed"));
+                    g.setIsPrivate(false);
+                    groups.add(g);
+                }
+            } finally {
+                rs.close();
+            }
+        } finally {
+            stm.close();
+        }
+        return groups;
     }
 }
