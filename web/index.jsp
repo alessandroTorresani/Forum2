@@ -17,29 +17,34 @@
     </head>
     <body>  
         <h1>Forum</h1>
-        <% HttpSession servletSession = request.getSession();
-               User user = (User) servletSession.getAttribute("user");
-               if (user != null){
-                   %> <p> Hi <%=user.getUsername() + " "%><%if(user.getLastLogin() == null){
-                       %> <c:out value=", this is you first login" /><% }else {  %><%=user.getLastLogin()%><%
-                   }
-                   %> </p> <%
-               }%>
+        <c:if test="${sessionScope.user != null}">
+            <c:out value ="Hi ${sessionScope.user.getUsername()},"/>
+            <c:if test="${sessionScope.user.getLastLogin() == null}">
+                <c:out value="this is your first login"/>
+            </c:if>
+            <c:if test="${sessionScope.user.getLastLogin() != null}">
+                <c:out value="you was here: ${sessionScope.user.getLastLogin()}"/>
+            </c:if>
+        </c:if>
+        <br>
+        <br>
         <form action ="registration.jsp" method ="get">
             <input type="submit" value ="Sign up"/>
         </form>
+        <br>
         <form action="Login" method="post">
             <input type="text" name="email"/>
             <input type="password" name="password"/>
             <input type="submit" value="Sign in"/>
         </form>
+        <br>
         <form action ="Logout" method ="get">
             <input type="submit" value ="Logout"/>
         </form>
-        <% List <Group> publicGroups = (List<Group>)request.getAttribute("publicGroups"); 
-            for (int x = 0; x < publicGroups.size(); x++){
-        %> <p> <%= publicGroups.get(x).getGroupName()%> <%=publicGroups.get(x).getGroupId()%>  <%=publicGroups.get(x).getAdminId()%>  <%=publicGroups.get(x).getCreationDate()%> <%=publicGroups.get(x).isIsClosed()%> <%=publicGroups.get(x).isIsPrivate() %> </p><%
-            }
-        %>
+        <br>
+        <c:forEach items="${publicGroups}" var="group">
+            ${group.getGroupName()} ${group.getGroupId()} ${group.getAdminId()} ${group.getCreationDate()} ${group.isIsClosed()} ${group.isIsPrivate()} <br>
+        </c:forEach>
+        
     </body>
 </html>

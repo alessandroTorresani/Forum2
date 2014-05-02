@@ -52,13 +52,15 @@ public class LoginServlet extends HttpServlet {
         User user = null;
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
-        
+
         try {
             user = manager.authenticate(email, password, dateFormat.format(date));
-            manager.setLoginDate(user.getUserId(), dateFormat.format(date));
+            if (user != null) {
+                manager.setLoginDate(user.getUserId(), dateFormat.format(date));
+            }
         } catch (SQLException ex) {
             log.error(ex.toString());
         }
