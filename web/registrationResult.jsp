@@ -16,7 +16,6 @@
         <h1>
             <c:out value="${Result}"/>
         </h1>   
-        <% String result = (String) request.getAttribute("Result");%>
 
         <c:choose>
             <c:when test='${Result != "Your registration was successful"}'>
@@ -48,17 +47,7 @@
                         <p>Emails don't corresponding </p>
                     </c:when>  
                 </c:choose>
-                  
-                 
-                <% /*<c:out value="${usernameCheck}"/>
-                <c:out value="${pass1Check}"/>
-                <c:out value="${pass2Check}"/>
-                <c:out value="${email1Check}"/>
-                <c:out value="${email2Check}"/>
-                <c:out value="${equalPass}"/>
-                <c:out value="${equalEmail}"/>*/
-                %>
-                 
+            
             </c:when>
             <c:otherwise>
                 <form action ="Start" method ="get">
