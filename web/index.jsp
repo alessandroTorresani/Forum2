@@ -38,6 +38,10 @@
             <input type="submit" value="Sign in"/>
         </form>
         <br>
+        <form action="forgetPassword.jsp" method="get">
+            <input type="submit" value="Forgot password"/>
+        </form>
+        <br>
         <form action ="Logout" method ="get">
             <input type="submit" value ="Logout"/>
         </form>

@@ -141,7 +141,7 @@ public class RegistrationServlet extends HttpServlet {
              && (email1 != null) && (email2 != null) && (email1.matches(EMAIL_REGEX)) && (email2.matches(EMAIL_REGEX)) && (email1.equals(email2)))*/
             if (isAllRight) {
                 try {
-                    if (manager.checkNewEmail(email1)) {
+                    if (manager.checkEmail(email1)) {
                         userID = manager.registerUser(username, email1, password1);
                     } else {
                         log.warn("Email already used");
