@@ -47,14 +47,16 @@ public class ControlRequestServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
         ServletContext sc = getServletContext();
         int userId = Integer.parseInt(request.getParameter("user_id"));
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date actualDate = new Date();
         Date requestDate = null;
+        
         try {
             String requestTime = manager.getPasswordRequestTimebyUserId(userId);
-            if (requestTime != null) {
+            if (requestTime != null) { //if was done a request using the specified userId, and exists a request date
                 try {
                     requestDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(requestTime);
                 } catch (ParseException pex) {
@@ -62,9 +64,9 @@ public class ControlRequestServlet extends HttpServlet {
                     throw new ServletException(pex);
                 }
 
-                long secondsAfterRequest = (actualDate.getTime() - requestDate.getTime()) / 1000;
+                long secondsAfterRequest = (actualDate.getTime() - requestDate.getTime()) / 1000; // get the second between the change password request and the visit of the link to change the password
                 if (secondsAfterRequest <= 90) {
-                    RequestDispatcher rd = sc.getRequestDispatcher("/changePassword.jsp?user_id=" + userId); // change password
+                    RequestDispatcher rd = sc.getRequestDispatcher("/changePassword.jsp?user_id=" + userId); // change password ??is really necessary the userId here?
                     rd.forward(request, response);
                 }
             }

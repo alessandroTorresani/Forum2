@@ -47,7 +47,7 @@ public class StartServlet extends HttpServlet {
         ServletContext sc = getServletContext();
         List <Group> publicGroups = null;
         try {
-            publicGroups = manager.getPublicGroups();
+            publicGroups = manager.getPublicGroups(); // get all public groups
         } catch (Exception ex){
             log.error(ex.toString());
         }

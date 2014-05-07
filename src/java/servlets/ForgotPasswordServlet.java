@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 import java.util.zip.DataFormatException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -52,14 +53,16 @@ public class ForgotPasswordServlet extends HttpServlet {
 
         try {
             userId = manager.getUserIdByEmail(email);
-            if (userId > 0) {
+            if (userId > 0) { //if user which that email exits
+                String requestId = UUID.randomUUID().toString();
+               System.out.println(requestId);
                 try {
-                    if (manager.checkPasswordRequest(userId)) {
+                    if (manager.checkPasswordRequest(userId)) { //if the user had already done a request
                         // query update
-                        manager.updatePasswordRequest(userId, dateFormat.format(date));
+                        manager.updatePasswordRequest(userId, dateFormat.format(date), ""+requestId); //we update the request
                     } else {
                         //insert query
-                        manager.insertPasswordRequest(userId, dateFormat.format(date));
+                        manager.insertPasswordRequest(userId, dateFormat.format(date), ""+requestId); //else we create a new change password request
                     }
                 } catch (SQLException ex) {
                     log.error(ex.toString());

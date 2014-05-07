@@ -171,22 +171,24 @@ public class DBManager implements Serializable {
         return resultLenght > 0;
     }
 
-    public void updatePasswordRequest(int userId, String requestTime) throws SQLException {
-        PreparedStatement stm = con.prepareStatement("UPDATE forgotten_passwords  SET request_time = ?  WHERE user_id = ?");
+    public void updatePasswordRequest(int userId, String requestTime, String requestId) throws SQLException {
+        PreparedStatement stm = con.prepareStatement("UPDATE forgotten_passwords  SET request_time = ?, request_id = ?  WHERE user_id = ?");
         try {
             stm.setString(1, requestTime);
             stm.setInt(2, userId);
+            stm.setString(3, requestId);
             stm.executeUpdate();
         } finally {
             stm.close();
         }
     }
 
-    public void insertPasswordRequest(int userId, String requestTime) throws SQLException {
-        PreparedStatement stm = con.prepareStatement("INSERT INTO forgotten_passwords (user_id, request_time) VALUES(?,?)");
+    public void insertPasswordRequest(int userId, String requestTime, String requestId) throws SQLException {
+        PreparedStatement stm = con.prepareStatement("INSERT INTO forgotten_passwords (user_id, request_time, request_id) VALUES(?,?,?)");
         try {
             stm.setInt(1, userId);
             stm.setString(2, requestTime);
+            stm.setString(3, requestId);
             stm.executeUpdate();
         } finally {
             stm.close();
