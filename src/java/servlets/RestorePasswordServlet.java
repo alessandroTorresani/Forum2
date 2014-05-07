@@ -20,13 +20,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
-import static servlets.ForgotPasswordServlet.log;
+import static servlets.ControlRequestServlet.log;
 
 /**
  *
  * @author Alessandro
  */
-public class ControlRequestServlet extends HttpServlet {
+public class RestorePasswordServlet extends HttpServlet {
 
     private DBManager manager;
     static Logger log = Logger.getLogger(RegistrationServlet.class.getName());
@@ -49,14 +49,14 @@ public class ControlRequestServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         ServletContext sc = getServletContext();
-        String RequestId = request.getParameter("requestId");
+        String requestId = request.getParameter("requestId");
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date actualDate = new Date();
         Date requestDate = null;
+        int userId = 0;
 
         try {
-            String requestTime = manager.getPasswordRequestTimebyRequestId(RequestId);
-            System.out.println(requestTime);
+            String requestTime = manager.getPasswordRequestTimebyRequestId(requestId);
             if (requestTime != null) { //if was done a request using the specified userId, and exists a request date
                 try {
                     requestDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(requestTime);
@@ -64,17 +64,21 @@ public class ControlRequestServlet extends HttpServlet {
                     log.error(pex.toString());
                     throw new ServletException(pex);
                 }
-
                 long secondsAfterRequest = (actualDate.getTime() - requestDate.getTime()) / 1000; // get the second between the change password request and the visit of the link to change the password
-                System.out.println("gap:" + secondsAfterRequest);
 
-                if (secondsAfterRequest <= 1000) {
-                    request.setAttribute("correctRequest", true);
-                    RequestDispatcher rd = sc.getRequestDispatcher("/changePassword.jsp?requestId=" + RequestId); // change password ??is really necessary the userId here?
-                    rd.forward(request, response);
+                if (secondsAfterRequest <= 90) {
+                    userId = manager.getUserIdByRequestId(requestId);
+                    if (userId > 0) {
+                        String tempPassword = manager.getTempPasswordByUserId(userId);
+                        manager.changeUserPassword(userId, tempPassword);
+                        manager.deletePasswordRequest(requestId);
+                        request.setAttribute("correctRequest", true);
+                        RequestDispatcher rd = sc.getRequestDispatcher("/changePassword.jsp?requestId=" + requestId); // change password ??is really necessary the userId here?
+                        rd.forward(request, response);
+                    }
                 } else {
                     request.setAttribute("errorMessage", "Request out of time");
-                    manager.deletePasswordRequest(RequestId);
+                    manager.deletePasswordRequest(requestId);
                     RequestDispatcher rd = sc.getRequestDispatcher("/changePassword.jsp"); // change password ??is really necessary the userId here?
                     rd.forward(request, response);
                 }
@@ -83,11 +87,11 @@ public class ControlRequestServlet extends HttpServlet {
                 RequestDispatcher rd = sc.getRequestDispatcher("/changePassword.jsp");
                 rd.forward(request, response);
             }
+
         } catch (SQLException ex) {
             log.error(ex.toString());
             throw new ServletException(ex);
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

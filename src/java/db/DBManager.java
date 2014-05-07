@@ -171,35 +171,38 @@ public class DBManager implements Serializable {
         return resultLenght > 0;
     }
 
-    public void updatePasswordRequest(int userId, String requestTime, String requestId) throws SQLException {
-        PreparedStatement stm = con.prepareStatement("UPDATE forgotten_passwords  SET request_time = ?, request_id = ?  WHERE user_id = ?");
+    public void updatePasswordRequest(int userId, String requestTime, String requestId, String tempPassword) throws SQLException {
+        PreparedStatement stm = con.prepareStatement("UPDATE forgotten_passwords  SET request_time = ?, request_id = ?, temp_password = ?  WHERE user_id = ?");
         try {
             stm.setString(1, requestTime);
-            stm.setInt(2, userId);
-            stm.setString(3, requestId);
+            stm.setString(2, requestId);
+            stm.setString(3, tempPassword);
+            stm.setInt(4, userId);
+
             stm.executeUpdate();
         } finally {
             stm.close();
         }
     }
 
-    public void insertPasswordRequest(int userId, String requestTime, String requestId) throws SQLException {
-        PreparedStatement stm = con.prepareStatement("INSERT INTO forgotten_passwords (user_id, request_time, request_id) VALUES(?,?,?)");
+    public void insertPasswordRequest(int userId, String requestTime, String requestId, String tempPassword) throws SQLException {
+        PreparedStatement stm = con.prepareStatement("INSERT INTO forgotten_passwords (user_id, request_time, request_id, temp_password) VALUES(?,?,?,?)");
         try {
             stm.setInt(1, userId);
             stm.setString(2, requestTime);
             stm.setString(3, requestId);
+            stm.setString(4, tempPassword);
             stm.executeUpdate();
         } finally {
             stm.close();
         }
     }
 
-    public String getPasswordRequestTimebyUserId(int userId) throws SQLException {
+    public String getPasswordRequestTimebyRequestId(String requestId) throws SQLException {
         String requestTime = null;
-        PreparedStatement stm = con.prepareCall("SELECT request_time FROM forgotten_passwords WHERE user_id = ?");
+        PreparedStatement stm = con.prepareCall("SELECT request_time FROM forgotten_passwords WHERE request_id = ?");
         try {
-            stm.setInt(1, userId);
+            stm.setString(1, requestId);
             ResultSet rs = stm.executeQuery();
             try {
                 while (rs.next()) {
@@ -212,6 +215,84 @@ public class DBManager implements Serializable {
             stm.close();
         }
         return requestTime;
+    }
+    
+    public String getPasswordRequestIdbyUserId(int userId) throws SQLException{
+        String requestId = null;
+        PreparedStatement stm = con.prepareCall("SELECT request_id FROM forgotten_passwords WHERE user_id = ?");
+        try {
+            stm.setInt(1,userId );
+            ResultSet rs = stm.executeQuery();
+            try {
+                while (rs.next()){
+                    requestId = rs.getString("request_id");
+                }
+            } finally {
+                rs.close();
+            }
+        } finally {
+            stm.close();
+        }
+        return requestId;
+    }
+    
+    public String getTempPasswordByUserId(int userId) throws SQLException{
+        String tempPassword = null;
+        PreparedStatement stm = con.prepareCall("SELECT temp_password FROM forgotten_passwords WHERE user_id = ?");
+        try {
+            stm.setInt(1,userId );
+            ResultSet rs = stm.executeQuery();
+            try {
+                while (rs.next()){
+                    tempPassword = rs.getString("temp_password");
+                }
+            } finally {
+                rs.close();
+            }
+        } finally {
+            stm.close();
+        }
+        return tempPassword;
+    }
+    
+    public void changeUserPassword(int userId, String password) throws SQLException{
+        PreparedStatement stm = con.prepareCall("UPDATE users SET password = ? WHERE user_id = ?");
+        try {
+            stm.setString(1, password);
+            stm.setInt(2, userId);
+            stm.executeUpdate();
+        } finally {
+            stm.close();
+        }
+    }
+    
+    public void deletePasswordRequest (String requestId) throws SQLException{
+        PreparedStatement stm = con.prepareCall("DELETE  FROM forgotten_passwords WHERE request_id = ?");
+        try {
+            stm.setString(1, requestId);
+            stm.executeUpdate();
+        } finally {
+            stm.close();
+        }
+    }
+
+    public int getUserIdByRequestId(String requestId) throws SQLException {
+        int userId = 0;
+        PreparedStatement stm = con.prepareCall("SELECT user_id FROM forgotten_passwords WHERE request_id = ?");
+        try {
+            stm.setString(1, requestId);
+            ResultSet rs = stm.executeQuery();
+            try {
+                while (rs.next()) {
+                    userId = rs.getInt("user_id");
+                }
+            } finally {
+                rs.close();
+            }
+        } finally {
+            stm.close();
+        }
+        return userId;
     }
 
     public List<Group> getPublicGroups() throws SQLException {

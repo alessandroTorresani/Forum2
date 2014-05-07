@@ -60,6 +60,8 @@ public class LoginServlet extends HttpServlet {
             user = manager.authenticate(email, password, dateFormat.format(date));
             if (user != null) {
                 manager.setLoginDate(user.getUserId(), dateFormat.format(date));
+                String requestId = manager.getPasswordRequestIdbyUserId(user.getUserId());
+                manager.deletePasswordRequest(requestId);
             }
         } catch (SQLException ex) {
             log.error(ex.toString());

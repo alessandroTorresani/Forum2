@@ -29,6 +29,7 @@ public class ForgotPasswordServlet extends HttpServlet {
 
     private DBManager manager;
     static Logger log = Logger.getLogger(RegistrationServlet.class.getName());
+    private String PASSWORD_REGEX = "((?=.*[a-z]).{3,20})";
 
     public void init() throws ServletException {
         this.manager = (DBManager) super.getServletContext().getAttribute("dbmanager");
@@ -47,6 +48,9 @@ public class ForgotPasswordServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String email = request.getParameter("email");
+        String password1 = request.getParameter("password1");
+        String password2 = request.getParameter("password2");
+
         int userId;
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
@@ -54,22 +58,26 @@ public class ForgotPasswordServlet extends HttpServlet {
         try {
             userId = manager.getUserIdByEmail(email);
             if (userId > 0) { //if user which that email exits
-                String requestId = UUID.randomUUID().toString();
-               System.out.println(requestId);
-                try {
-                    if (manager.checkPasswordRequest(userId)) { //if the user had already done a request
-                        // query update
-                        manager.updatePasswordRequest(userId, dateFormat.format(date), ""+requestId); //we update the request
-                    } else {
-                        //insert query
-                        manager.insertPasswordRequest(userId, dateFormat.format(date), ""+requestId); //else we create a new change password request
+                if ((password1 != null) && (password2 != null) && (password1.matches(PASSWORD_REGEX)) && (password2.matches(PASSWORD_REGEX)) && (password1.equals(password2))) {
+                    String requestId = UUID.randomUUID().toString(); // generate random requestId
+                    try {
+                        if (manager.checkPasswordRequest(userId)) { //if the user had already done a request
+                            // query update
+                            manager.updatePasswordRequest(userId, dateFormat.format(date), requestId, password1); //we update the request
+                        } else {
+                            //insert query
+                            manager.insertPasswordRequest(userId, dateFormat.format(date), requestId, password1); //else we create a new change password request
+                        }
+                    } catch (SQLException ex) {
+                        log.error(ex.toString());
+                        throw new ServletException(ex);
                     }
-                } catch (SQLException ex) {
-                    log.error(ex.toString());
-                    throw new ServletException(ex);
+                    //invio email
+                    response.sendRedirect(request.getContextPath() + "/");
+                } else {
+                    System.out.println("password non corrette");
                 }
-                //invio email
-                 response.sendRedirect(request.getContextPath() + "/");
+
             } else {
                 System.out.println("Email non esistente"); // gestione errore
             }

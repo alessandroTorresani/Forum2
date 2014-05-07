@@ -43,6 +43,10 @@
         <servlet-name>ControlRequest</servlet-name>
         <servlet-class>servlets.ControlRequestServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RestorePassword</servlet-name>
+        <servlet-class>servlets.RestorePasswordServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -66,6 +70,10 @@
     <servlet-mapping>
         <servlet-name>ControlRequest</servlet-name>
         <url-pattern>/ControlRequest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RestorePassword</servlet-name>
+        <url-pattern>/RestorePassword</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

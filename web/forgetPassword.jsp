@@ -12,9 +12,13 @@
         <title>Forgot password</title>
     </head>
     <body>
-        <h1>Insert your email, you have 90 seconds to change it</h1>
+        <h1>Insert your email and your new password</h1>
+        <h1>If you visit the link that we will send to your email in 90 seconds, your modification will be applied </h1>
+
         <form action="ForgotPassword" method="post">
-            <input type="text" name="email"/>
+            Email: <input type="text" name="email"/>
+            New password: <input type="password" name="password1"/>
+            Repeat password: <input type="password" name="password2"/>
             <input type ="submit" value="Change"/>
         </form>
     </body>
