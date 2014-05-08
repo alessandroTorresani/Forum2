@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import static servlets.RegistrationServlet.log;
+import utils.Mailer;
 
 /**
  *
@@ -72,7 +73,10 @@ public class ForgotPasswordServlet extends HttpServlet {
                         log.error(ex.toString());
                         throw new ServletException(ex);
                     }
-                    //invio email
+                    //invio email (bisogna inviare anche la password inserita??) evitare false richieste
+                    Mailer mail = new Mailer();
+                    
+                    
                     response.sendRedirect(request.getContextPath() + "/");
                 } else {
                     System.out.println("password non corrette");

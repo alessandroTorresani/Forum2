@@ -13,6 +13,10 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <link href='Style/css/bootstrap.min.css' rel='stylesheet' media='screen'>
+        <script src='http://code.jquery.com/jquery.js'></script>
+        <script src='Style/js/bootstrap.min.js'></script>
         <title>Forum</title>
     </head>
     <body>  
@@ -49,6 +53,6 @@
         <c:forEach items="${publicGroups}" var="group">
             ${group.getGroupName()} ${group.getGroupId()} ${group.getAdminId()} ${group.getCreationDate()} ${group.isIsClosed()} ${group.isIsPrivate()} <br>
         </c:forEach>
-        
+
     </body>
 </html>
