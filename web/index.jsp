@@ -19,40 +19,64 @@
         <script src='Style/js/bootstrap.min.js'></script>
         <title>Forum</title>
     </head>
-    <body>  
-        <h1>Forum</h1>
-        <c:if test="${sessionScope.user != null}">
-            <c:out value ="Hi ${sessionScope.user.getUsername()},"/>
-            <c:if test="${sessionScope.user.getLastLogin() == null}">
-                <c:out value="this is your first login"/>
-            </c:if>
-            <c:if test="${sessionScope.user.getLastLogin() != null}">
-                <c:out value="you was here: ${sessionScope.user.getLastLogin()}"/>
-            </c:if>
-        </c:if>
-        <br>
-        <br>
-        <form action ="registration.jsp" method ="get">
-            <input type="submit" value ="Sign up"/>
-        </form>
-        <br>
-        <form action="Login" method="post">
-            <input type="text" name="email"/>
-            <input type="password" name="password"/>
-            <input type="submit" value="Sign in"/>
-        </form>
-        <br>
-        <form action="forgetPassword.jsp" method="get">
-            <input type="submit" value="Forgot password"/>
-        </form>
-        <br>
-        <form action ="Logout" method ="get">
-            <input type="submit" value ="Logout"/>
-        </form>
-        <br>
-        <c:forEach items="${publicGroups}" var="group">
-            ${group.getGroupName()} ${group.getGroupId()} ${group.getAdminId()} ${group.getCreationDate()} ${group.isIsClosed()} ${group.isIsPrivate()} <br>
-        </c:forEach>
 
+    <body>
+
+
+
+        <div style="width:80%; margin:0 auto;">
+
+            <ul class="nav nav-pills">
+                <li class="active"><a href="">Home</a></li>
+                    <c:choose>
+                        <c:when test="${sessionScope.user != null}">
+                        <li><a href="Logout">Logout</a></li>
+                        <li> <a href=""><c:out value="${sessionScope.user.getUsername()}"/></a></li>
+                        <li><a href=""><c:out value="${sessionScope.user.getLastLogin()}"/></a></li>
+                        </c:when>
+                        <c:otherwise>       
+                        <li><a href="registration.jsp">Sign up</a></li>
+                        <li><a href="forgetPassword.jsp">Forget password</a></li>
+                        </c:otherwise>
+                    </c:choose>
+            </ul>
+
+            <h1>Forum</h1>
+            
+            <c:choose>
+                <c:when test="${sessionScope.user == null}">
+                    <form role="form" action="Login" method="post">
+                        <div class="form-group">
+                            <label for="name">Login</label>
+                            <input type="text" class="form-control" placeholder="Email" name="email">
+                            <input type="password" class="form-control" placeholder="Password" name="password">
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="submit" class="btn btn-default">Sign in</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </c:when>
+            </c:choose>
+            <br>
+            <div class="panel panel-default">
+                <!-- Table -->
+                <table class="table">
+                    <th> Group </th>
+                    <th> Owner </th>
+                    <th> Created at </th>
+                    <th> Closed </th>
+                        <c:forEach items="${publicGroups}" var="group">
+                        <tr>
+                            <td>${group.getGroupName()}</td>
+                            <td>${group.getAdminId()}</td>
+                            <td>${group.getCreationDate()}</td>
+                            <td>${group.isIsClosed()}</td>
+                        </tr>
+                    </c:forEach>
+                </table>
+            </div>
+        </div>
     </body>
 </html>
