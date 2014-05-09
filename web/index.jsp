@@ -12,18 +12,16 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-        <link href='Style/css/bootstrap.min.css' rel='stylesheet' media='screen'>
-        <script src='http://code.jquery.com/jquery.js'></script>
-        <script src='Style/js/bootstrap.min.js'></script>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="Style/css/bootstrap.min.css" rel="stylesheet">
         <title>Forum</title>
     </head>
 
     <body>
-
-
-
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script src='Style/js/bootstrap.min.js'></script>
         <div style="width:80%; margin:0 auto;">
 
             <ul class="nav nav-pills">
@@ -42,20 +40,19 @@
             </ul>
 
             <h1>Forum</h1>
-            
+
             <c:choose>
                 <c:when test="${sessionScope.user == null}">
                     <form role="form" action="Login" method="post">
                         <div class="form-group">
-                            <label for="name">Login</label>
-                            <input type="text" class="form-control" placeholder="Email" name="email">
-                            <input type="password" class="form-control" placeholder="Password" name="password">
-                            <div class="form-group">
-                                <div class="col-sm-offset-2 col-sm-10">
-                                    <button type="submit" class="btn btn-default">Sign in</button>
-                                </div>
-                            </div>
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" placeholder="Email" name="email">
                         </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+                        </div>
+                        <button type="submit" class="btn btn-default">Submit</button>
                     </form>
                 </c:when>
             </c:choose>

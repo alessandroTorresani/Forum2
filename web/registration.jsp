@@ -9,15 +9,16 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-        <link href='Style/css/bootstrap.min.css' rel='stylesheet' media='screen'>
-        <script src='http://code.jquery.com/jquery.js'></script>
-        <script src='Style/js/bootstrap.min.js'></script>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="Style/css/bootstrap.min.css" rel="stylesheet">
         <title>Register now</title>
     </head>
 
     <body>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script src='Style/js/bootstrap.min.js'></script>
         <div style="width:80%; margin:0 auto;">
 
             <ul class="nav nav-pills">
@@ -36,6 +37,8 @@
             </ul>
 
             <h1>Registration</h1>
+            <br>
+
 
             <form role="form" action="Registration" method="post" enctype="multipart/form-data">
                 <div class="form-group">
@@ -62,6 +65,7 @@
                     <label for="exampleInputFile">File input</label>
                     <input type="file" name="avatar">
                 </div>
+                <br>
                 <button type="submit" class="btn btn-default">Submit</button>
             </form>
 
