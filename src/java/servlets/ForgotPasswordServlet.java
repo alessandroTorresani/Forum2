@@ -14,11 +14,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 import java.util.zip.DataFormatException;
+import javax.mail.MessagingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
+import static servlets.ControlRequestServlet.log;
 import static servlets.RegistrationServlet.log;
 import utils.Mailer;
 
@@ -56,6 +58,7 @@ public class ForgotPasswordServlet extends HttpServlet {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
 
+        //invio email (bisogna inviare anche la password inserita??) evitare false richieste
         try {
             userId = manager.getUserIdByEmail(email);
             if (userId > 0) { //if user which that email exits
@@ -73,10 +76,16 @@ public class ForgotPasswordServlet extends HttpServlet {
                         log.error(ex.toString());
                         throw new ServletException(ex);
                     }
-                    //invio email (bisogna inviare anche la password inserita??) evitare false richieste
+                    
+                    String recoveryLink = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/RestorePassword?requestId=" + requestId;
                     Mailer mail = new Mailer();
-                    
-                    
+                    try {
+                        mail.sendEmail(email, "Password recovery", recoveryLink + " Inserted password: " + password1);
+                    } catch (MessagingException mex) {
+                        log.error(mex.toString());
+                        throw new ServletException(mex);
+                    }
+
                     response.sendRedirect(request.getContextPath() + "/");
                 } else {
                     System.out.println("password non corrette");

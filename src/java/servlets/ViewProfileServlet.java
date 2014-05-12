@@ -3,33 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package servlets;
 
-import db.DBManager;
-import db.Group;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.log4j.Logger;
 
 /**
  *
  * @author Alessandro
  */
-public class StartServlet extends HttpServlet {
-
-    private DBManager manager;
-    static Logger log = Logger.getLogger(StartServlet.class.getName());
-
-    public void init() throws ServletException {    // inizializza il DBManager dagli attributi di Application
-        this.manager = (DBManager) super.getServletContext().getAttribute("dbmanager");
-    }
+public class ViewProfileServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,16 +32,20 @@ public class StartServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        ServletContext sc = getServletContext();
-        List <Group> publicGroups = null;
         try {
-            publicGroups = manager.getPublicGroups(); // get all public groups
-        } catch (Exception ex){
-            log.error(ex.toString());
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet ViewProfileServlet</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet ViewProfileServlet at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        } finally {
+            out.close();
         }
-        request.setAttribute("publicGroups", publicGroups);
-        RequestDispatcher rd = sc.getRequestDispatcher("/index.jsp");
-        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

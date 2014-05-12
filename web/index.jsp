@@ -24,12 +24,22 @@
         <script src='Style/js/bootstrap.min.js'></script>
         <div style="width:80%; margin:0 auto;">
 
+
             <ul class="nav nav-pills">
-                <li class="active"><a href="">Home</a></li>
+                <li class="active"><a href="Start">Home</a></li>
                     <c:choose>
                         <c:when test="${sessionScope.user != null}">
-                        <li><a href="Logout">Logout</a></li>
-                        <li> <a href=""><c:out value="${sessionScope.user.getUsername()}"/></a></li>
+
+                        <li class="dropdown">
+                            <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">${sessionScope.user.getUsername()}<b class="caret"></b></a>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#your groups">Your groups</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="ViewProfile?email=${sessionScope.user.getEmail()}">View profile</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#Switch moderator">Switch to moderator</a></li>
+                                <li role="presentation" class="divider"></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="Logout">Logout</a></li>
+                            </ul>
+                        </li>
                         <li><a href=""><c:out value="${sessionScope.user.getLastLogin()}"/></a></li>
                         </c:when>
                         <c:otherwise>       
@@ -38,6 +48,7 @@
                         </c:otherwise>
                     </c:choose>
             </ul>
+
 
             <h1>Forum</h1>
 
@@ -53,7 +64,7 @@
                                 <label for="password">Password</label>
                                 <input type="password" class="form-control" id="password" placeholder="Password" name="password">
                             </div>
-                            <button type="submit" class="btn btn-default">Submit</button>
+                            <button type="submit" class="btn btn-default">Login</button>
                         </form>
                     </div>
                 </c:when>
@@ -75,6 +86,32 @@
                         </tr>
                     </c:forEach>
                 </table>
+            </div>
+
+            <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Apri il box</button>
+
+            <div id="myModal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Recovery password</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>Insert your email and your new password, If you visit the link that we will send to your email in 90 seconds, your modification will be applied</p>
+                            <form action="ForgotPassword" method="post">
+                                Email: <input type="text" name="email"/>
+                                New password: <input type="password" name="password1"/>
+                                Repeat password: <input type="password" name="password2"/>
+                                <input type ="submit" value="Change"/>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+                            <button type="button" class="btn btn-primary">Invia</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </body>

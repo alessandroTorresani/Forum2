@@ -333,7 +333,6 @@ public class DBManager implements Serializable {
                     g.setGroupName(rs.getString("groupname"));
                     g.setIsClosed(rs.getBoolean("is_closed"));
                     g.setIsPrivate(false);
-                    
                     groups.add(g);
                 }
             } finally {
