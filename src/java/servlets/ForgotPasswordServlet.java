@@ -20,8 +20,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
-import static servlets.ControlRequestServlet.log;
-import static servlets.RegistrationServlet.log;
 import utils.Mailer;
 
 /**
