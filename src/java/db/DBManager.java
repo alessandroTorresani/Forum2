@@ -129,6 +129,25 @@ public class DBManager implements Serializable {
         }
         return userId;
     }
+    
+    public String getUsernameByUserId(int userId) throws SQLException{
+        String username = null;
+        PreparedStatement stm = con.prepareCall("SELECT username FROM users WHERE user_id=?");
+        try {
+            stm.setInt(1, userId);
+            ResultSet rs = stm.executeQuery();
+            try {
+                while(rs.next()){
+                    username = rs.getString("username");
+                }
+            } finally {
+                rs.close();
+            }
+        } finally {
+            stm.close();
+        }
+        return username;
+    }
 
     public int registerUser(String username, String email, String password) throws SQLException {
         PreparedStatement stm = con.prepareStatement("INSERT INTO users ( username,password,email) VALUES (?,?,?)", Statement.RETURN_GENERATED_KEYS);
@@ -297,6 +316,7 @@ public class DBManager implements Serializable {
 
     public List<Group> getPublicGroups() throws SQLException {
         List<Group> groups = new ArrayList<Group>();
+        String adminUsername;
         PreparedStatement stm = con.prepareStatement("SELECT * FROM groups WHERE is_private = ?");
         try {
             stm.setBoolean(1, false);
@@ -304,12 +324,16 @@ public class DBManager implements Serializable {
             try {
                 while (rs.next()) {
                     Group g = new Group();
+                    int adminId = rs.getInt("administrator_id");
+                    adminUsername = getUsernameByUserId(adminId);
                     g.setGroupId(rs.getInt("group_id"));
-                    g.setAdminId(rs.getInt("administrator_id"));
+                    g.setAdminId(adminId);
+                    g.setAdminUsername(adminUsername);
                     g.setCreationDate(rs.getString("creation_date"));
                     g.setGroupName(rs.getString("groupname"));
                     g.setIsClosed(rs.getBoolean("is_closed"));
                     g.setIsPrivate(false);
+                    
                     groups.add(g);
                 }
             } finally {

@@ -40,60 +40,59 @@
                 <c:out value="${Result}"/>
             </h1>   
 
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Panel title</h3>
-                </div>
-                <div class="panel-body">
-                    Panel content
-                </div>
-            </div>
-
-
             <c:choose>
                 <c:when test='${Result != "Your registration was successful"}'>
-                    <div class="alert alert-danger">
-                        <a href="#" class="alert-link">Errori</a>
-                    </div>
 
-                    <c:choose>
-                        <c:when test="${usernameCheck == false}">
-                            <p>You inserted a non valid username</p>
-                        </c:when>
-                    </c:choose>
-                    <c:choose>
-                        <c:when test="${pass1Check == false}">
-                            <p>You inserted a non valid password</p>
-                        </c:when>
-                    </c:choose>
-                    <c:choose>
-                        <c:when test="${email1Check == false}">
-                            <p>You inserted a non valid email</p>
-                        </c:when>
-                    </c:choose>
-                    <c:choose>
-                        <c:when test="${equalPass == false}">
-                            <p>Passwords don't corresponding</p>
-                        </c:when>
-                    </c:choose>
-                    <c:choose>
-                        <c:when test="${equalEmail == false}">
-                            <p>Emails don't corresponding </p>
-                        </c:when>  
-                    </c:choose>
-                    <form action ="registration.jsp" method ="get">
-                        <input type="submit" value ="Retry"/>
-                    </form>
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Error</h3>
+                        </div>
+                        <div class="panel-body">
 
-                </c:when>
-                <c:otherwise>
-                    <div class="alert alert-success">
-                        <a href="#" class="alert-link">${Result}</a>
+                            <c:choose>
+                                <c:when test="${usernameCheck == false}">
+                                    <p>You inserted a non valid username</p>
+                                </c:when>
+                            </c:choose>
+                            <c:choose>
+                                <c:when test="${pass1Check == false}">
+                                    <p>You inserted a non valid password</p>
+                                </c:when>
+                            </c:choose>
+                            <c:choose>
+                                <c:when test="${email1Check == false}">
+                                    <p>You inserted a non valid email</p>
+                                </c:when>
+                            </c:choose>
+                            <c:choose>
+                                <c:when test="${equalPass == false}">
+                                    <p>Passwords don't corresponding</p>
+                                </c:when>
+                            </c:choose>
+                            <c:choose>
+                                <c:when test="${equalEmail == false}">
+                                    <p>Emails don't corresponding </p>
+                                </c:when>  
+                            </c:choose>
+                            <a href="registration.jsp">
+                                <BUTTON class="btn btn-danger">Retry</BUTTON>
+                            </a>
+                        </c:when>
+                        <c:otherwise>   
+                            <div class="panel panel-success">
+                                <div class="panel-heading">                                    
+                                    <h3 class="panel-title">Success</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <a href="Start">
+                                        <BUTTON class="btn btn-success">Return home</BUTTON>
+                                    </a>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
                     </div>
-                    <form action ="Start" method ="get">
-                        <input type="submit" value ="Return to home"/>
-                    </c:otherwise>
-                </c:choose>
-        </div>
+                </div>
+
+            </div>
     </body>
 </html>

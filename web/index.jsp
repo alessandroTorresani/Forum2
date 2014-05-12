@@ -43,17 +43,19 @@
 
             <c:choose>
                 <c:when test="${sessionScope.user == null}">
-                    <form role="form" action="Login" method="post">
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" class="form-control" id="email" placeholder="Email" name="email">
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" class="form-control" id="password" placeholder="Password" name="password">
-                        </div>
-                        <button type="submit" class="btn btn-default">Submit</button>
-                    </form>
+                    <div style="width:50;">
+                        <form role="form" action="Login" method="post">
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" placeholder="Email" name="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+                            </div>
+                            <button type="submit" class="btn btn-default">Submit</button>
+                        </form>
+                    </div>
                 </c:when>
             </c:choose>
             <br>
@@ -67,7 +69,7 @@
                         <c:forEach items="${publicGroups}" var="group">
                         <tr>
                             <td>${group.getGroupName()}</td>
-                            <td>${group.getAdminId()}</td>
+                            <td>${group.getAdminUsername()}</td>
                             <td>${group.getCreationDate()}</td>
                             <td>${group.isIsClosed()}</td>
                         </tr>

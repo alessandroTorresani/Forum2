@@ -19,8 +19,9 @@
     <body>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script src='Style/js/bootstrap.min.js'></script>
-        <div style="width:80%; margin:0 auto;">
 
+
+        <div style="width:80%; margin:0 auto;">
             <ul class="nav nav-pills">
                 <li class="active"><a href="Start">Home</a></li>
                     <c:choose>

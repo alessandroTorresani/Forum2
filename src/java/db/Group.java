@@ -19,6 +19,7 @@ public class Group  implements Serializable {
     private String creationDate;
     private boolean isClosed;
     private boolean isPrivate;
+    private String adminUsername;
 
     /**
      * @return the groupId
@@ -102,5 +103,19 @@ public class Group  implements Serializable {
      */
     public void setIsPrivate(boolean isPrivate) {
         this.isPrivate = isPrivate;
+    }
+
+    /**
+     * @return the adminUsername
+     */
+    public String getAdminUsername() {
+        return adminUsername;
+    }
+
+    /**
+     * @param adminUsername the adminUsername to set
+     */
+    public void setAdminUsername(String adminUsername) {
+        this.adminUsername = adminUsername;
     }
 }
