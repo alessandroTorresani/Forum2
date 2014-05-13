@@ -99,11 +99,24 @@
                         </div>
                         <div class="modal-body">
                             <p>Insert your email and your new password, If you visit the link that we will send to your email in 90 seconds, your modification will be applied</p>
-                            <form action="ForgotPassword" method="post">
-                                Email: <input type="text" name="email"/>
-                                New password: <input type="password" name="password1"/>
-                                Repeat password: <input type="password" name="password2"/>
-                                <input type ="submit" value="Change"/>
+                            <form class="form-horizontal">
+                                <div class="control-group">
+                                    <label class="control-label" for="inputEmail">Email</label>
+                                    <div class="controls">
+                                        <input type="text" id="inputEmail" placeholder="Email">
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label" for="inputPassword">Password</label>
+                                    <div class="controls">
+                                        <input type="password" id="inputPassword" placeholder="Password">
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <button type="submit" class="btn">Sign in</button>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                         <div class="modal-footer">

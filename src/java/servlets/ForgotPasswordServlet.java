@@ -76,9 +76,17 @@ public class ForgotPasswordServlet extends HttpServlet {
                     }
                     
                     String recoveryLink = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/RestorePassword?requestId=" + requestId;
+                    String mailBody = "<div style='font-size: 16px; font-family:\\\"Helvetica Neue\\\", Helvetica, Arial, \\\"Lucida Grande\\\", sans-serif;'>"+
+                            "Hi " + manager.getUsernameByUserId(userId)+", <br/><br/>" +
+                            "It seems that you requested a password change, using this password: <b>" + password1 + "</b>. <br/><br/>" +
+                            "if you didn't requested this change simply ignore this message <br/><br/>" +
+                            "Otherwise check the inserted password and click the link to validate the changes <br/><br/> "+
+                             recoveryLink + "<br/><br/>" +
+                            "Best regards </div>";
+                    
                     Mailer mail = new Mailer();
                     try {
-                        mail.sendEmail(email, "Password recovery", recoveryLink + " Inserted password: " + password1);
+                        mail.sendEmail(email, "Password recovery", mailBody);
                     } catch (MessagingException mex) {
                         log.error(mex.toString());
                         throw new ServletException(mex);

@@ -3,13 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package servlets;
 
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import db.DBManager;
 import db.User;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Enumeration;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -18,17 +24,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
+import static servlets.RegistrationServlet.log;
 
 /**
  *
  * @author Alessandro
  */
-public class ViewProfileServlet extends HttpServlet {
-
+public class ChangeAvatarServlet extends HttpServlet {
+    
+    static Logger log = Logger.getLogger(RegistrationServlet.class.getName());
     private DBManager manager;
-    static Logger log = Logger.getLogger(LoginServlet.class.getName());
-
-    public void init() throws ServletException {    // inizializza il DBManager dagli attributi di Application
+    
+    public void init() throws ServletException {
+// inizializza il DBManager dagli attributi di Application
         this.manager = (DBManager) super.getServletContext().getAttribute("dbmanager");
     }
 
@@ -44,20 +52,45 @@ public class ViewProfileServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        ServletContext sc = getServletContext();
-        String imgUrl = "0.jpg";
         HttpSession session = request.getSession();
-        
         User user = (User) session.getAttribute("user");
-        
-        File tmp = new File(request.getServletContext().getRealPath("/") + File.separator + "Avatars" + File.separator + user.getUserId()+".jpg");
-        if (tmp.isFile()){
-            imgUrl = user.getUserId() + ".jpg";
+        MultipartRequest multi = null;
+         
+         try {
+            multi = new MultipartRequest(request, request.getServletContext().getRealPath("/") + File.separator + "Avatars", 10 * 1024 * 1024, "ISO-8859-1", new DefaultFileRenamePolicy());
+        } catch (Exception ex) {
+            log.error(ex.toString());
         }
-        request.setAttribute("imgUrl", imgUrl);
-        
-        RequestDispatcher rd = sc.getRequestDispatcher("/viewProfile.jsp");
-        rd.forward(request, response);
+         
+        if (multi != null){
+            Enumeration files = multi.getFileNames(); //file management
+                while (files.hasMoreElements()) {
+                    String name = (String) files.nextElement();
+                    String filename = multi.getFilesystemName(name);
+                    String originalFilename = multi.getOriginalFileName(name);
+                    String type = multi.getContentType(name);
+                    File f = multi.getFile(name);
+                     if (f != null) {
+                        if (type.startsWith("image")) {
+                            Path source = f.toPath(); //path to the uploaded file
+                            File tmp = new File(request.getServletContext().getRealPath("/") + File.separator + "Avatars" + File.separator + user.getUserId()+".jpg");
+                            if(tmp.isFile()){
+                                tmp.delete();
+                            }
+                            Files.move(source, source.resolveSibling("" + user.getUserId() + ".jpg")); // copy the file with a new name
+                            f.delete();  // delete source file
+                            response.sendRedirect(request.getContextPath()+"/ViewProfile?email="+user.getEmail());
+                        } else {
+                            f.delete(); //if is not an image, it must be deleted
+                            response.sendRedirect(request.getContextPath()+"/ViewProfile?email="+user.getEmail());
+                        }
+                    } else {
+                         response.sendRedirect(request.getContextPath()+"/ViewProfile?email="+user.getEmail());
+                    }   
+                }
+        } else {
+            System.out.println("Errore non chiamato in modo legito");
+        }
         
     }
 

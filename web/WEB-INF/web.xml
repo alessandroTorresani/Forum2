@@ -23,6 +23,8 @@
     <filter-mapping>
         <filter-name>profileFilter</filter-name>
         <url-pattern>/ViewProfile</url-pattern>
+        <url-pattern>/viewProfile.jsp</url-pattern>
+        <url-pattern>/ChangeAvatar</url-pattern>
     </filter-mapping>
     <welcome-file-list>
         <welcome-file>Start</welcome-file>
@@ -59,6 +61,10 @@
         <servlet-name>ViewProfile</servlet-name>
         <servlet-class>servlets.ViewProfileServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ChangeAvatar</servlet-name>
+        <servlet-class>servlets.ChangeAvatarServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -90,6 +96,10 @@
     <servlet-mapping>
         <servlet-name>ViewProfile</servlet-name>
         <url-pattern>/ViewProfile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangeAvatar</servlet-name>
+        <url-pattern>/ChangeAvatar</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
