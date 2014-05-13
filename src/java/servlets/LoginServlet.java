@@ -29,7 +29,7 @@ import org.apache.log4j.Logger;
 public class LoginServlet extends HttpServlet {
 
     private DBManager manager;
-    static Logger log = Logger.getLogger(RegistrationServlet.class.getName());
+    static Logger log = Logger.getLogger(LoginServlet.class.getName());
 
     public void init() throws ServletException {    // inizializza il DBManager dagli attributi di Application
         this.manager = (DBManager) super.getServletContext().getAttribute("dbmanager");

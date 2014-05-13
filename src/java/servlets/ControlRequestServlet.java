@@ -29,7 +29,7 @@ import static servlets.ForgotPasswordServlet.log;
 public class ControlRequestServlet extends HttpServlet {
 
     private DBManager manager;
-    static Logger log = Logger.getLogger(RegistrationServlet.class.getName());
+    static Logger log = Logger.getLogger(ControlRequestServlet.class.getName());
 
     public void init() throws ServletException {
         this.manager = (DBManager) super.getServletContext().getAttribute("dbmanager");

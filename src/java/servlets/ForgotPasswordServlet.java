@@ -29,7 +29,7 @@ import utils.Mailer;
 public class ForgotPasswordServlet extends HttpServlet {
 
     private DBManager manager;
-    static Logger log = Logger.getLogger(RegistrationServlet.class.getName());
+    static Logger log = Logger.getLogger(ForgotPasswordServlet.class.getName());
     private String PASSWORD_REGEX = "((?=.*[a-z]).{3,20})";
 
     public void init() throws ServletException {
