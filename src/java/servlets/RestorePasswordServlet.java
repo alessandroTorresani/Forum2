@@ -74,20 +74,20 @@ public class RestorePasswordServlet extends HttpServlet {
                         manager.deletePasswordRequest(requestId);
                          log.warn("Recovery password request clicked in 90 second, password changed successfully");
                         request.setAttribute("correctRequest", true);
-                        RequestDispatcher rd = sc.getRequestDispatcher("/changePassword.jsp?requestId=" + requestId); //display the result of the operation
+                        RequestDispatcher rd = sc.getRequestDispatcher("/changePasswordResult.jsp?requestId=" + requestId); //display the result of the operation
                         rd.forward(request, response);
                     }
                 } else {
                     log.warn("Recovery password request clicked after 90 second");
                     request.setAttribute("errorMessage", "Request out of time");
                     manager.deletePasswordRequest(requestId);
-                    RequestDispatcher rd = sc.getRequestDispatcher("/changePassword.jsp"); // display error message in the page
+                    RequestDispatcher rd = sc.getRequestDispatcher("/changePasswordResult.jsp"); // display error message in the page
                     rd.forward(request, response);
                 }
             } else {
                 log.warn("Illegal call of the recovery servlet");
                 request.setAttribute("correctRequest", false);
-                RequestDispatcher rd = sc.getRequestDispatcher("/changePassword.jsp"); //illegal call of the servlet
+                RequestDispatcher rd = sc.getRequestDispatcher("/changePasswordResult.jsp"); //illegal call of the servlet
                 rd.forward(request, response);
             }
 

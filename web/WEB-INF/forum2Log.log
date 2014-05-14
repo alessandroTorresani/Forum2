@@ -55,3 +55,15 @@
 2014-05-14 15:43:15 INFO  LoginServlet:43 - User: harwinrene@gmail.comhas logout
 2014-05-14 15:46:55 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
 2014-05-14 15:46:57 INFO  LoginServlet:43 - User: harwinrene@gmail.comhas logout
+2014-05-14 15:50:52 INFO  ForgotPasswordServlet:63 - Recovery password request for email:harwinrene@gmail.com, email exists
+2014-05-14 15:50:55 INFO  ForgotPasswordServlet:100 - Email send to: harwinrene@gmail.com with the recovery link
+2014-05-14 15:51:27 WARN  RestorePasswordServlet:75 - Recovery password request clicked in 90 second, password changed successfully
+2014-05-14 15:53:12 WARN  RestorePasswordServlet:88 - Illegal call of the recovery servlet
+2014-05-14 15:53:31 INFO  ForgotPasswordServlet:63 - Recovery password request for email:harwinrene@gmail.com, email exists
+2014-05-14 15:53:33 INFO  ForgotPasswordServlet:100 - Email send to: harwinrene@gmail.com with the recovery link
+2014-05-14 15:53:40 WARN  RestorePasswordServlet:75 - Recovery password request clicked in 90 second, password changed successfully
+2014-05-14 15:54:20 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-14 15:54:24 INFO  LoginServlet:43 - User: harwinrene@gmail.comhas logout
+2014-05-14 16:02:18 WARN  RestorePasswordServlet:88 - Illegal call of the recovery servlet
+2014-05-14 16:04:09 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-14 16:05:06 INFO  LoginServlet:43 - User: harwinrene@gmail.comhas logout

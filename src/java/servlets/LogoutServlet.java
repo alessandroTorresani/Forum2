@@ -40,7 +40,7 @@ public class LogoutServlet extends HttpServlet {
         User user = (User) session.getAttribute("user");
         
         if (user != null) {
-            log.info("User: " + user.getEmail() + "has logout");
+            log.info("User: " + user.getEmail() + " has logout");
             session.removeAttribute("user"); // remove the attribute user
         }
         session.invalidate(); // invalid the session
