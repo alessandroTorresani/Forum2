@@ -144,7 +144,7 @@ public class RegistrationServlet extends HttpServlet {
                     if (manager.checkEmail(email1)) {
                         userID = manager.registerUser(username, email1, password1);
                     } else {
-                        log.warn("Email already used");
+                        log.warn("Registration failure, email already used: " + email1);
                         Enumeration files = multi.getFileNames();
                         while (files.hasMoreElements()) {
                             String name = (String) files.nextElement();
@@ -162,7 +162,7 @@ public class RegistrationServlet extends HttpServlet {
                     throw new ServletException(ex);
                 }
             } else {
-                log.warn("Inserted data is wrong, something missing or passwords/emails do not coincide");
+                log.warn("Registration failure: Inserted data is wrong, something missing or passwords/emails do not coincide");
                 request.setAttribute("Result", "There are some errors in the inserted data, please retry");
                 RequestDispatcher rd = sc.getRequestDispatcher("/registrationResult.jsp");
                 rd.forward(request, response);
@@ -182,6 +182,7 @@ public class RegistrationServlet extends HttpServlet {
                             Files.move(source, source.resolveSibling("" + userID + ".jpg")); // copy the file with a new name
                             f.delete();  // delete source file
 
+                            log.info("Successfull registration: new user: " + email1);
                             request.setAttribute("Result", "Your registration was successful");
                             RequestDispatcher rd = sc.getRequestDispatcher("/registrationResult.jsp");
                             rd.forward(request, response);

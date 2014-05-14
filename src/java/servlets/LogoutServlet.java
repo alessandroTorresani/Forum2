@@ -8,11 +8,6 @@ package servlets;
 import db.User;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -43,11 +38,9 @@ public class LogoutServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = new Date();
         
         if (user != null) {
-            log.info("User: " + user.getEmail() + "has logout at " + dateFormat.format(date));
+            log.info("User: " + user.getEmail() + "has logout");
             session.removeAttribute("user"); // remove the attribute user
         }
         session.invalidate(); // invalid the session

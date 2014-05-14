@@ -1,0 +1,24 @@
+2014-05-14 11:18:17 INFO  LoginServlet:71 - login corretto, user:harwinrene@gmail.com at: 2014-05-14 11:18:17
+2014-05-14 11:18:34 INFO  LoginServlet:50 - User: harwinrene@gmail.comhas logout at 2014-05-14 11:18:34
+2014-05-14 11:20:04 WARN  RegistrationServlet:147 - Email already used
+2014-05-14 11:21:06 WARN  RegistrationServlet:147 - Registration failure, email already used: harwinrene@gmail.com
+2014-05-14 11:23:18 INFO  RegistrationServlet:185 - Successfull registration: new email: luigi@gmail.com
+2014-05-14 11:35:04 INFO  LoginServlet:71 - login corretto, user:harwinrene@gmail.com
+2014-05-14 11:35:13 WARN  RegistrationServlet:90 - User: harwinrene@gmail.com tried to change the avatar without uploading a file
+2014-05-14 11:35:38 WARN  RegistrationServlet:85 - User: harwinrene@gmail.com tried to change the avatar without uploading an image
+2014-05-14 11:36:12 INFO  RegistrationServlet:80 - User: harwinrene@gmail.com Changed his avatar
+2014-05-14 11:41:34 INFO  LoginServlet:43 - User: harwinrene@gmail.comhas logout
+2014-05-14 11:41:46 INFO  ForgotPasswordServlet:104 - Recovery password request for email:pippo@gmail.com, but email does not exist
+2014-05-14 11:42:32 INFO  ForgotPasswordServlet:63 - Recovery password request for email:harwinrene@gmail.com, email exists
+2014-05-14 11:42:32 ERROR Mailer:54 - javax.mail.MessagingException: Unknown SMTP host: smtp.gmail.com;
+  nested exception is:
+	java.net.UnknownHostException: smtp.gmail.com
+2014-05-14 11:42:32 INFO  ForgotPasswordServlet:91 - Email send to: harwinrene@gmail.com with the recovery link
+2014-05-14 11:43:15 INFO  ForgotPasswordServlet:63 - Recovery password request for email:harwinrene@gmail.com, email exists
+2014-05-14 11:43:17 INFO  ForgotPasswordServlet:91 - Email send to: harwinrene@gmail.com with the recovery link
+2014-05-14 11:45:36 INFO  ForgotPasswordServlet:63 - Recovery password request for email:paolo@gmail.com, email exists
+2014-05-14 11:45:36 INFO  ForgotPasswordServlet:105 - Recovery request not done - inserted different or non legal password for email:paolo@gmail.com
+2014-05-14 11:49:48 INFO  ForgotPasswordServlet:63 - Recovery password request for email:harwinrene@gmail.com, email exists
+2014-05-14 11:49:51 INFO  ForgotPasswordServlet:100 - Email send to: harwinrene@gmail.com with the recovery link
+2014-05-14 11:50:05 WARN  RestorePasswordServlet:75 - Recovery password request clicked in 90 second, password changed successfully
+2014-05-14 11:50:56 INFO  LoginServlet:71 - login corretto, user:harwinrene@gmail.com

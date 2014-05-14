@@ -60,6 +60,7 @@ public class ForgotPasswordServlet extends HttpServlet {
         try {
             userId = manager.getUserIdByEmail(email);
             if (userId > 0) { //if user which that email exits
+                log.info("Recovery password request for email:" + email + ", email exists");
                 if ((password1 != null) && (password2 != null) && (password1.matches(PASSWORD_REGEX)) && (password2.matches(PASSWORD_REGEX)) && (password1.equals(password2))) {
                     String requestId = UUID.randomUUID().toString(); // generate random requestId
                     try {
@@ -74,30 +75,39 @@ public class ForgotPasswordServlet extends HttpServlet {
                         log.error(ex.toString());
                         throw new ServletException(ex);
                     }
-                    
+
                     String recoveryLink = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/RestorePassword?requestId=" + requestId;
-                    String mailBody = "<div style='font-size: 16px; font-family:\\\"Helvetica Neue\\\", Helvetica, Arial, \\\"Lucida Grande\\\", sans-serif;'>"+
-                            "Hi " + manager.getUsernameByUserId(userId)+", <br/><br/>" +
-                            "It seems that you requested a password change, using this password: <b>" + password1 + "</b>. <br/><br/>" +
-                            "if you didn't requested this change simply ignore this message <br/><br/>" +
-                            "Otherwise check the inserted password and click the link to validate the changes <br/><br/> "+
-                             recoveryLink + "<br/><br/>" +
-                            "Best regards </div>";
-                    
+                    String mailBody = "<div style='font-size: 16px; font-family:\\\"Helvetica Neue\\\", Helvetica, Arial, \\\"Lucida Grande\\\", sans-serif;'>"
+                            + "Hi " + manager.getUsernameByUserId(userId) + ", <br/><br/>"
+                            + "It seems that you requested a password change, using this password: <b>" + password1 + "</b>. <br/><br/>"
+                            + "if you didn't requested this change simply ignore this message <br/><br/>"
+                            + "Otherwise check the inserted password and click the link to validate the changes <br/><br/> "
+                            + recoveryLink + "<br/><br/>"
+                            + "Best regards </div>";
+
                     Mailer mail = new Mailer();
+                    boolean res;
                     try {
                         mail.sendEmail(email, "Password recovery", mailBody);
+                        res = true;
                     } catch (MessagingException mex) {
                         log.error(mex.toString());
+                        res = false;
                         throw new ServletException(mex);
+                    }
+                    
+                    if (res == true) {
+                        log.info("Email send to: " + email + " with the recovery link");
                     }
 
                     response.sendRedirect(request.getContextPath() + "/");
                 } else {
+                    log.info("Recovery request not done - inserted different or non legal password for email: " + email);
                     System.out.println("password non corrette");
                 }
 
             } else {
+                log.info("Recovery password request for email: " + email + ", but email does not exist");
                 System.out.println("Email non esistente"); // gestione errore
             }
         } catch (SQLException ex) {

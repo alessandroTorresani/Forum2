@@ -77,14 +77,17 @@ public class ChangeAvatarServlet extends HttpServlet {
                             if(tmp.isFile()){
                                 tmp.delete();
                             }
+                            log.info("User: " + user.getEmail() + " Changed his avatar");
                             Files.move(source, source.resolveSibling("" + user.getUserId() + ".jpg")); // copy the file with a new name
                             f.delete();  // delete source file
                             response.sendRedirect(request.getContextPath()+"/ViewProfile?email="+user.getEmail());
                         } else {
+                            log.warn("User: " + user.getEmail() + " tried to change the avatar without uploading an image");
                             f.delete(); //if is not an image, it must be deleted
                             response.sendRedirect(request.getContextPath()+"/ViewProfile?email="+user.getEmail());
                         }
                     } else {
+                         log.warn("User: " + user.getEmail() + " tried to change the avatar without uploading a file");
                          response.sendRedirect(request.getContextPath()+"/ViewProfile?email="+user.getEmail());
                     }   
                 }
