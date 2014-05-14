@@ -46,11 +46,13 @@ public class StartServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         ServletContext sc = getServletContext();
         List <Group> publicGroups = null;
+        
         try {
             publicGroups = manager.getPublicGroups(); // get all public groups
         } catch (Exception ex){
             log.error(ex.toString());
         }
+        
         request.setAttribute("publicGroups", publicGroups);
         RequestDispatcher rd = sc.getRequestDispatcher("/index.jsp");
         rd.forward(request, response);
