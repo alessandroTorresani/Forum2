@@ -50,9 +50,9 @@ public class ViewProfileServlet extends HttpServlet {
         
         User user = (User) session.getAttribute("user");
         
-        File tmp = new File(request.getServletContext().getRealPath("/") + File.separator + "Avatars" + File.separator + user.getUserId()+".jpg");
+        File tmp = new File(request.getServletContext().getRealPath("/") + File.separator + "Avatars" + File.separator + user.getUserId());
         if (tmp.isFile()){
-            imgUrl = user.getUserId() + ".jpg";
+            imgUrl = ""+user.getUserId();
         }
         request.setAttribute("imgUrl", imgUrl);
         
