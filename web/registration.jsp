@@ -37,6 +37,7 @@
                                 <li role="presentation"><a role="menuitem" tabindex="-1" href="Logout">Logout</a></li>
                             </ul>
                         </li>
+                        
                         <li><a href=""><c:out value="${sessionScope.user.getLastLogin()}"/></a></li>
                         </c:when>
                         <c:otherwise>       

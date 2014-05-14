@@ -66,12 +66,12 @@ public class LoginServlet extends HttpServlet {
         } catch (SQLException ex) {
             log.error(ex.toString());
         }
+
         if (user != null) {
             session.setAttribute("user", user);
             log.info("login corretto, user:" + user.getEmail());
         }
         response.sendRedirect(request.getContextPath() + "/");
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

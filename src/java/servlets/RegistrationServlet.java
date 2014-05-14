@@ -182,7 +182,7 @@ public class RegistrationServlet extends HttpServlet {
                             Files.move(source, source.resolveSibling(userID +".jpg")); // copy the file with a new name
                             f.delete();  // delete source file
 
-                            log.info("Successfull registration: new user: " + email1);
+                            
                             request.setAttribute("Result", "Your registration was successful");
                             RequestDispatcher rd = sc.getRequestDispatcher("/registrationResult.jsp");
                             rd.forward(request, response);
@@ -194,6 +194,8 @@ public class RegistrationServlet extends HttpServlet {
                             rd.forward(request, response);
                         }
                     } else {
+                        
+                        log.info("Successfull registration: new user: " + email1);
                         request.setAttribute("Result", "Your registration was successful");
                         RequestDispatcher rd = sc.getRequestDispatcher("/registrationResult.jsp");
                         rd.forward(request, response);

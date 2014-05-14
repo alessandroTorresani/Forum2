@@ -40,6 +40,7 @@
                                 <li role="presentation"><a role="menuitem" tabindex="-1" href="Logout">Logout</a></li>
                             </ul>
                         </li>
+
                         <li><a href=""><c:out value="${sessionScope.user.getLastLogin()}"/></a></li>
                         </c:when>
                         <c:otherwise>       
@@ -51,7 +52,7 @@
 
 
             <h1>Forum</h1>
-
+            
             <c:choose>
                 <c:when test="${sessionScope.user == null}">
                     <div style="width:50;">
@@ -66,6 +67,8 @@
                             </div>
                             <button type="submit" class="btn btn-default">Login</button>
                         </form>
+                        <br>
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#forgetPassword">Forget password</button>
                     </div>
                 </c:when>
             </c:choose>
@@ -88,44 +91,38 @@
                 </table>
             </div>
 
-            <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Apri il box</button>
+        </div>
 
-            <div id="myModal" class="modal fade">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Recovery password</h4>
-                        </div>
-                        <div class="modal-body">
-                            <p>Insert your email and your new password, If you visit the link that we will send to your email in 90 seconds, your modification will be applied</p>
-                            <form class="form-horizontal">
-                                <div class="control-group">
-                                    <label class="control-label" for="inputEmail">Email</label>
-                                    <div class="controls">
-                                        <input type="text" id="inputEmail" placeholder="Email">
-                                    </div>
-                                </div>
-                                <div class="control-group">
-                                    <label class="control-label" for="inputPassword">Password</label>
-                                    <div class="controls">
-                                        <input type="password" id="inputPassword" placeholder="Password">
-                                    </div>
-                                </div>
-                                <div class="control-group">
-                                    <div class="controls">
-                                        <button type="submit" class="btn">Sign in</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
-                            <button type="button" class="btn btn-primary">Invia</button>
-                        </div>
+        <div id="forgetPassword" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Password recovery</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p> Insert your email and your new password</p>
+                        <p>If you visit the link that we will send to your email in 90 seconds, your modification will be applied</p>
+                        <form role="form" action="ForgotPassword" method="post">
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email1" placeholder="Email" name="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="password1">Password</label>
+                                <input type="password" class="form-control" id="password1" placeholder="Password" name="password1">
+                            </div>
+                            <div class="form-group">
+                                <label for="password2">Reinsert Password</label>
+                                <input type="password" class="form-control" id="password2" placeholder="Password" name="password2">
+                            </div>
+                            <br>
+                            <button type="submit" class="btn btn-default">Submit</button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
+
     </body>
 </html>

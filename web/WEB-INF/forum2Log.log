@@ -30,3 +30,28 @@
 2014-05-14 14:48:52 INFO  LoginServlet:43 - User: harwinrene@gmail.comhas logout
 2014-05-14 14:49:31 INFO  LoginServlet:71 - login corretto, user:ilenia@gmail.com
 2014-05-14 14:50:26 INFO  LoginServlet:43 - User: ilenia@gmail.comhas logout
+2014-05-14 14:55:57 WARN  RegistrationServlet:165 - Registration failure: Inserted data is wrong, something missing or passwords/emails do not coincide
+2014-05-14 14:56:24 WARN  RegistrationServlet:165 - Registration failure: Inserted data is wrong, something missing or passwords/emails do not coincide
+2014-05-14 14:56:40 INFO  LoginServlet:71 - login corretto, user:harwinrene@gmail.com
+2014-05-14 14:57:02 ERROR RegistrationServlet:69 - java.io.IOException: Posted content type isn't multipart/form-data
+2014-05-14 14:58:18 INFO  LoginServlet:43 - User: harwinrene@gmail.comhas logout
+2014-05-14 15:06:53 INFO  ForgotPasswordServlet:110 - Recovery password request for email: null, but email does not exist
+2014-05-14 15:07:53 INFO  ForgotPasswordServlet:63 - Recovery password request for email:harwinrene@gmail.com, email exists
+2014-05-14 15:07:56 INFO  ForgotPasswordServlet:100 - Email send to: harwinrene@gmail.com with the recovery link
+2014-05-14 15:09:29 WARN  RestorePasswordServlet:81 - Recovery password request clicked after 90 second
+2014-05-14 15:10:10 WARN  RestorePasswordServlet:88 - Illegal call of the recovery servlet
+2014-05-14 15:10:49 WARN  RestorePasswordServlet:81 - Recovery password request clicked after 90 second
+2014-05-14 15:11:00 INFO  LoginServlet:71 - login corretto, user:harwinrene@gmail.com
+2014-05-14 15:11:02 INFO  LoginServlet:43 - User: harwinrene@gmail.comhas logout
+2014-05-14 15:13:15 INFO  LoginServlet:71 - login corretto, user:harwinrene@gmail.com
+2014-05-14 15:14:46 INFO  LoginServlet:43 - User: harwinrene@gmail.comhas logout
+2014-05-14 15:15:42 INFO  LoginServlet:71 - login corretto, user:luigi@gmail.com
+2014-05-14 15:15:50 INFO  LoginServlet:43 - User: luigi@gmail.comhas logout
+2014-05-14 15:15:59 INFO  LoginServlet:71 - login corretto, user:luigi@gmail.com
+2014-05-14 15:16:56 INFO  LoginServlet:43 - User: luigi@gmail.comhas logout
+2014-05-14 15:37:55 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-14 15:38:50 INFO  LoginServlet:43 - User: harwinrene@gmail.comhas logout
+2014-05-14 15:42:18 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-14 15:43:15 INFO  LoginServlet:43 - User: harwinrene@gmail.comhas logout
+2014-05-14 15:46:55 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-14 15:46:57 INFO  LoginServlet:43 - User: harwinrene@gmail.comhas logout
