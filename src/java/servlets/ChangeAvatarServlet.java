@@ -73,12 +73,12 @@ public class ChangeAvatarServlet extends HttpServlet {
                      if (f != null) {
                         if (type.startsWith("image")) {
                             Path source = f.toPath(); //path to the uploaded file
-                            File tmp = new File(request.getServletContext().getRealPath("/") + File.separator + "Avatars" + File.separator + user.getUserId());
+                            File tmp = new File(request.getServletContext().getRealPath("/") + File.separator + "Avatars" + File.separator + user.getUserId()+".jpg");
                             if(tmp.isFile()){
                                 tmp.delete();
                             }
                             log.info("User: " + user.getEmail() + " Changed his avatar");
-                            Files.move(source, source.resolveSibling("" + user.getUserId())); // copy the file with a new name
+                            Files.move(source, source.resolveSibling("" + user.getUserId() + ".jpg")); // copy the file with a new name
                             f.delete();  // delete source file
                             response.sendRedirect(request.getContextPath()+"/ViewProfile?email="+user.getEmail());
                         } else {

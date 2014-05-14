@@ -179,7 +179,7 @@ public class RegistrationServlet extends HttpServlet {
                     if (f != null) {
                         if (type.startsWith("image")) {
                             Path source = f.toPath(); //path to the uploaded file
-                            Files.move(source, source.resolveSibling("" + userID)); // copy the file with a new name
+                            Files.move(source, source.resolveSibling(userID +".jpg")); // copy the file with a new name
                             f.delete();  // delete source file
 
                             log.info("Successfull registration: new user: " + email1);

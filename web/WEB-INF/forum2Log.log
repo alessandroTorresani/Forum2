@@ -22,3 +22,11 @@
 2014-05-14 11:49:51 INFO  ForgotPasswordServlet:100 - Email send to: harwinrene@gmail.com with the recovery link
 2014-05-14 11:50:05 WARN  RestorePasswordServlet:75 - Recovery password request clicked in 90 second, password changed successfully
 2014-05-14 11:50:56 INFO  LoginServlet:71 - login corretto, user:harwinrene@gmail.com
+2014-05-14 14:40:23 INFO  LoginServlet:71 - login corretto, user:harwinrene@gmail.com
+2014-05-14 14:41:06 INFO  RegistrationServlet:80 - User: harwinrene@gmail.com Changed his avatar
+2014-05-14 14:47:29 INFO  RegistrationServlet:80 - User: harwinrene@gmail.com Changed his avatar
+2014-05-14 14:47:44 INFO  RegistrationServlet:80 - User: harwinrene@gmail.com Changed his avatar
+2014-05-14 14:48:30 INFO  RegistrationServlet:80 - User: harwinrene@gmail.com Changed his avatar
+2014-05-14 14:48:52 INFO  LoginServlet:43 - User: harwinrene@gmail.comhas logout
+2014-05-14 14:49:31 INFO  LoginServlet:71 - login corretto, user:ilenia@gmail.com
+2014-05-14 14:50:26 INFO  LoginServlet:43 - User: ilenia@gmail.comhas logout
