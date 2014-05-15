@@ -25,7 +25,7 @@
         <div style="width:80%; margin:0 auto;">
 
 
-            <ul class="nav nav-pills">
+        <% /*    <ul class="nav nav-pills">
                 <li class="active"><a href="Start">Home</a></li>
                     <c:choose>
                         <c:when test="${sessionScope.user != null}">
@@ -33,7 +33,7 @@
                         <li class="dropdown">
                             <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">${sessionScope.user.getUsername()}<b class="caret"></b></a>
                             <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#your groups">Your groups</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="GetOwnerGroups?email=${sessionScope.user.getEmail()}">Your groups</a></li>
                                 <li role="presentation"><a role="menuitem" tabindex="-1" href="ViewProfile?email=${sessionScope.user.getEmail()}">View profile</a></li>
                                 <li role="presentation"><a role="menuitem" tabindex="-1" href="#Switch moderator">Switch to moderator</a></li>
                                 <li role="presentation" class="divider"></li>
@@ -46,9 +46,63 @@
                         <c:otherwise>       
                         <li><a href="registration.jsp">Sign up</a></li>
                         <li><a href="forgetPassword.jsp">Forget password</a></li>
+                        <li><a data-toggle="modal" data-target="#forgetPassword">Forget password</a></li>
                         </c:otherwise>
                     </c:choose>
-            </ul>
+            </ul> */ %>
+            
+            <nav class="navbar navbar-inverse" role="navigation">
+                <div class="container-fluid">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#">Forum</a>
+                    </div>
+
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <c:choose>
+
+                            <c:when test="${sessionScope.user == null}">
+                                <!-- Collect the nav links, forms, and other content for toggling -->
+                               
+                                <form class="navbar-form navbar-left" role="form" action="Login" method="post">
+                                    <div class="form-group">
+                                        <input type="email" class="form-control" id="email" placeholder="Email" name="email">
+                                        <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+                                    </div>
+                                    <button type="submit" class="btn btn-default">Login</button>
+                                </form>
+                                
+                                <ul class="nav navbar-nav navbar-right">
+                                    <li><a  data-toggle="modal" data-target="#forgetPassword">Forget password</a></li>
+                                    <li><a  href="registration.jsp">Sign up</a></li>
+                                </ul>
+
+                            </c:when>
+                            <c:otherwise>
+                                <ul class="nav navbar-nav navbar-right">
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">${sessionScope.user.getUsername()}<b class="caret"></b></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="GetOwnerGroups?email=${sessionScope.user.getEmail()}">Your groups</a></li>
+                                            <li><a href="ViewProfile?email=${sessionScope.user.getEmail()}">View profile</a></li>
+                                            <li><a href="#moderator">Swith to moderator</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="Logout">Logout</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </c:otherwise>
+                                
+                        </c:choose>
+                    </div><!-- /.navbar-collapse -->
+                </div><!-- /.container-fluid -->
+            </nav>
 
 
             <h1>Forum</h1>
@@ -85,6 +139,15 @@
 
             </c:choose>
             <br>
+
+            <c:choose>
+                <c:when test="${sessionScope.user != null}">
+                    <a href="createGroup.jsp" class="btn btn-primary" role="button">Create group</a>
+                    <br>
+                    <br>
+                </c:when>
+            </c:choose>
+
             <div class="panel panel-default">
                 <!-- Table -->
                 <table class="table">

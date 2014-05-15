@@ -363,4 +363,55 @@ public class DBManager implements Serializable {
         }
         return groups;
     }
+    
+    public int createGroup(int userId, String groupName, String creationDate, boolean isPrivate) throws SQLException{
+        
+        int groupId = 0;
+        System.out.println(userId + groupName + creationDate + isPrivate);
+        PreparedStatement stm = con.prepareStatement("INSERT INTO groups (administrator_id, groupname,creation_date,is_private, is_closed) VALUES (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+        try {
+            stm.setInt(1, userId);
+            stm.setString(2, groupName);
+            stm.setString(3, creationDate);
+            stm.setBoolean(4, isPrivate);
+            stm.setBoolean(5, false);
+            stm.executeUpdate();
+            ResultSet rs = stm.getGeneratedKeys();
+            try {
+                while (rs.next()) {
+                    groupId = rs.getInt(1);
+                }   
+            } finally {
+                rs.close();
+            }
+        } finally {
+            stm.close();
+        }
+        return groupId;
+    }
+    
+    public List<Group> getOwnerGroups(int userId) throws SQLException{
+        List<Group> groups = new ArrayList<Group>();
+                PreparedStatement stm = con.prepareStatement("SELECT * FROM groups WHERE administrator_id = ?");
+        try {
+            stm.setInt(1, userId);
+            ResultSet rs = stm.executeQuery();
+            try {
+                while (rs.next()) {
+                    Group g = new Group();
+                    g.setGroupId(rs.getInt("group_id"));
+                    g.setCreationDate(rs.getString("creation_date"));
+                    g.setGroupName(rs.getString("groupname"));
+                    g.setIsClosed(rs.getBoolean("is_closed"));
+                    g.setIsPrivate(rs.getBoolean("is_private"));
+                    groups.add(g);
+                }
+            } finally {
+                rs.close();
+            }
+        } finally {
+            stm.close();
+        }
+        return groups;
+    }
 }

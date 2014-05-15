@@ -83,3 +83,18 @@
 2014-05-15 15:43:58 INFO  RegistrationServlet:80 - User: harwinrene@gmail.com Changed his avatar
 2014-05-15 15:44:30 INFO  RegistrationServlet:80 - User: harwinrene@gmail.com Changed his avatar
 2014-05-15 15:44:42 INFO  RegistrationServlet:80 - User: harwinrene@gmail.com Changed his avatar
+2014-05-15 16:26:36 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
+2014-05-15 16:28:43 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-15 17:12:26 ERROR RegistrationServlet:66 - java.sql.SQLSyntaxErrorException: 'CREATIUON_DATE' is not a column in table or VTI 'FORUM2.GROUPS'.
+2014-05-15 17:15:25 ERROR RegistrationServlet:66 - java.sql.SQLSyntaxErrorException: 'CREATIUON_DATE' is not a column in table or VTI 'FORUM2.GROUPS'.
+2014-05-15 17:30:54 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
+2014-05-15 17:30:59 INFO  LoginServlet:72 - login corretto, user:m.lion920@gmail.com
+2014-05-15 17:43:19 INFO  LoginServlet:43 - User: m.lion920@gmail.com has logout
+2014-05-15 17:43:28 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-15 18:21:36 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
+2014-05-15 18:39:41 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-15 18:48:44 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
+2014-05-15 18:49:04 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-15 18:55:00 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
+2014-05-15 19:04:18 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-15 19:05:31 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout

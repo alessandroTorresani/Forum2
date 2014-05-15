@@ -23,27 +23,20 @@
 
             <ul class="nav nav-pills">
                 <li class="active"><a href="Start">Home</a></li>
-                    <c:choose>
-                        <c:when test="${sessionScope.user != null}">
 
-                        <li class="dropdown">
-                            <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">${sessionScope.user.getUsername()}<b class="caret"></b></a>
-                            <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#your groups">Your groups</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="ViewProfile?email=${sessionScope.user.getEmail()}">View profile</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#Switch moderator">Switch to moderator</a></li>
-                                <li role="presentation" class="divider"></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="Logout">Logout</a></li>
-                            </ul>
-                        </li>
 
-                        <li><a href=""><c:out value="${sessionScope.user.getLastLogin()}"/></a></li>
-                        </c:when>
-                        <c:otherwise>       
-                        <li><a href="registration.jsp">Sign up</a></li>
-                        <li><a href="forgetPassword.jsp">Forget password</a></li>
-                        </c:otherwise>
-                    </c:choose>
+                <li class="dropdown">
+                    <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">${sessionScope.user.getUsername()}<b class="caret"></b></a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="GetOwnerGroups?email=${sessionScope.user.getEmail()}">Your groups</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="ViewProfile?email=${sessionScope.user.getEmail()}">View profile</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#Switch moderator">Switch to moderator</a></li>
+                        <li role="presentation" class="divider"></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="Logout">Logout</a></li>
+                    </ul>
+                </li>
+
+                <li><a href=""><c:out value="${sessionScope.user.getLastLogin()}"/></a></li>
             </ul>
             <br>
             <c:choose>
@@ -57,10 +50,10 @@
                 <c:when test="${sessionScope.passwordChange == false}">
                     <div class="alert alert-danger">You inserted a non valid password, or passwords don't coincide</div>
                     <%HttpSession session2 = request.getSession();
-                    session2.removeAttribute("passwordChange");%>
+                        session2.removeAttribute("passwordChange");%>
                 </c:when>
             </c:choose>
-            
+
 
             <h1>Your Profile</h1>
             <div style="width: 40%; float:left;">
@@ -151,6 +144,6 @@
                 </div>
             </div>
         </div>
-        
+
     </body>
 </html>

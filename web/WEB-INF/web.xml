@@ -26,6 +26,17 @@
         <url-pattern>/viewProfile.jsp</url-pattern>
         <url-pattern>/ChangeAvatar</url-pattern>
         <url-pattern>/ChangePassword</url-pattern>
+        <url-pattern>/GetOwnerGroups</url-pattern>
+        <url-pattern>/ownerGroups.jsp</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>loginFilter</filter-name>
+        <filter-class> filters.LoginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>loginFilter</filter-name>
+        <url-pattern>/CreateGroup</url-pattern>
+        <url-pattern>/createGroup.jsp</url-pattern>
     </filter-mapping>
     <welcome-file-list>
         <welcome-file>Start</welcome-file>
@@ -70,6 +81,14 @@
         <servlet-name>ChangePassword</servlet-name>
         <servlet-class>servlets.ChangePasswordServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CreateGroup</servlet-name>
+        <servlet-class>servlets.CreateGroupServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetOwnerGroups</servlet-name>
+        <servlet-class>servlets.GetOwnerGroupsServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -109,6 +128,14 @@
     <servlet-mapping>
         <servlet-name>ChangePassword</servlet-name>
         <url-pattern>/ChangePassword</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateGroup</servlet-name>
+        <url-pattern>/CreateGroup</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetOwnerGroups</servlet-name>
+        <url-pattern>/GetOwnerGroups</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
