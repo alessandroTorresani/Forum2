@@ -20,8 +20,8 @@
         <script src='Style/js/bootstrap.min.js'></script>
 
         <div style="width:80%; margin:0 auto;">
-            
-           <ul class="nav nav-pills">
+
+            <ul class="nav nav-pills">
                 <li class="active"><a href="Start">Home</a></li>
                     <c:choose>
                         <c:when test="${sessionScope.user != null}">
@@ -36,7 +36,7 @@
                                 <li role="presentation"><a role="menuitem" tabindex="-1" href="Logout">Logout</a></li>
                             </ul>
                         </li>
-                        
+
                         <li><a href=""><c:out value="${sessionScope.user.getLastLogin()}"/></a></li>
                         </c:when>
                         <c:otherwise>       
@@ -45,7 +45,23 @@
                         </c:otherwise>
                     </c:choose>
             </ul>
+            <br>
+            <c:choose>
+                <c:when test="${sessionScope.passwordChange == true}">
+                    <div class="alert alert-success">Password changes successfully</div>
+                    <%HttpSession session1 = request.getSession();
+                        session1.removeAttribute("passwordChange");%>
+                </c:when>
+            </c:choose>
+            <c:choose>
+                <c:when test="${sessionScope.passwordChange == false}">
+                    <div class="alert alert-danger">You inserted a non valid password, or passwords don't coincide</div>
+                    <%HttpSession session2 = request.getSession();
+                    session2.removeAttribute("passwordChange");%>
+                </c:when>
+            </c:choose>
             
+
             <h1>Your Profile</h1>
             <div style="width: 40%; float:left;">
                 <img src="Avatars/${imgUrl}" class="img-thumbnail" style="max-height: 50%;max-width: 100%">
@@ -112,10 +128,14 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Change avatar</h4>
+                        <h4 class="modal-title">Change password</h4>
                     </div>
                     <div class="modal-body">
-                        <form role="form" action="ChangeAvatar" method="post" enctype="multipart/form-data">
+                        <form role="form" action="ChangePassword?email=${sessionScope.user.getEmail()}" method="post">
+                            <div class="form-group">
+                                <label for="currentPassword1">Current password</label>
+                                <input type="password" class="form-control" id="password1" placeholder="Password" name="currentPassword">
+                            </div>
                             <div class="form-group">
                                 <label for="password1">Password</label>
                                 <input type="password" class="form-control" id="password1" placeholder="Password" name="password1">
@@ -131,6 +151,6 @@
                 </div>
             </div>
         </div>
-
+        
     </body>
 </html>

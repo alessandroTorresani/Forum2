@@ -70,6 +70,8 @@ public class LoginServlet extends HttpServlet {
         if (user != null) {
             session.setAttribute("user", user);
             log.info("login corretto, user:" + user.getEmail());
+        } else {
+            session.setAttribute("login", "error");
         }
         response.sendRedirect(request.getContextPath() + "/");
     }

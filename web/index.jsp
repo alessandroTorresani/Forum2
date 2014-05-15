@@ -52,9 +52,20 @@
 
 
             <h1>Forum</h1>
-            
+
             <c:choose>
                 <c:when test="${sessionScope.user == null}">
+                    <c:choose>
+                        <c:when test="${sessionScope.login == 'error'}">
+                            <div class="alert alert-danger">You inserted a non valid username and/or an invalid password</div>
+                            <%HttpSession servletSession = request.getSession();
+                                servletSession.removeAttribute("login");%>
+                        </c:when>
+                        <c:otherwise>
+                            <%HttpSession servletSession1 = request.getSession();
+                                servletSession1.removeAttribute("login");%>
+                        </c:otherwise>
+                    </c:choose> 
                     <div style="width:50;">
                         <form role="form" action="Login" method="post">
                             <div class="form-group">
@@ -71,6 +82,7 @@
                         <button class="btn btn-primary" data-toggle="modal" data-target="#forgetPassword">Forget password</button>
                     </div>
                 </c:when>
+
             </c:choose>
             <br>
             <div class="panel panel-default">

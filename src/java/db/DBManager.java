@@ -79,6 +79,26 @@ public class DBManager implements Serializable {
             stm.close();
         }
     }
+    
+    public String checkUserPassword(int userId, String password) throws SQLException{
+        PreparedStatement stm = con.prepareStatement("SELECT email FROM users WHERE user_id = ? AND password = ?");
+        String email = null;
+        try {
+            stm.setInt(1, userId);
+            stm.setString(2, password);
+            ResultSet rs = stm.executeQuery();
+            try {
+                if (rs.next()){
+                    email = rs.getString("email");
+                } 
+            } finally {
+                rs.close();
+            }
+        } finally {
+            stm.close();
+        }
+            return email;
+    }
 
     public void setLoginDate(int userId, String loginDate) throws SQLException {
 
@@ -313,7 +333,7 @@ public class DBManager implements Serializable {
         }
         return userId;
     }
-
+    
     public List<Group> getPublicGroups() throws SQLException {
         List<Group> groups = new ArrayList<Group>();
         String adminUsername;

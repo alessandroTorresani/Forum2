@@ -67,3 +67,19 @@
 2014-05-14 16:02:18 WARN  RestorePasswordServlet:88 - Illegal call of the recovery servlet
 2014-05-14 16:04:09 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
 2014-05-14 16:05:06 INFO  LoginServlet:43 - User: harwinrene@gmail.comhas logout
+2014-05-14 16:27:20 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-14 16:27:22 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
+2014-05-14 16:37:14 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-14 16:37:17 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
+2014-05-14 16:38:20 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-14 17:09:19 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
+2014-05-14 17:09:29 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-14 17:51:05 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-14 18:09:47 INFO  RegistrationServlet:80 - User: harwinrene@gmail.com Changed his avatar
+2014-05-14 18:23:39 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
+2014-05-14 18:45:13 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-14 18:48:18 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
+2014-05-15 15:43:50 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-15 15:43:58 INFO  RegistrationServlet:80 - User: harwinrene@gmail.com Changed his avatar
+2014-05-15 15:44:30 INFO  RegistrationServlet:80 - User: harwinrene@gmail.com Changed his avatar
+2014-05-15 15:44:42 INFO  RegistrationServlet:80 - User: harwinrene@gmail.com Changed his avatar
