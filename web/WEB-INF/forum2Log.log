@@ -98,3 +98,38 @@
 2014-05-15 18:55:00 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
 2014-05-15 19:04:18 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
 2014-05-15 19:05:31 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
+2014-05-16 18:52:19 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-16 18:52:59 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
+2014-05-16 18:59:33 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-16 19:01:51 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
+2014-05-16 19:07:16 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-16 19:07:38 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
+2014-05-16 20:35:05 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-16 20:40:39 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
+2014-05-18 15:14:08 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-18 15:25:27 INFO  LoginServlet:72 - login corretto, user:paolo@gmail.com
+2014-05-18 15:29:24 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
+2014-05-18 15:29:33 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-18 15:33:26 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
+2014-05-18 15:34:15 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-18 15:41:39 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
+2014-05-18 15:43:42 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-18 16:14:41 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
+2014-05-18 16:28:26 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-18 16:31:16 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
+2014-05-18 16:35:10 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-18 16:50:48 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
+2014-05-18 16:51:10 INFO  LoginServlet:72 - login corretto, user:m.lion920@gmail.com
+2014-05-18 16:53:29 INFO  LoginServlet:43 - User: m.lion920@gmail.com has logout
+2014-05-19 13:45:23 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-19 13:46:47 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
+2014-05-19 13:50:19 WARN  RegistrationServlet:164 - Registration failure: Inserted data is wrong, something missing or passwords/emails do not coincide
+2014-05-19 13:50:42 WARN  RegistrationServlet:164 - Registration failure: Inserted data is wrong, something missing or passwords/emails do not coincide
+2014-05-19 13:51:39 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-19 13:55:43 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
+2014-05-19 13:55:49 INFO  LoginServlet:72 - login corretto, user:m.lion920@gmail.com
+2014-05-19 13:57:35 INFO  LoginServlet:43 - User: m.lion920@gmail.com has logout
+2014-05-19 13:58:15 INFO  LoginServlet:72 - login corretto, user:luigi@gmail.com
+2014-05-19 14:01:21 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-19 14:01:54 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
+2014-05-19 14:03:51 INFO  LoginServlet:43 - User: luigi@gmail.com has logout
