@@ -28,6 +28,13 @@
         <url-pattern>/ChangePassword</url-pattern>
         <url-pattern>/GetOwnerGroups</url-pattern>
         <url-pattern>/ownerGroups.jsp</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>adminFilter</filter-name>
+        <filter-class>filters.AdminFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>adminFilter</filter-name>
         <url-pattern>/EditGroup</url-pattern>
         <url-pattern>/editGroup.jsp</url-pattern>
         <url-pattern>/PreEditGroup</url-pattern>

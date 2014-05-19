@@ -346,18 +346,17 @@ public class DBManager implements Serializable {
         }
     }
 
-    public List<User> getAllUser(int adminId, int groupId) throws SQLException {
+    public List<User> getAllInvitableUser(int groupId) throws SQLException {
         List<User> users = new ArrayList<User>();
-        PreparedStatement stm = con.prepareStatement("SELECT * FROM users EXCEPT (SELECT * FROM users WHERE user_id = ? )");
+        PreparedStatement stm = con.prepareStatement("SELECT * FROM users WHERE user_id NOT IN (SELECT user_id FROM users_groups WHERE group_id = ? )");
         try {
-            stm.setInt(1, adminId);
+            stm.setInt(1, groupId);
             ResultSet rs = stm.executeQuery();
             try {
                 while (rs.next()) {
                     User u = new User();
                     u.setUserId(rs.getInt("user_id"));
                     u.setUsername(rs.getString("username"));
-                    u.setEmail(rs.getString("email"));
                     users.add(u);
                 }
             } finally {
@@ -482,5 +481,24 @@ public class DBManager implements Serializable {
             stm.close();
         }
         return g;
+    }
+    
+    public boolean isAdmin(int userId, int groupId) throws SQLException{
+        boolean isAdmin = false;
+        PreparedStatement stm = con.prepareStatement("SELECT administrator_id FROM groups WHERE group_id = ?");
+        try {
+            stm.setInt(1, groupId);
+            ResultSet rs = stm.executeQuery();
+            try {
+                while(rs.next()){
+                    isAdmin = rs.getInt("administrator_id") == userId; 
+                }
+            } finally {
+                rs.close();
+            }
+        } finally {
+            stm.close();
+        }
+        return isAdmin;
     }
 }

@@ -90,50 +90,13 @@
                             <td>${group.getCreationDate()}</td>
                             <td>${group.isIsClosed()}</td>
                             <td>${group.isIsPrivate()}</td>
-                            <td><button type="button" class="btn btn-primary btn-xs">
-                                    <span class="glyphicon glyphicon-plus"></span> Invite</button></td>
-                                    <td><a href="PreEditGroup?email=${sessionScope.user.getEmail()}&groupId=${group.getGroupId()}"><button type="button" class="btn btn-primary btn-xs">
-                                                <span class="glyphicon glyphicon-pencil"></span> Edit</button></a></td>
+                            <td><a href="PreEditGroup?groupId=${group.getGroupId()}"><button type="button" class="btn btn-primary btn-xs">
+                                        <span class="glyphicon glyphicon-cog"></span> Manage</button></a></td>
                         </tr>
                     </c:forEach>
                 </table>
             </div>
 
-        </div>
-        <div id="editGroup" class="modal fade">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Edit your group</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p> Insert a new name or change the group status</p>
-                        <form role="form" action="EditGroup?email=${sessionScope.user.getEmail()}&groupId=${group.getGroupId()}" method="post">
-                            <div class="form-group">
-                                <label for="groupName">Group name</label>
-                                <input type="text" class="form-control" id="groupName" placeholder="groupName" name="groupName">
-                            </div>
-                            <div class="form-group">
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="public" checked>
-                                        Public
-                                    </label>
-                                </div>
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="private">
-                                        Private
-                                    </label>
-                                </div>
-                            </div>
-                            <br>
-                            <button type="submit" class="btn btn-default">Submit</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
         </div>
     </body>
 </html>

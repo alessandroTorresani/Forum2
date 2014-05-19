@@ -11,6 +11,7 @@ import db.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -47,11 +48,14 @@ public class PreEditGroupServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        int groupId = Integer.parseInt(request.getParameter("groupId"));
+
         HttpSession session = request.getSession();
+        ServletContext sc = getServletContext();
+
+        int groupId = Integer.parseInt(request.getParameter("groupId"));
         User user = (User) session.getAttribute("user");
         Group g = null;
-        ServletContext sc = getServletContext();
+        List<User> invitableUser = null;
 
         try {
             g = manager.getGroup(groupId);
@@ -59,12 +63,23 @@ public class PreEditGroupServlet extends HttpServlet {
             log.error(ex.toString());
             throw new ServletException(ex);
         }
+
+        if (g.isIsPrivate()) {
+            try {
+                invitableUser = manager.getAllInvitableUser(groupId);
+            } catch (SQLException ex) {
+                log.error(ex.toString());
+                throw new ServletException(ex);
+            }
+            request.setAttribute("invitableUsers", invitableUser);
+        }
+
         if (g != null) {
             request.setAttribute("group", g);
-            RequestDispatcher rd = sc.getRequestDispatcher("/editGroup.jsp?email=" + user.getEmail());
+            RequestDispatcher rd = sc.getRequestDispatcher("/editGroup.jsp?groupId=" + g.getGroupId());
             rd.forward(request, response);
         } else {
-            System.out.println("errore gruppo");
+            response.sendRedirect(request.getContextPath() + "/");
         }
     }
 
