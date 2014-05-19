@@ -79,8 +79,8 @@ public class DBManager implements Serializable {
             stm.close();
         }
     }
-    
-    public String checkUserPassword(int userId, String password) throws SQLException{
+
+    public String checkUserPassword(int userId, String password) throws SQLException {
         PreparedStatement stm = con.prepareStatement("SELECT email FROM users WHERE user_id = ? AND password = ?");
         String email = null;
         try {
@@ -88,16 +88,16 @@ public class DBManager implements Serializable {
             stm.setString(2, password);
             ResultSet rs = stm.executeQuery();
             try {
-                if (rs.next()){
+                if (rs.next()) {
                     email = rs.getString("email");
-                } 
+                }
             } finally {
                 rs.close();
             }
         } finally {
             stm.close();
         }
-            return email;
+        return email;
     }
 
     public void setLoginDate(int userId, String loginDate) throws SQLException {
@@ -149,15 +149,15 @@ public class DBManager implements Serializable {
         }
         return userId;
     }
-    
-    public String getUsernameByUserId(int userId) throws SQLException{
+
+    public String getUsernameByUserId(int userId) throws SQLException {
         String username = null;
         PreparedStatement stm = con.prepareCall("SELECT username FROM users WHERE user_id=?");
         try {
             stm.setInt(1, userId);
             ResultSet rs = stm.executeQuery();
             try {
-                while(rs.next()){
+                while (rs.next()) {
                     username = rs.getString("username");
                 }
             } finally {
@@ -255,15 +255,15 @@ public class DBManager implements Serializable {
         }
         return requestTime;
     }
-    
-    public String getPasswordRequestIdbyUserId(int userId) throws SQLException{
+
+    public String getPasswordRequestIdbyUserId(int userId) throws SQLException {
         String requestId = null;
         PreparedStatement stm = con.prepareCall("SELECT request_id FROM forgotten_passwords WHERE user_id = ?");
         try {
-            stm.setInt(1,userId );
+            stm.setInt(1, userId);
             ResultSet rs = stm.executeQuery();
             try {
-                while (rs.next()){
+                while (rs.next()) {
                     requestId = rs.getString("request_id");
                 }
             } finally {
@@ -274,15 +274,15 @@ public class DBManager implements Serializable {
         }
         return requestId;
     }
-    
-    public String getTempPasswordByUserId(int userId) throws SQLException{
+
+    public String getTempPasswordByUserId(int userId) throws SQLException {
         String tempPassword = null;
         PreparedStatement stm = con.prepareCall("SELECT temp_password FROM forgotten_passwords WHERE user_id = ?");
         try {
-            stm.setInt(1,userId );
+            stm.setInt(1, userId);
             ResultSet rs = stm.executeQuery();
             try {
-                while (rs.next()){
+                while (rs.next()) {
                     tempPassword = rs.getString("temp_password");
                 }
             } finally {
@@ -293,8 +293,8 @@ public class DBManager implements Serializable {
         }
         return tempPassword;
     }
-    
-    public void changeUserPassword(int userId, String password) throws SQLException{
+
+    public void changeUserPassword(int userId, String password) throws SQLException {
         PreparedStatement stm = con.prepareCall("UPDATE users SET password = ? WHERE user_id = ?");
         try {
             stm.setString(1, password);
@@ -304,8 +304,8 @@ public class DBManager implements Serializable {
             stm.close();
         }
     }
-    
-    public void deletePasswordRequest (String requestId) throws SQLException{
+
+    public void deletePasswordRequest(String requestId) throws SQLException {
         PreparedStatement stm = con.prepareCall("DELETE  FROM forgotten_passwords WHERE request_id = ?");
         try {
             stm.setString(1, requestId);
@@ -333,7 +333,42 @@ public class DBManager implements Serializable {
         }
         return userId;
     }
-    
+
+    public void subscribeAdmin(int groupId, int adminId) throws SQLException {
+        PreparedStatement stm = con.prepareStatement("INSERT INTO users_groups (user_id, group_id, is_administrator) VALUES (?,?,?)");
+        try {
+            stm.setInt(1, adminId);
+            stm.setInt(2, groupId);
+            stm.setBoolean(3, true);
+            stm.executeUpdate();
+        } finally {
+            stm.close();
+        }
+    }
+
+    public List<User> getAllUser(int adminId, int groupId) throws SQLException {
+        List<User> users = new ArrayList<User>();
+        PreparedStatement stm = con.prepareStatement("SELECT * FROM users EXCEPT (SELECT * FROM users WHERE user_id = ? )");
+        try {
+            stm.setInt(1, adminId);
+            ResultSet rs = stm.executeQuery();
+            try {
+                while (rs.next()) {
+                    User u = new User();
+                    u.setUserId(rs.getInt("user_id"));
+                    u.setUsername(rs.getString("username"));
+                    u.setEmail(rs.getString("email"));
+                    users.add(u);
+                }
+            } finally {
+                rs.close();
+            }
+        } finally {
+            stm.close();
+        }
+        return users;
+    }
+
     public List<Group> getPublicGroups() throws SQLException {
         List<Group> groups = new ArrayList<Group>();
         String adminUsername;
@@ -363,9 +398,9 @@ public class DBManager implements Serializable {
         }
         return groups;
     }
-    
-    public int createGroup(int userId, String groupName, String creationDate, boolean isPrivate) throws SQLException{
-        
+
+    public int createGroup(int userId, String groupName, String creationDate, boolean isPrivate) throws SQLException {
+
         int groupId = 0;
         System.out.println(userId + groupName + creationDate + isPrivate);
         PreparedStatement stm = con.prepareStatement("INSERT INTO groups (administrator_id, groupname,creation_date,is_private, is_closed) VALUES (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
@@ -380,7 +415,7 @@ public class DBManager implements Serializable {
             try {
                 while (rs.next()) {
                     groupId = rs.getInt(1);
-                }   
+                }
             } finally {
                 rs.close();
             }
@@ -389,10 +424,22 @@ public class DBManager implements Serializable {
         }
         return groupId;
     }
-    
-    public List<Group> getOwnerGroups(int userId) throws SQLException{
+
+    public void editGroup(int groupId, String groupName, boolean status) throws SQLException {
+        PreparedStatement stm = con.prepareStatement("UPDATE groups SET groupname = ?, is_private = ? WHERE group_id = ? ");
+        try {
+            stm.setString(1, groupName);
+            stm.setBoolean(2, status);
+            stm.setInt(3, groupId);
+            stm.executeUpdate();
+        } finally {
+            stm.close();
+        }
+    }
+
+    public List<Group> getOwnerGroups(int userId) throws SQLException {
         List<Group> groups = new ArrayList<Group>();
-                PreparedStatement stm = con.prepareStatement("SELECT * FROM groups WHERE administrator_id = ?");
+        PreparedStatement stm = con.prepareStatement("SELECT * FROM groups WHERE administrator_id = ?");
         try {
             stm.setInt(1, userId);
             ResultSet rs = stm.executeQuery();
@@ -413,5 +460,27 @@ public class DBManager implements Serializable {
             stm.close();
         }
         return groups;
+    }
+
+    public Group getGroup(int groupId) throws SQLException {
+        Group g = null;
+        PreparedStatement stm = con.prepareStatement("SELECT * FROM groups WHERE group_id = ?");
+        try {
+            stm.setInt(1, groupId);
+            ResultSet rs = stm.executeQuery();
+            try {
+                while (rs.next()) {
+                    g = new Group();
+                    g.setGroupName(rs.getString("groupname"));
+                    g.setIsPrivate(rs.getBoolean("is_private"));
+                    g.setGroupId(rs.getInt("group_id"));
+                }
+            } finally {
+                rs.close();
+            }
+        } finally {
+            stm.close();
+        }
+        return g;
     }
 }

@@ -34,25 +34,25 @@
                 </div>
 
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                            <ul class="nav navbar-nav navbar-left">
-                                <li><a href="createGroup.jsp"><span class="glyphicon glyphicon-th-list"></span><b> Create group</b></a></li>
-                                <li><a href="#"><span class="glyphicon glyphicon-th-list"></span><b> See invitations</b></a></li>
-                            </ul>
+                    <ul class="nav navbar-nav navbar-left">
+                        <li><a href="createGroup.jsp"><span class="glyphicon glyphicon-th-list"></span><b> Create group</b></a></li>
+                        <li><a href="#"><span class="glyphicon glyphicon-th-list"></span><b> See invitations</b></a></li>
+                    </ul>
 
-                            <ul class="nav navbar-nav navbar-right">
-                                <li class="dropdown">
-                                    <a href="" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span>
-                                        <b>${sessionScope.user.getUsername()}</b><b class="caret"></b></a>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span>
+                                <b>${sessionScope.user.getUsername()}</b><b class="caret"></b></a>
 
-                                    <ul class="dropdown-menu">
-                                        <li><a href="GetOwnerGroups?email=${sessionScope.user.getEmail()}">Your groups</a></li>
-                                        <li><a href="ViewProfile?email=${sessionScope.user.getEmail()}">View profile</a></li>
-                                        <li><a href="#moderator">Swith to moderator</a></li>
-                                        <li class="divider"></li>
-                                        <li><a href="Logout">Logout</a></li>
-                                    </ul>
-                                </li>
+                            <ul class="dropdown-menu">
+                                <li><a href="GetOwnerGroups?email=${sessionScope.user.getEmail()}">Your groups</a></li>
+                                <li><a href="ViewProfile?email=${sessionScope.user.getEmail()}">View profile</a></li>
+                                <li><a href="#moderator">Swith to moderator</a></li>
+                                <li class="divider"></li>
+                                <li><a href="Logout">Logout</a></li>
                             </ul>
+                        </li>
+                    </ul>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
         </nav>

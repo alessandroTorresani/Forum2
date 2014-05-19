@@ -133,3 +133,9 @@
 2014-05-19 14:01:21 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
 2014-05-19 14:01:54 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
 2014-05-19 14:03:51 INFO  LoginServlet:43 - User: luigi@gmail.com has logout
+2014-05-19 14:27:29 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-19 15:10:03 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
+2014-05-19 15:10:11 INFO  LoginServlet:72 - login corretto, user:paolo@gmail.com
+2014-05-19 15:12:09 ERROR RegistrationServlet:74 - java.sql.SQLSyntaxErrorException: Syntax error: Encountered "?" at line 1, column 76.
+2014-05-19 15:35:07 INFO  LoginServlet:43 - User: paolo@gmail.com has logout
+2014-05-19 15:37:29 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com

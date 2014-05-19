@@ -10,11 +10,7 @@ import db.DBManager;
 import db.User;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.rmi.ServerException;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -26,12 +22,12 @@ import org.apache.log4j.Logger;
  *
  * @author Alessandro
  */
-public class CreateGroupServlet extends HttpServlet {
+public class EditGroupServlet extends HttpServlet {
     
     private DBManager manager;
+    static Logger log = Logger.getLogger(StartServlet.class.getName());
     private String GROUPNAME_REGEX = "^[a-zA-Z0-9_-]{3,20}$";
-    static Logger log = Logger.getLogger(RegistrationServlet.class.getName());
-    
+
     public void init() throws ServletException {
         this.manager = (DBManager) super.getServletContext().getAttribute("dbmanager");
     }
@@ -48,47 +44,29 @@ public class CreateGroupServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-        String groupName = request.getParameter("groupName");
-        System.out.println(request.getParameter("optionsRadios"));
-        boolean is_private = "private".equals(request.getParameter("optionsRadios"));
-        
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = new Date();
-        
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        int groupId = 0;
-        System.out.println(is_private);
-        
-        
-        if ((groupName != null) && (groupName.matches(GROUPNAME_REGEX))){
-            try {
-            groupId = manager.createGroup(user.getUserId(), groupName, dateFormat.format(date), is_private);
-            } catch (SQLException ex){
-                log.error(ex.toString());
-                throw new ServletException(ex);
-            }
-            if (groupId > 0){
-                try {
-                manager.subscribeAdmin(groupId, user.getUserId());
-                } catch (SQLException ex){
-                    log.error(ex.toString());
-                    throw new ServletException(ex);
-                }
-                 response.sendRedirect(request.getContextPath() + "/GetOwnerGroups?email=" + user.getEmail());
-            } else {
-                System.out.println("no group_id");
-                response.sendRedirect(request.getContextPath() + "/createGroup.jsp");
-            }
-        } else {
-             System.out.println("no correct name");
-            response.sendRedirect(request.getContextPath() + "/createGroup.jsp");
-        }
-        
-        
-        
-        
+       int groupId = Integer.parseInt(request.getParameter("groupId"));
+       String groupName = request.getParameter("groupName");
+       boolean is_private = "private".equals(request.getParameter("optionsRadios"));
+       boolean res = false;
+       HttpSession session = request.getSession();
+       User user = (User) session.getAttribute("user");
+       
+       System.out.println(groupName + " " + is_private);
+       
+       if ((groupId > 0)&&(groupName != null)&&(groupName.matches(GROUPNAME_REGEX))){
+           try {
+               manager.editGroup(groupId, groupName, is_private);
+               res = true;
+           } catch(SQLException ex){
+               log.error(ex.toString());
+               throw new ServletException(ex);
+           }
+           if (res == true){
+               response.sendRedirect(request.getContextPath() + "/GetOwnerGroups?email="+user.getEmail());
+           }
+       } else {
+           System.out.println("Errore nome o id");
+       }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

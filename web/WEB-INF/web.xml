@@ -28,6 +28,9 @@
         <url-pattern>/ChangePassword</url-pattern>
         <url-pattern>/GetOwnerGroups</url-pattern>
         <url-pattern>/ownerGroups.jsp</url-pattern>
+        <url-pattern>/EditGroup</url-pattern>
+        <url-pattern>/editGroup.jsp</url-pattern>
+        <url-pattern>/PreEditGroup</url-pattern>
     </filter-mapping>
     <filter>
         <filter-name>loginFilter</filter-name>
@@ -89,6 +92,10 @@
         <servlet-name>GetOwnerGroups</servlet-name>
         <servlet-class>servlets.GetOwnerGroupsServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EditGroup</servlet-name>
+        <servlet-class>servlets.EditGroupServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -136,6 +143,10 @@
     <servlet-mapping>
         <servlet-name>GetOwnerGroups</servlet-name>
         <url-pattern>/GetOwnerGroups</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditGroup</servlet-name>
+        <url-pattern>/EditGroup</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
