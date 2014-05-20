@@ -46,10 +46,10 @@ public class RestorePasswordServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
 
         ServletContext sc = getServletContext();
         String requestId = request.getParameter("requestId");
+        
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date actualDate = new Date();
         Date requestDate = null;

@@ -50,8 +50,6 @@ public class RegistrationServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
 
         String email1 = null;
         String email2 = null;
@@ -202,7 +200,6 @@ public class RegistrationServlet extends HttpServlet {
                 }
             }
         } else {
-            out.println("No information inserted, please retry");
             request.setAttribute("Result", "You inserted wrong or empty data, pleasy retry");
 
             RequestDispatcher rd = sc.getRequestDispatcher("/registrationResult.jsp");

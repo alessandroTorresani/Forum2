@@ -51,7 +51,7 @@ public class ChangeAvatarServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+       
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         MultipartRequest multi = null;

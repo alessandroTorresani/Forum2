@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package servlets;
 
 import db.DBManager;
@@ -23,7 +22,7 @@ import org.apache.log4j.Logger;
  * @author Alessandro
  */
 public class EditGroupServlet extends HttpServlet {
-    
+
     private DBManager manager;
     static Logger log = Logger.getLogger(StartServlet.class.getName());
     private String GROUPNAME_REGEX = "^[a-zA-Z0-9_-]{3,20}$";
@@ -43,30 +42,29 @@ public class EditGroupServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-       int groupId = Integer.parseInt(request.getParameter("groupId"));
-       String groupName = request.getParameter("groupName");
-       boolean is_private = "private".equals(request.getParameter("optionsRadios"));
-       boolean res = false;
-       HttpSession session = request.getSession();
-       User user = (User) session.getAttribute("user");
-       
-       System.out.println(groupName + " " + is_private);
-       
-       if ((groupId > 0)&&(groupName != null)&&(groupName.matches(GROUPNAME_REGEX))){
-           try {
-               manager.editGroup(groupId, groupName, is_private);
-               res = true;
-           } catch(SQLException ex){
-               log.error(ex.toString());
-               throw new ServletException(ex);
-           }
-           if (res == true){
-               response.sendRedirect(request.getContextPath() + "/GetOwnerGroups?email="+user.getEmail());
-           }
-       } else {
-           System.out.println("Errore nome o id");
-       }
+
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+
+        int groupId = Integer.parseInt(request.getParameter("groupId"));
+        String groupName = request.getParameter("groupName");
+        boolean is_private = "private".equals(request.getParameter("optionsRadios"));
+        boolean res = false;
+
+        if ((groupId > 0) && (groupName != null) && (groupName.matches(GROUPNAME_REGEX))) {
+            try {
+                manager.editGroup(groupId, groupName, is_private);
+                res = true;
+            } catch (SQLException ex) {
+                log.error(ex.toString());
+                throw new ServletException(ex);
+            }
+            if (res == true) {
+                response.sendRedirect(request.getContextPath() + "/GetOwnerGroups?email=" + user.getEmail());
+            }
+        } else {
+            System.out.println("Errore nome o id");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

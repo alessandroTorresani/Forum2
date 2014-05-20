@@ -46,8 +46,7 @@ public class PreEditGroupServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+            throws ServletException, IOException { //get the data to pass to the editgroup.jsps
 
         HttpSession session = request.getSession();
         ServletContext sc = getServletContext();
@@ -64,9 +63,9 @@ public class PreEditGroupServlet extends HttpServlet {
             throw new ServletException(ex);
         }
 
-        if (g.isIsPrivate()) {
+        if (g.isIsPrivate()) { // if the group is private allow to invite users
             try {
-                invitableUser = manager.getAllInvitableUser(groupId);
+                invitableUser = manager.getAllInvitableUser(groupId); //invitable users
             } catch (SQLException ex) {
                 log.error(ex.toString());
                 throw new ServletException(ex);
