@@ -18,6 +18,8 @@ public class Bid  implements Serializable {
     private int userId;
     private int groupId;
     private int adminId;
+    private String groupName;
+    private String adminUsername;
 
     /**
      * @return the bidId
@@ -73,6 +75,34 @@ public class Bid  implements Serializable {
      */
     public void setAdminId(int adminId) {
         this.adminId = adminId;
+    }
+
+    /**
+     * @return the groupName
+     */
+    public String getGroupName() {
+        return groupName;
+    }
+
+    /**
+     * @param groupName the groupName to set
+     */
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    /**
+     * @return the adminUsername
+     */
+    public String getAdminUsername() {
+        return adminUsername;
+    }
+
+    /**
+     * @param adminUsername the adminUsername to set
+     */
+    public void setAdminUsername(String adminUsername) {
+        this.adminUsername = adminUsername;
     }
          
     

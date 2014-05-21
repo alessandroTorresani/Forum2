@@ -482,16 +482,35 @@ public class DBManager implements Serializable {
         }
         return g;
     }
-    
-    public boolean isAdmin(int userId, int groupId) throws SQLException{
+
+    public String getGroupName(int groupId) throws SQLException {
+        String groupName = null;
+        PreparedStatement stm = con.prepareStatement("SELECT groupname FROM groups WHERE group_id = ?");
+        try {
+            stm.setInt(1, groupId);
+            ResultSet rs = stm.executeQuery();
+            try {
+                while (rs.next()) {
+                    groupName = rs.getString("groupname");
+                }
+            } finally {
+                rs.close();
+            }
+        } finally {
+            stm.close();
+        }
+        return groupName;
+    }
+
+    public boolean isAdmin(int userId, int groupId) throws SQLException {
         boolean isAdmin = false;
         PreparedStatement stm = con.prepareStatement("SELECT administrator_id FROM groups WHERE group_id = ?");
         try {
             stm.setInt(1, groupId);
             ResultSet rs = stm.executeQuery();
             try {
-                while(rs.next()){
-                    isAdmin = rs.getInt("administrator_id") == userId; 
+                while (rs.next()) {
+                    isAdmin = rs.getInt("administrator_id") == userId;
                 }
             } finally {
                 rs.close();
@@ -500,5 +519,111 @@ public class DBManager implements Serializable {
             stm.close();
         }
         return isAdmin;
+    }
+
+    public void sendBids(List<String> ids, int groupId, int adminId) throws SQLException {
+        PreparedStatement stm = con.prepareStatement("INSERT INTO bids (user_id, group_id, administrator_id) VALUES (?,?,?)");
+        try {
+            stm.setInt(2, groupId);
+            stm.setInt(3, adminId);
+            for (int x = 0; x < ids.size(); x++) {
+                stm.setInt(1, Integer.parseInt(ids.get(x)));
+                stm.executeUpdate();
+            }
+        } finally {
+            stm.close();
+        }
+    }
+
+    public List<Bid> getBids(int userId) throws SQLException {
+        List<Bid> bids = new ArrayList();
+        String groupName = null;
+        String adminUsername = null;
+        PreparedStatement stm = con.prepareStatement("SELECT * FROM bids WHERE user_id = ?");
+        try {
+            stm.setInt(1, userId);
+            ResultSet rs = stm.executeQuery();
+            try {
+                while (rs.next()) {
+                    Bid b = new Bid();
+                    groupName = getGroupName(rs.getInt("group_id"));
+                    b.setGroupName(groupName);
+                    b.setGroupId(rs.getInt("group_id"));
+                    b.setAdminId(rs.getInt("administrator_id"));
+                    adminUsername = getUsernameByUserId(rs.getInt("administrator_id"));
+                    b.setAdminUsername(adminUsername);
+                    b.setBidId(rs.getInt("bid_id"));
+                    b.setUserId(rs.getInt("user_id"));
+                    bids.add(b);
+                }
+            } finally {
+                rs.close();
+            }
+        } finally {
+            stm.close();
+        }
+        return bids;
+    }
+    
+    public boolean checkBids(int userId, int bidId) throws SQLException{
+        PreparedStatement stm = con.prepareStatement("SELECT user_id FROM bids WHERE bid_id = ? and user_id = ?");
+        int numBids = 0;
+        try {
+            stm.setInt(1, bidId);
+            stm.setInt(2, userId);
+            ResultSet rs = stm.executeQuery();
+            try {
+                while(rs.next()){
+                    numBids++;
+                }
+            } finally {
+                rs.close();
+            }
+        } finally {
+            stm.close();
+        }
+        return numBids == 0;
+    }
+
+    public void AcceptBids(List<String> bids, int userId) throws SQLException {
+        PreparedStatement stm = con.prepareStatement("INSERT INTO users_groups (user_id, group_id, is_administrator) VALUES (?,?,?)");
+        int groupId = 0;
+        try {
+            stm.setInt(1, userId);
+            stm.setBoolean(3, false);
+            for (int x = 0; x < bids.size(); x++) {
+                PreparedStatement stm1 = con.prepareCall("SELECT group_id FROM bids WHERE bid_id = ?");
+                try {
+                    stm1.setInt(1, Integer.parseInt(bids.get(x)));
+                    ResultSet rs = stm1.executeQuery();
+                    try {
+                        while (rs.next()) {
+                            groupId = rs.getInt("group_id");
+                            System.out.println("groupid= " + groupId);
+                        }
+                    } finally {
+                        rs.close();
+                    }
+                } finally {
+                    stm1.close();
+                }
+                stm.setInt(2, groupId);
+                stm.executeUpdate();
+            }
+        } finally {
+            stm.close();
+        }
+    }
+
+    public void deleteBids(List<String> bids) throws SQLException {
+        PreparedStatement stm = con.prepareStatement("DELETE FROM bids WHERE bid_id=?");
+        try {
+            for (int x = 0; x < bids.size(); x++) {
+                stm.setInt(1, Integer.parseInt(bids.get(x)));
+                stm.executeUpdate();
+            }
+        } finally {
+            stm.close();
+        }
     }
 }

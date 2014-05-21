@@ -89,7 +89,9 @@
                         <div class="form-group">
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="public">
+                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="public" 
+                                           data-container="body" data-toggle="popover" data-placement=""
+                                           data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
                                     Public
                                 </label>
                             </div>
@@ -106,7 +108,7 @@
                                 <div class="col-lg-6">
                                     <div class="input-group">
                                         <span class="input-group-addon">
-                                            <input type="checkbox">
+                                            <input type="checkbox" name="users" value="${user.getUserId()}">
                                         </span>
                                         <input type="text" class="form-control" placeholder="${user.getUsername()}" disabled>
                                     </div><!-- /input-group -->

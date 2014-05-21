@@ -69,7 +69,7 @@
                                 <li class="dropdown">
                                     <a href="" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span>
                                         <b>${sessionScope.user.getUsername()}</b><b class="caret"></b></a>
-                                            
+
                                     <ul class="dropdown-menu">
                                         <li><a href="GetOwnerGroups?email=${sessionScope.user.getEmail()}">Your groups</a></li>
                                         <li><a href="ViewProfile?email=${sessionScope.user.getEmail()}">View profile</a></li>
@@ -88,35 +88,6 @@
 
         <div style="width:80%; margin:0 auto;">
 
-
-            <% /*    <ul class="nav nav-pills">
-                 <li class="active"><a href="Start">Home</a></li>
-                 <c:choose>
-                 <c:when test="${sessionScope.user != null}">
-
-                 <li class="dropdown">
-                 <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">${sessionScope.user.getUsername()}<b class="caret"></b></a>
-                 <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
-                 <li role="presentation"><a role="menuitem" tabindex="-1" href="GetOwnerGroups?email=${sessionScope.user.getEmail()}">Your groups</a></li>
-                 <li role="presentation"><a role="menuitem" tabindex="-1" href="ViewProfile?email=${sessionScope.user.getEmail()}">View profile</a></li>
-                 <li role="presentation"><a role="menuitem" tabindex="-1" href="#Switch moderator">Switch to moderator</a></li>
-                 <li role="presentation" class="divider"></li>
-                 <li role="presentation"><a role="menuitem" tabindex="-1" href="Logout">Logout</a></li>
-                 </ul>
-                 </li>
-
-                 <li><a href=""><c:out value="${sessionScope.user.getLastLogin()}"/></a></li>
-                 </c:when>
-                 <c:otherwise>       
-                 <li><a href="registration.jsp">Sign up</a></li>
-                 <li><a href="forgetPassword.jsp">Forget password</a></li>
-                 <li><a data-toggle="modal" data-target="#forgetPassword">Forget password</a></li>
-                 </c:otherwise>
-                 </c:choose>
-                 </ul> */ %>
-
-
-
             <h1>Forum</h1>
 
             <c:choose>
@@ -134,30 +105,10 @@
                     </c:choose> 
                 </c:when>
             </c:choose>
-
-            <% /*<div style="width:50;">
-                 <form role="form" action="Login" method="post">
-                 <div class="form-group">
-                 <label for="email">Email</label>
-                 <input type="email" class="form-control" id="email" placeholder="Email" name="email">
-                 </div>
-                 <div class="form-group">
-                 <label for="password">Password</label>
-                 <input type="password" class="form-control" id="password" placeholder="Password" name="password">
-                 </div>
-                 <button type="submit" class="btn btn-default">Login</button>
-                 </form>
-                 <br>
-                 <button class="btn btn-primary" data-toggle="modal" data-target="#forgetPassword">Forget password</button>
-                 </div>
-                 </c:when>*/%>
-
-
             <br>
-
             <c:choose>
                 <c:when test="${sessionScope.user != null}">
-                    <a href="createGroup.jsp" class="btn btn-primary" role="button">Create group</a>
+                    <a href="createGroup.jsp" class="btn btn-primary" role="button" >Create group</a>
                     <br>
                     <br>
                 </c:when>
@@ -180,7 +131,48 @@
                     </c:forEach>
                 </table>
             </div>
-
+            <br>
+            <c:choose>
+                <c:when test="${bids.size()>0}">
+                    <form action="AcceptBids" method="post">
+                        <div class="panel panel-default">
+                            <!-- Table -->
+                            <table class="table">
+                                <th> Group </th>
+                                <th> Owner </th>
+                                <th> Accept </th>
+                                <th> Refuse </th>
+                                    <c:forEach items="${bids}" var="bid">
+                                    <tr>
+                                        <td>${bid.getGroupName()}</td>
+                                        <td>${bid.getAdminUsername()}</td>
+                                        <td><div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" name="accepted" value="${bid.getBidId()}">
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" name="refused" value="${bid.getBidId()}">
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </table>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </c:when>
+                <c:when test="${sessionScope.user == null}">
+                    
+                </c:when>
+                <c:otherwise>
+                    <p> no invitation </p>
+                </c:otherwise>
+            </c:choose>
         </div>
 
         <div id="forgetPassword" class="modal fade">

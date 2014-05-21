@@ -5,8 +5,10 @@
  */
 package servlets;
 
+import db.Bid;
 import db.DBManager;
 import db.Group;
+import db.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -16,6 +18,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 
 /**
@@ -42,13 +45,21 @@ public class StartServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
+
         ServletContext sc = getServletContext();
-        List <Group> publicGroups = null;
-        
+        List<Group> publicGroups = null;
+        List<Bid> bids = null;
+
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+
         try {
             publicGroups = manager.getPublicGroups(); // get all public groups
-        } catch (Exception ex){
+            if (user != null) {
+                bids = manager.getBids(user.getUserId());
+                request.setAttribute("bids", bids);
+            }
+        } catch (Exception ex) {
             log.error(ex.toString());
         }
         

@@ -47,6 +47,7 @@
         <filter-name>loginFilter</filter-name>
         <url-pattern>/CreateGroup</url-pattern>
         <url-pattern>/createGroup.jsp</url-pattern>
+        <url-pattern>/AcceptBids</url-pattern>
     </filter-mapping>
     <welcome-file-list>
         <welcome-file>Start</welcome-file>
@@ -103,6 +104,10 @@
         <servlet-name>EditGroup</servlet-name>
         <servlet-class>servlets.EditGroupServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AcceptBids</servlet-name>
+        <servlet-class>servlets.AcceptBidsServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -154,6 +159,10 @@
     <servlet-mapping>
         <servlet-name>EditGroup</servlet-name>
         <url-pattern>/EditGroup</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AcceptBids</servlet-name>
+        <url-pattern>/AcceptBids</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

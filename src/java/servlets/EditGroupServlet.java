@@ -10,6 +10,8 @@ import db.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +28,7 @@ public class EditGroupServlet extends HttpServlet {
     private DBManager manager;
     static Logger log = Logger.getLogger(StartServlet.class.getName());
     private String GROUPNAME_REGEX = "^[a-zA-Z0-9_-]{3,20}$";
+    private String GROUPNAME_REGEX1 = "^[[a-zA-Z0-9_-]+(\\s[a-zA-Z0-9_-]+)*]{3,20}$"; //how limit to 20 characters?
 
     public void init() throws ServletException {
         this.manager = (DBManager) super.getServletContext().getAttribute("dbmanager");
@@ -46,12 +49,15 @@ public class EditGroupServlet extends HttpServlet {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
 
+        String[] checkbox_params = request.getParameterValues("users");
+        List<String> bids = new ArrayList();
+
         int groupId = Integer.parseInt(request.getParameter("groupId"));
         String groupName = request.getParameter("groupName");
         boolean is_private = "private".equals(request.getParameter("optionsRadios"));
         boolean res = false;
 
-        if ((groupId > 0) && (groupName != null) && (groupName.matches(GROUPNAME_REGEX))) {
+        if ((groupId > 0) && (groupName != null) && (groupName.matches(GROUPNAME_REGEX1))) {
             try {
                 manager.editGroup(groupId, groupName, is_private);
                 res = true;
@@ -64,6 +70,19 @@ public class EditGroupServlet extends HttpServlet {
             }
         } else {
             System.out.println("Errore nome o id");
+            response.sendRedirect(request.getContextPath() + "/GetOwnerGroups?email=" + user.getEmail());
+        }
+
+        if ((checkbox_params != null) && (is_private)) {
+            for (int x = 0; x < checkbox_params.length; x++) { // metto i dati in una List<String> per la funzione sendbids
+                bids.add(checkbox_params[x]);
+            }
+            try {
+                manager.sendBids(bids, groupId, user.getUserId());
+            } catch (SQLException ex) {
+                log.error(ex.toString());
+                throw new ServletException();
+            }
         }
     }
 

@@ -140,3 +140,48 @@
 2014-05-19 15:35:07 INFO  LoginServlet:43 - User: paolo@gmail.com has logout
 2014-05-19 15:37:29 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
 2014-05-20 12:01:10 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-20 12:35:02 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
+2014-05-21 10:04:56 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-21 10:41:18 ERROR StartServlet:63 - java.sql.SQLSyntaxErrorException: Column 'USERID' is either not in any table in the FROM list or appears within a join specification and is outside the scope of the join specification or appears in a HAVING clause and is not in the GROUP BY list. If this is a CREATE or ALTER TABLE  statement then 'USERID' is not a column in the target table.
+2014-05-21 10:41:33 ERROR StartServlet:63 - java.sql.SQLSyntaxErrorException: Column 'USERID' is either not in any table in the FROM list or appears within a join specification and is outside the scope of the join specification or appears in a HAVING clause and is not in the GROUP BY list. If this is a CREATE or ALTER TABLE  statement then 'USERID' is not a column in the target table.
+2014-05-21 10:41:39 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
+2014-05-21 10:41:53 INFO  LoginServlet:72 - login corretto, user:paolo@gmail.com
+2014-05-21 10:41:53 ERROR StartServlet:63 - java.sql.SQLSyntaxErrorException: Column 'USERID' is either not in any table in the FROM list or appears within a join specification and is outside the scope of the join specification or appears in a HAVING clause and is not in the GROUP BY list. If this is a CREATE or ALTER TABLE  statement then 'USERID' is not a column in the target table.
+2014-05-21 10:41:58 ERROR StartServlet:63 - java.sql.SQLSyntaxErrorException: Column 'USERID' is either not in any table in the FROM list or appears within a join specification and is outside the scope of the join specification or appears in a HAVING clause and is not in the GROUP BY list. If this is a CREATE or ALTER TABLE  statement then 'USERID' is not a column in the target table.
+2014-05-21 10:41:59 ERROR StartServlet:63 - java.sql.SQLSyntaxErrorException: Column 'USERID' is either not in any table in the FROM list or appears within a join specification and is outside the scope of the join specification or appears in a HAVING clause and is not in the GROUP BY list. If this is a CREATE or ALTER TABLE  statement then 'USERID' is not a column in the target table.
+2014-05-21 11:02:52 INFO  LoginServlet:43 - User: paolo@gmail.com has logout
+2014-05-21 11:03:00 INFO  LoginServlet:72 - login corretto, user:pier@gmail.com
+2014-05-21 11:27:54 INFO  LoginServlet:72 - login corretto, user:pier@gmail.com
+2014-05-21 12:16:10 ERROR StartServlet:85 - java.sql.SQLSyntaxErrorException: Syntax error: Encountered "VALUES" at line 1, column 63.
+2014-05-21 12:17:54 INFO  LoginServlet:43 - User: pier@gmail.com has logout
+2014-05-21 14:21:06 INFO  LoginServlet:72 - login corretto, user:paolo@gmail.com
+2014-05-21 14:32:49 INFO  LoginServlet:43 - User: paolo@gmail.com has logout
+2014-05-21 14:32:58 INFO  LoginServlet:72 - login corretto, user:ilenia@gmail.com
+2014-05-21 14:33:04 INFO  LoginServlet:43 - User: ilenia@gmail.com has logout
+2014-05-21 14:33:17 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-21 14:33:54 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
+2014-05-21 14:34:14 INFO  LoginServlet:72 - login corretto, user:luigi@gmail.com
+2014-05-21 14:34:32 INFO  LoginServlet:43 - User: luigi@gmail.com has logout
+2014-05-21 14:34:40 INFO  LoginServlet:72 - login corretto, user:ilenia@gmail.com
+2014-05-21 14:36:38 INFO  LoginServlet:43 - User: ilenia@gmail.com has logout
+2014-05-21 14:36:46 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-21 14:41:08 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
+2014-05-21 14:41:19 INFO  LoginServlet:72 - login corretto, user:ilenia@gmail.com
+2014-05-21 14:41:44 INFO  LoginServlet:43 - User: ilenia@gmail.com has logout
+2014-05-21 14:41:50 INFO  LoginServlet:72 - login corretto, user:luigi@gmail.com
+2014-05-21 14:42:32 INFO  LoginServlet:43 - User: luigi@gmail.com has logout
+2014-05-21 14:42:42 INFO  LoginServlet:72 - login corretto, user:paolo@gmail.com
+2014-05-21 14:44:08 INFO  LoginServlet:43 - User: paolo@gmail.com has logout
+2014-05-21 14:44:14 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-21 15:25:00 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
+2014-05-21 15:25:05 INFO  LoginServlet:72 - login corretto, user:paolo@gmail.com
+2014-05-21 16:02:44 INFO  LoginServlet:72 - login corretto, user:paolo@gmail.com
+2014-05-21 16:02:57 ERROR StartServlet:95 - java.sql.SQLSyntaxErrorException: Column 'USERID' is either not in any table in the FROM list or appears within a join specification and is outside the scope of the join specification or appears in a HAVING clause and is not in the GROUP BY list. If this is a CREATE or ALTER TABLE  statement then 'USERID' is not a column in the target table.
+2014-05-21 16:05:09 INFO  LoginServlet:43 - User: paolo@gmail.com has logout
+2014-05-21 16:05:15 INFO  LoginServlet:72 - login corretto, user:ilenia@gmail.com
+2014-05-21 16:05:19 INFO  LoginServlet:43 - User: ilenia@gmail.com has logout
+2014-05-21 16:05:24 INFO  LoginServlet:72 - login corretto, user:pier@gmail.com
+2014-05-21 16:06:14 INFO  LoginServlet:43 - User: pier@gmail.com has logout
+2014-05-21 16:13:25 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-21 16:16:56 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
+2014-05-21 16:18:51 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
