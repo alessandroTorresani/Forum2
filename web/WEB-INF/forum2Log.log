@@ -185,3 +185,12 @@
 2014-05-21 16:13:25 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
 2014-05-21 16:16:56 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
 2014-05-21 16:18:51 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-22 15:06:26 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-22 15:39:31 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-22 15:40:18 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
+2014-05-22 15:58:08 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-22 16:19:21 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
+2014-05-22 16:34:06 INFO  LoginServlet:72 - login corretto, user:m.lion920@gmail.com
+2014-05-22 16:53:38 INFO  LoginServlet:43 - User: m.lion920@gmail.com has logout
+2014-05-22 16:53:53 INFO  LoginServlet:72 - login corretto, user:harwinrene@gmail.com
+2014-05-22 17:55:39 INFO  RegistrationServlet:80 - User: harwinrene@gmail.com Changed his avatar

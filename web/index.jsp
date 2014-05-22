@@ -120,13 +120,21 @@
                     <th> Group </th>
                     <th> Owner </th>
                     <th> Created at </th>
-                    <th> Closed </th>
-                        <c:forEach items="${publicGroups}" var="group">
+                    <th> Private </th>
+                        <c:forEach items="${publicGroups}" var="publicGroup">
                         <tr>
-                            <td>${group.getGroupName()}</td>
-                            <td>${group.getAdminUsername()}</td>
-                            <td>${group.getCreationDate()}</td>
-                            <td>${group.isIsClosed()}</td>
+                        <td><a href="LoadPost?groupId=${publicGroup.getGroupId()}">${publicGroup.getGroupName()}</a></td>
+                        <td>${publicGroup.getAdminUsername()}</td>
+                        <td>${publicGroup.getCreationDate()}</td>
+                        <td>${publicGroup.isIsPrivate()}</td>
+                        </tr>
+                    </c:forEach>
+                    <c:forEach items="${privateGroups}" var="privateGroup">
+                        <tr>
+                        <td><a href="LoadPost?groupId=${privateGroup.getGroupId()}">${privateGroup.getGroupName()}</a></td>
+                        <td>${privateGroup.getAdminUsername()}</td>
+                        <td>${privateGroup.getCreationDate()}</td>
+                        <td>${privateGroup.isIsPrivate()}</td>
                         </tr>
                     </c:forEach>
                 </table>
@@ -167,7 +175,7 @@
                     </form>
                 </c:when>
                 <c:when test="${sessionScope.user == null}">
-                    
+
                 </c:when>
                 <c:otherwise>
                     <p> no invitation </p>

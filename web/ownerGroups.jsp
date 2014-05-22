@@ -70,7 +70,7 @@
                     <th>Private</th>
                         <c:forEach items="${ownerGroups}" var="group">
                         <tr>
-                            <td>${group.getGroupName()}</td>
+                            <td><a href="LoadPost?groupId=${group.getGroupId()}">${group.getGroupName()}</a></td>
                             <td>${group.getCreationDate()}</td>
                             <td>${group.isIsClosed()}</td>
                             <td>${group.isIsPrivate()}</td>

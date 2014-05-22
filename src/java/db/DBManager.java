@@ -369,7 +369,7 @@ public class DBManager implements Serializable {
     }
 
     public List<Group> getPublicGroups() throws SQLException {
-        List<Group> groups = new ArrayList<Group>();
+        List<Group> publicGroups = new ArrayList<Group>();
         String adminUsername;
         PreparedStatement stm = con.prepareStatement("SELECT * FROM groups WHERE is_private = ?");
         try {
@@ -387,7 +387,7 @@ public class DBManager implements Serializable {
                     g.setGroupName(rs.getString("groupname"));
                     g.setIsClosed(rs.getBoolean("is_closed"));
                     g.setIsPrivate(false);
-                    groups.add(g);
+                    publicGroups.add(g);
                 }
             } finally {
                 rs.close();
@@ -395,7 +395,38 @@ public class DBManager implements Serializable {
         } finally {
             stm.close();
         }
-        return groups;
+        return publicGroups;
+    }
+    
+    public List<Group> getPrivateGroups(int userId) throws SQLException{
+        List<Group> privateGroups = new ArrayList<Group>();
+        PreparedStatement stm = con.prepareStatement("SELECT * FROM users_groups JOIN groups ON users_groups.group_id = groups.group_id WHERE user_id = ? AND is_private=?");
+        String adminUsername;
+        try{
+            stm.setInt(1, userId);
+            stm.setBoolean(2, true);
+            ResultSet rs = stm.executeQuery();
+            try {
+                while(rs.next()){
+                    Group g = new Group();
+                    int adminId = rs.getInt("administrator_id");
+                    adminUsername = getUsernameByUserId(adminId);
+                    g.setGroupId(rs.getInt("group_id"));
+                    g.setAdminId(adminId);
+                    g.setAdminUsername(adminUsername);
+                    g.setCreationDate(rs.getString("creation_date"));
+                    g.setGroupName(rs.getString("groupname"));
+                    g.setIsClosed(rs.getBoolean("is_closed"));
+                    g.setIsPrivate(true);
+                    privateGroups.add(g);
+                }
+            } finally{
+                rs.close();
+            }
+        } finally{
+            stm.close();
+        }
+        return privateGroups;
     }
 
     public int createGroup(int userId, String groupName, String creationDate, boolean isPrivate) throws SQLException {
@@ -501,6 +532,26 @@ public class DBManager implements Serializable {
         }
         return groupName;
     }
+    
+    public boolean isSubscribed(int userId, int groupId) throws SQLException{
+        int res = 0;
+        PreparedStatement stm = con.prepareStatement("SELECT group_id FROM users_groups WHERE user_id = ? AND group_id = ?");
+        try {
+            stm.setInt(1, userId);
+            stm.setInt(2, groupId);
+            ResultSet rs = stm.executeQuery();
+            try {
+                while(rs.next()){
+                    res++;
+                }
+            } finally{
+                rs.close();
+            }
+        } finally {
+            stm.close();
+        }
+        return res == 1;
+    }
 
     public boolean isAdmin(int userId, int groupId) throws SQLException {
         boolean isAdmin = false;
@@ -536,7 +587,7 @@ public class DBManager implements Serializable {
     }
 
     public List<Bid> getBids(int userId) throws SQLException {
-        List<Bid> bids = new ArrayList();
+        List<Bid> bids = new ArrayList<Bid>();
         String groupName = null;
         String adminUsername = null;
         PreparedStatement stm = con.prepareStatement("SELECT * FROM bids WHERE user_id = ?");
@@ -625,5 +676,32 @@ public class DBManager implements Serializable {
         } finally {
             stm.close();
         }
+    }
+    
+    public List<Post> getPosts(int groupId) throws SQLException{
+        List<Post>posts = new ArrayList<Post>();
+        PreparedStatement stm = con.prepareStatement("SELECT * FROM posts WHERE group_id = ?");
+        try {
+            stm.setInt(1, groupId);
+            ResultSet rs = stm.executeQuery();
+            try {
+                while(rs.next()){
+                    Post p = new Post();
+                    String username = getUsernameByUserId(rs.getInt("user_id"));
+                    p.setUsername(username);
+                    p.setPostId(rs.getInt("post_id"));
+                    p.setUserId(rs.getInt("user_id"));
+                    p.setGroupId(rs.getInt("group_id"));
+                    p.setMessage(rs.getString("message"));
+                    p.setCreationDate(rs.getString("creation_date"));
+                    posts.add(p);
+                }
+            } finally {
+                rs.close();
+            }
+        } finally {
+            stm.close();
+        } 
+        return posts;
     }
 }
