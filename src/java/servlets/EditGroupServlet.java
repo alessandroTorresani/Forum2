@@ -73,7 +73,7 @@ public class EditGroupServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/GetOwnerGroups?email=" + user.getEmail());
         }
 
-        if ((checkbox_params != null) && (is_private)) {
+        if (checkbox_params != null) {
             for (int x = 0; x < checkbox_params.length; x++) { // metto i dati in una List<String> per la funzione sendbids
                 bids.add(checkbox_params[x]);
             }

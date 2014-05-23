@@ -63,15 +63,13 @@ public class PreEditGroupServlet extends HttpServlet {
             throw new ServletException(ex);
         }
 
-        if (g.isIsPrivate()) { // if the group is private allow to invite users
-            try {
-                invitableUser = manager.getAllInvitableUser(groupId); //invitable users
-            } catch (SQLException ex) {
-                log.error(ex.toString());
-                throw new ServletException(ex);
-            }
-            request.setAttribute("invitableUsers", invitableUser);
+        try {
+            invitableUser = manager.getAllInvitableUser(groupId); //invitable users
+        } catch (SQLException ex) {
+            log.error(ex.toString());
+            throw new ServletException(ex);
         }
+        request.setAttribute("invitableUsers", invitableUser);
 
         if (g != null) {
             request.setAttribute("group", g);

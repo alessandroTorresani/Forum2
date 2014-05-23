@@ -104,5 +104,18 @@
                     </table>
                 </div>
             </c:forEach>
+             <div class="panel panel-default">
+                    <!-- Table -->
+                    <table class="table table-condensed table-striped">
+                        <th class="col-sm-2" > Administrator </th>
+                        <th> Message</th>
+                        <th class="col-sm-1"> File </th>
+                        <tr>
+                            <td><img src="Avatars/0.jpg" class="img-thumbnail" style="height: 120px;width: 110px"></td>
+                            <td>${groupName} was created at ..</td>
+                            <td>File</td>
+                        </tr>
+                    </table>
+                </div>
     </body>
 </html>

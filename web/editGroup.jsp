@@ -84,6 +84,18 @@
                                 </label>
                             </div>
                         </div>
+                        <div class="row">
+                            <c:forEach items="${invitableUsers}" var="user">
+                                <div class="col-lg-6">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <input type="checkbox" name="users" value="${user.getUserId()}">
+                                        </span>
+                                        <input type="text" class="form-control" placeholder="${user.getUsername()}" disabled>
+                                    </div><!-- /input-group -->
+                                </div><!-- /.col-lg-6 -->
+                            </c:forEach>
+                        </div>
                     </c:when>
                     <c:otherwise>
                         <div class="form-group">
@@ -102,7 +114,7 @@
                                 </label>
                             </div>
                         </div>
-                        
+
                         <div class="row">
                             <c:forEach items="${invitableUsers}" var="user">
                                 <div class="col-lg-6">
