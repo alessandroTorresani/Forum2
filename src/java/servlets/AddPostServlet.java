@@ -6,28 +6,26 @@
 package servlets;
 
 import db.DBManager;
-import db.Group;
-import db.Post;
 import db.User;
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.List;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
+//import static servlets.AddPostServelet.log; Non so perchè errore
 
 /**
  *
- * @author Alessandro
+ * @author Marco
  */
-public class LoadPostServlet extends HttpServlet {
+public class AddPostServlet extends HttpServlet {
 
     private DBManager manager;
     static Logger log = Logger.getLogger(RegistrationServlet.class.getName());
@@ -48,43 +46,18 @@ public class LoadPostServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        ServletContext sc = getServletContext();
-
-        List<Post> posts = null;
-        int groupId = Integer.parseInt(request.getParameter("groupId"));
-
-        Group groupPage;
-        String imgUrl = "0.jpg";
-        String imgUrlAdmin = "0.jpg";
-        Boolean isSubscribed = false;
-
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
 
-        try {
-            posts = manager.getPosts(groupId);
-            groupPage = manager.getGroup(groupId);
-        } catch (SQLException ex) {
-            log.error(ex.toString());
-            throw new ServletException(ex);
-        }
+        int groupId = Integer.parseInt(request.getParameter("groupId"));
+        String message = request.getParameter("message");
 
-        for (int x = 0; x < posts.size(); x++) {
-            File tmp = new File(request.getServletContext().getRealPath("/") + File.separator + "Avatars" + File.separator + posts.get(x).getUserId() + ".jpg");
-            if (tmp.isFile()) {
-                posts.get(x).setImgUrl(posts.get(x).getUserId() + ".jpg");
-            } else {
-                posts.get(x).setImgUrl(imgUrl);
-            }
-        }
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date();
 
-        //img per admin  
-        File tmp1 = new File(request.getServletContext().getRealPath("/") + File.separator + "Avatars" + File.separator + groupPage.getAdminId() + ".jpg");
-        if (tmp1.isFile()) {
-            imgUrlAdmin = groupPage.getAdminId() + ".jpg";
-        }
+        Boolean isSubscribed = null;
+        int postId = 0;
 
-        //is_subscibed for the current user and group
         if (user != null) {
             try {
                 isSubscribed = manager.isSubscribed(user.getUserId(), groupId);
@@ -92,15 +65,18 @@ public class LoadPostServlet extends HttpServlet {
                 log.error(ex.toString());
                 throw new ServletException(ex);
             }
+            if (isSubscribed) {
+                try {
+                    postId = manager.addPost(user.getUserId(), groupId, message, dateFormat.format(date));
+                    response.sendRedirect(request.getContextPath() + "/LoadPost?groupId=" + groupId);
+
+                } catch (SQLException ex) {
+                    log.error(ex.toString());
+                    throw new ServletException(ex);
+                }
+            }
 
         }
-        request.setAttribute("isSubscribed", isSubscribed);
-        request.setAttribute("imgUrlAdmin", imgUrlAdmin);
-        request.setAttribute("posts", posts);
-        request.setAttribute("groupPage", groupPage);
-        RequestDispatcher rd = sc.getRequestDispatcher("/groupPage.jsp");
-        rd.forward(request, response);
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

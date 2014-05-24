@@ -397,17 +397,17 @@ public class DBManager implements Serializable {
         }
         return publicGroups;
     }
-    
-    public List<Group> getPrivateGroups(int userId) throws SQLException{
+
+    public List<Group> getPrivateGroups(int userId) throws SQLException {
         List<Group> privateGroups = new ArrayList<Group>();
         PreparedStatement stm = con.prepareStatement("SELECT * FROM users_groups JOIN groups ON users_groups.group_id = groups.group_id WHERE user_id = ? AND is_private=?");
         String adminUsername;
-        try{
+        try {
             stm.setInt(1, userId);
             stm.setBoolean(2, true);
             ResultSet rs = stm.executeQuery();
             try {
-                while(rs.next()){
+                while (rs.next()) {
                     Group g = new Group();
                     int adminId = rs.getInt("administrator_id");
                     adminUsername = getUsernameByUserId(adminId);
@@ -420,10 +420,10 @@ public class DBManager implements Serializable {
                     g.setIsPrivate(true);
                     privateGroups.add(g);
                 }
-            } finally{
+            } finally {
                 rs.close();
             }
-        } finally{
+        } finally {
             stm.close();
         }
         return privateGroups;
@@ -432,7 +432,6 @@ public class DBManager implements Serializable {
     public int createGroup(int userId, String groupName, String creationDate, boolean isPrivate) throws SQLException {
 
         int groupId = 0;
-        System.out.println(userId + groupName + creationDate + isPrivate);
         PreparedStatement stm = con.prepareStatement("INSERT INTO groups (administrator_id, groupname,creation_date,is_private, is_closed) VALUES (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
         try {
             stm.setInt(1, userId);
@@ -494,7 +493,7 @@ public class DBManager implements Serializable {
 
     public Group getGroup(int groupId) throws SQLException {
         Group g = null;
-        String adminUsername=null;
+        String adminUsername = null;
         PreparedStatement stm = con.prepareStatement("SELECT * FROM groups JOIN users ON users.user_id = groups.administrator_id WHERE group_id = ?");
         try {
             stm.setInt(1, groupId);
@@ -537,8 +536,8 @@ public class DBManager implements Serializable {
         }
         return groupName;
     }
-    
-    public boolean isSubscribed(int userId, int groupId) throws SQLException{
+
+    public boolean isSubscribed(int userId, int groupId) throws SQLException {
         int res = 0;
         PreparedStatement stm = con.prepareStatement("SELECT group_id FROM users_groups WHERE user_id = ? AND group_id = ?");
         try {
@@ -546,10 +545,10 @@ public class DBManager implements Serializable {
             stm.setInt(2, groupId);
             ResultSet rs = stm.executeQuery();
             try {
-                while(rs.next()){
+                while (rs.next()) {
                     res++;
                 }
-            } finally{
+            } finally {
                 rs.close();
             }
         } finally {
@@ -620,8 +619,8 @@ public class DBManager implements Serializable {
         }
         return bids;
     }
-    
-    public boolean checkBids(int userId, int bidId) throws SQLException{
+
+    public boolean checkBids(int userId, int bidId) throws SQLException {
         PreparedStatement stm = con.prepareStatement("SELECT user_id FROM bids WHERE bid_id = ? and user_id = ?");
         int numBids = 0;
         try {
@@ -629,7 +628,7 @@ public class DBManager implements Serializable {
             stm.setInt(2, userId);
             ResultSet rs = stm.executeQuery();
             try {
-                while(rs.next()){
+                while (rs.next()) {
                     numBids++;
                 }
             } finally {
@@ -682,15 +681,18 @@ public class DBManager implements Serializable {
             stm.close();
         }
     }
-    
-    public List<Post> getPosts(int groupId) throws SQLException{
-        List<Post>posts = new ArrayList<Post>();
+
+    public List<Post> getPosts(int groupId) throws SQLException {
+
+        List<Post> posts = new ArrayList<Post>();
+        List<Post> tmp = new ArrayList<Post>();
+
         PreparedStatement stm = con.prepareStatement("SELECT * FROM posts WHERE group_id = ?");
         try {
             stm.setInt(1, groupId);
             ResultSet rs = stm.executeQuery();
             try {
-                while(rs.next()){
+                while (rs.next()) {
                     Post p = new Post();
                     String username = getUsernameByUserId(rs.getInt("user_id"));
                     p.setUsername(username);
@@ -699,14 +701,43 @@ public class DBManager implements Serializable {
                     p.setGroupId(rs.getInt("group_id"));
                     p.setMessage(rs.getString("message"));
                     p.setCreationDate(rs.getString("creation_date"));
-                    posts.add(p);
+                    tmp.add(p);
+                }
+                for (int i = tmp.size() - 1; i >= 0; i--) {
+                    posts.add(tmp.get(i));
                 }
             } finally {
                 rs.close();
             }
         } finally {
             stm.close();
-        } 
+        }
         return posts;
     }
+
+    public int addPost(int userId, int groupId, String message, String creationDate) throws SQLException {
+
+        int postId = 0;
+        PreparedStatement stm = con.prepareStatement("INSERT INTO posts (user_id, group_id, message,creation_date) VALUES (?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+
+        try {
+            stm.setInt(1, userId);
+            stm.setInt(2, groupId);
+            stm.setString(3, message);
+            stm.setString(4, creationDate);
+            stm.executeUpdate();
+            ResultSet rs = stm.getGeneratedKeys();
+            try {
+                while (rs.next()) {
+                    postId = rs.getInt(1);
+                }
+            } finally {
+                rs.close();
+            }
+        } finally {
+            stm.close();
+        }
+        return postId;
+    }
+
 }

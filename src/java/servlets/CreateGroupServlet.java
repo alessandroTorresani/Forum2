@@ -49,7 +49,6 @@ public class CreateGroupServlet extends HttpServlet {
             throws ServletException, IOException {
         
         String groupName = request.getParameter("groupName");
-        System.out.println(request.getParameter("optionsRadios"));
         boolean is_private = "private".equals(request.getParameter("optionsRadios"));
         
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

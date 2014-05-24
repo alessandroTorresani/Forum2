@@ -55,10 +55,13 @@
                         </c:when>
                         <c:otherwise>
 
-                            <ul class="nav navbar-nav navbar-left">
-                                <li><a data-toggle="modal" data-target="#addPost"><span class="glyphicon glyphicon-th-list"></span><b> Add post</b></a></li>
-                            </ul>
-
+                            <c:choose>
+                                <c:when test="${isSubscribed == true}">
+                                    <ul class="nav navbar-nav navbar-left">
+                                        <li><a data-toggle="modal" data-target="#addPost"><span class="glyphicon glyphicon-th-list"></span><b> Add post</b></a></li>
+                                    </ul>
+                                </c:when>
+                            </c:choose>
                             <ul class="nav navbar-nav navbar-right">
                                 <li class="dropdown">
                                     <a href="" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span>
@@ -86,10 +89,10 @@
                                             <h4 class="modal-title">Add Post</h4>
                                         </div>
                                         <div class="modal-body">
-                                            <form role="form" action="" method="post">
+                                            <form role="form" action="AddPost?groupId=${groupPage.getGroupId()}" method="post">
                                                 <div class="form-group"> 
                                                     <label>Message</label>
-                                                    <textarea class="form-control" placeholder="Text input" rows="3"></textarea>
+                                                    <textarea class="form-control" name="message" placeholder="Text input" rows="3"></textarea>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="exampleInputFile">File input</label>

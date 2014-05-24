@@ -57,6 +57,7 @@
         <filter-name>groupFilter</filter-name>
         <url-pattern>/LoadPost</url-pattern>
         <url-pattern>/groupPage.jsp</url-pattern>
+        <url-pattern>/AddPost</url-pattern>
     </filter-mapping>
     <welcome-file-list>
         <welcome-file>Start</welcome-file>
@@ -121,6 +122,10 @@
         <servlet-name>LoadPost</servlet-name>
         <servlet-class>servlets.LoadPostServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddPost</servlet-name>
+        <servlet-class>servlets.AddPostServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -181,6 +186,11 @@
         <servlet-name>LoadPost</servlet-name>
         <url-pattern>/LoadPost</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddPost</servlet-name>
+        <url-pattern>/AddPost</url-pattern>
+    </servlet-mapping>
+
     <session-config>
         <session-timeout>
             30

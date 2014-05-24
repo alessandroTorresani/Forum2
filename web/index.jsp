@@ -193,7 +193,7 @@
                         <h4 class="modal-title">Password recovery</h4>
                     </div>
                     <div class="modal-body">
-                        <p> Insert your email and your new password</p>
+                        <p>Insert your email and your new password</p>
                         <p>If you visit the link that we will send to your email in 90 seconds, your modification will be applied</p>
                         <form role="form" action="ForgotPassword" method="post">
                             <div class="form-group">

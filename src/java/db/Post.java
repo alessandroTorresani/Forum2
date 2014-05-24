@@ -10,7 +10,7 @@ package db;
  *
  * @author Alessandro
  */
-public class Post {
+public class Post {//manca il file 
     
     private int postId;
     private int userId;

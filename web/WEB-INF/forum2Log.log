@@ -201,3 +201,8 @@
 2014-05-22 18:38:57 INFO  LoginServlet:43 - User: harwinrene@gmail.com has logout
 2014-05-22 18:39:11 INFO  LoginServlet:72 - login corretto, user:m.lion920@gmail.com
 2014-05-22 18:54:31 INFO  LoginServlet:43 - User: m.lion920@gmail.com has logout
+2014-05-24 17:09:32 INFO  LoginServlet:43 - User: m.lion920@gmail.com has logout
+2014-05-24 17:09:46 INFO  ForgotPasswordServlet:110 - Recovery password request for email: , but email does not exist
+2014-05-24 17:25:17 INFO  LoginServlet:72 - login corretto, user:m.lion920@gmail.com
+2014-05-24 18:10:58 INFO  LoginServlet:43 - User: m.lion920@gmail.com has logout
+2014-05-24 18:11:06 INFO  LoginServlet:72 - login corretto, user:paolo@a.com

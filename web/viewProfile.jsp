@@ -98,7 +98,7 @@
 
             <h1>Your Profile</h1>
             <div style="width: 40%; float:left;">
-                <img src="Avatars/${imgUrl}" class="img-thumbnail" style="max-height: 50%;max-width: 100%">
+                <img src="Avatars/${imgUrl}" class="img-thumbnail" style="height: 100%;width: 100%">
                 <br>
                 <button class="btn btn-primary" data-toggle="modal" data-target="#changeAvatar">Change avatar</button>
                 <br>
