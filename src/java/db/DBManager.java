@@ -348,9 +348,10 @@ public class DBManager implements Serializable {
 
     public List<User> getAllInvitableUser(int groupId) throws SQLException {
         List<User> users = new ArrayList<User>();
-        PreparedStatement stm = con.prepareStatement("SELECT * FROM users WHERE user_id NOT IN (SELECT user_id FROM users_groups WHERE group_id = ? )");
+        PreparedStatement stm = con.prepareStatement("SELECT * FROM users WHERE user_id NOT IN ((SELECT user_id FROM users_groups WHERE group_id = ? )UNION(SELECT user_id FROM bids WHERE group_id = ? ))");
         try {
             stm.setInt(1, groupId);
+            stm.setInt(2, groupId);
             ResultSet rs = stm.executeQuery();
             try {
                 while (rs.next()) {
@@ -505,6 +506,7 @@ public class DBManager implements Serializable {
                     adminUsername = getUsernameByUserId(rs.getInt("administrator_id"));
                     g.setAdminUsername(adminUsername);
                     g.setGroupName(rs.getString("groupname"));
+                    g.setIsClosed(rs.getBoolean("is_closed"));
                     g.setIsPrivate(rs.getBoolean("is_private"));
                     g.setGroupId(rs.getInt("group_id"));
                     g.setCreationDate(rs.getString("creation_date"));

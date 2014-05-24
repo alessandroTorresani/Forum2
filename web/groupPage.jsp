@@ -56,12 +56,13 @@
                         <c:otherwise>
 
                             <c:choose>
-                                <c:when test="${isSubscribed == true}">
+                                <c:when test="${(isSubscribed == true) && (groupPage.isIsClosed() == false)}">
                                     <ul class="nav navbar-nav navbar-left">
                                         <li><a data-toggle="modal" data-target="#addPost"><span class="glyphicon glyphicon-th-list"></span><b> Add post</b></a></li>
                                     </ul>
                                 </c:when>
                             </c:choose>
+
                             <ul class="nav navbar-nav navbar-right">
                                 <li class="dropdown">
                                     <a href="" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span>
@@ -115,7 +116,21 @@
         <div style="width:80%; margin:0 auto;">
             <h1>${groupPage.getGroupName()}</h1>
             <br>
-
+            <c:choose>
+                <c:when test="${groupPage.isIsClosed() == true}">
+                    <div class="panel panel-default">
+                        <!-- Table -->
+                        <table class="table table-condensed table-striped">
+                            <th class="col-sm-2" > ${(groupPage.getAdminUsername())} </th>
+                            <th> Message</th>
+                            <tr class="danger">
+                                <td><img src="Avatars/${imgUrlAdmin}" class="img-thumbnail" style="height: 120px;width: 110px"></td>
+                                <td>${groupPage.getGroupName()} is CLOSED  </td>
+                            </tr>
+                        </table>
+                    </div>
+                </c:when>
+            </c:choose>
             <c:forEach items="${posts}" var="post">
                 <div class="panel panel-default">
                     <!-- Table -->

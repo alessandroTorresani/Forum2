@@ -124,7 +124,14 @@
                     <th> Created at </th>
                     <th> Private </th>
                         <c:forEach items="${publicGroups}" var="publicGroup">
-                        <tr>
+                            <c:choose>
+                                <c:when test="${publicGroup.isIsClosed()==true}">
+                                <tr class="danger">
+                                </c:when>
+                                <c:otherwise>
+                                <tr>
+                                </c:otherwise>
+                            </c:choose>
                             <td><a href="LoadPost?groupId=${publicGroup.getGroupId()}">${publicGroup.getGroupName()}</a></td>
                             <td>${publicGroup.getAdminUsername()}</td>
                             <td>${publicGroup.getCreationDate()}</td>
@@ -132,12 +139,20 @@
                         </tr>
                     </c:forEach>
                     <c:forEach items="${privateGroups}" var="privateGroup">
-                        <tr>
+                        <c:choose>
+                            <c:when test="${privateGroup.isIsClosed()==true}">
+                                <tr class="danger">
+                                </c:when>
+                                <c:otherwise>
+                                <tr>
+                                </c:otherwise>
+                            </c:choose>
                             <td><a href="LoadPost?groupId=${privateGroup.getGroupId()}">${privateGroup.getGroupName()}</a></td>
                             <td>${privateGroup.getAdminUsername()}</td>
                             <td>${privateGroup.getCreationDate()}</td>
                             <td>${privateGroup.isIsPrivate()}</td>
                         </tr>
+
                     </c:forEach>
                 </table>
             </div>
