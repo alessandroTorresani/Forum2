@@ -221,3 +221,5 @@
 2014-05-24 18:51:47 ERROR StartServlet:69 - java.sql.SQLException: At least one parameter to the current statement is uninitialized.
 2014-05-24 18:52:20 ERROR StartServlet:69 - java.sql.SQLException: At least one parameter to the current statement is uninitialized.
 2014-05-24 18:54:35 ERROR StartServlet:69 - java.sql.SQLException: At least one parameter to the current statement is uninitialized.
+2014-05-24 20:57:39 INFO  LoginServlet:43 - User: ilenia@gmail.com has logout
+2014-05-24 20:58:08 INFO  LoginServlet:72 - login corretto, user:ilenia@gmail.com
