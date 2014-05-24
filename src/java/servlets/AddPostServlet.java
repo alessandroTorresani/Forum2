@@ -74,8 +74,11 @@ public class AddPostServlet extends HttpServlet {
                     log.error(ex.toString());
                     throw new ServletException(ex);
                 }
+            } else {
+                response.sendRedirect(request.getContextPath() + "/LoadPost?groupId=" + groupId);
             }
-
+        } else {
+            response.sendRedirect(request.getContextPath() + "/LoadPost?groupId=" + groupId);
         }
     }
 
