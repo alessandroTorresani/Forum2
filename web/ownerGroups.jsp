@@ -36,7 +36,6 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-left">
                         <li><a href="createGroup.jsp"><span class="glyphicon glyphicon-th-list"></span><b> Create group</b></a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-th-list"></span><b> See invitations</b></a></li>
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">
@@ -47,7 +46,11 @@
                             <ul class="dropdown-menu">
                                 <li><a href="GetOwnerGroups?email=${sessionScope.user.getEmail()}">Your groups</a></li>
                                 <li><a href="ViewProfile?email=${sessionScope.user.getEmail()}">View profile</a></li>
-                                <li><a href="#moderator">Swith to moderator</a></li>
+                                    <c:choose>
+                                        <c:when test="${sessionScope.user.getIsModerator() == true}">
+                                        <li><a href="#moderator">Switch to moderator</a></li>
+                                        </c:when>
+                                    </c:choose>
                                 <li class="divider"></li>
                                 <li><a href="Logout">Logout</a></li>
                             </ul>
@@ -80,7 +83,6 @@
                     </c:forEach>
                 </table>
             </div>
-
         </div>
     </body>
 </html>

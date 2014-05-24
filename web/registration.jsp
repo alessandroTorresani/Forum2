@@ -19,7 +19,7 @@
     <body>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script src='Style/js/bootstrap.min.js'></script>
-        
+
         <nav class="navbar navbar-default" role="navigation">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
@@ -57,11 +57,6 @@
                         </c:when>
                         <c:otherwise>
 
-                            <ul class="nav navbar-nav navbar-left">
-                                <li><a href="createGroup.jsp"><span class="glyphicon glyphicon-th-list"></span><b> Create group</b></a></li>
-                                <li><a href="#"><span class="glyphicon glyphicon-th-list"></span><b> See invitations</b></a></li>
-                            </ul>
-
                             <ul class="nav navbar-nav navbar-right">
                                 <li class="dropdown">
                                     <a href="" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span>
@@ -70,7 +65,11 @@
                                     <ul class="dropdown-menu">
                                         <li><a href="GetOwnerGroups?email=${sessionScope.user.getEmail()}">Your groups</a></li>
                                         <li><a href="ViewProfile?email=${sessionScope.user.getEmail()}">View profile</a></li>
-                                        <li><a href="#moderator">Swith to moderator</a></li>
+                                            <c:choose>
+                                                <c:when test="${sessionScope.user.getIsModerator() == true}">
+                                                <li><a href="#moderator">Switch to moderator</a></li>
+                                                </c:when>
+                                            </c:choose>
                                         <li class="divider"></li>
                                         <li><a href="Logout">Logout</a></li>
                                     </ul>
@@ -143,6 +142,36 @@
                 <button type="submit" class="btn btn-default">Submit</button>
             </form>
 
+        </div>
+        <div id="forgetPassword" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Password recovery</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p> Insert your email and your new password</p>
+                        <p>If you visit the link that we will send to your email in 90 seconds, your modification will be applied</p>
+                        <form role="form" action="ForgotPassword" method="post">
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email1" placeholder="Email" name="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="password1">Password</label>
+                                <input type="password" class="form-control" id="password1" placeholder="Password" name="password1">
+                            </div>
+                            <div class="form-group">
+                                <label for="password2">Reinsert Password</label>
+                                <input type="password" class="form-control" id="password2" placeholder="Password" name="password2">
+                            </div>
+                            <br>
+                            <button type="submit" class="btn btn-default">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
 </html>

@@ -62,7 +62,6 @@
 
                             <ul class="nav navbar-nav navbar-left">
                                 <li><a href="createGroup.jsp"><span class="glyphicon glyphicon-th-list"></span><b> Create group</b></a></li>
-                                <li><a href="#"><span class="glyphicon glyphicon-th-list"></span><b> See invitations</b></a></li>
                             </ul>
 
                             <ul class="nav navbar-nav navbar-right">
@@ -73,8 +72,11 @@
                                     <ul class="dropdown-menu">
                                         <li><a href="GetOwnerGroups?email=${sessionScope.user.getEmail()}">Your groups</a></li>
                                         <li><a href="ViewProfile?email=${sessionScope.user.getEmail()}">View profile</a></li>
-                                        <li><a href="#moderator">Swith to moderator</a></li>
-                                        <li class="divider"></li>
+                                            <c:choose>
+                                                <c:when test="${sessionScope.user.getIsModerator() == true}">
+                                                <li><a href="#moderator">Switch to moderator</a></li>
+                                                </c:when>
+                                            </c:choose><li class="divider"></li>
                                         <li><a href="Logout">Logout</a></li>
                                     </ul>
                                 </li>
@@ -123,18 +125,18 @@
                     <th> Private </th>
                         <c:forEach items="${publicGroups}" var="publicGroup">
                         <tr>
-                        <td><a href="LoadPost?groupId=${publicGroup.getGroupId()}">${publicGroup.getGroupName()}</a></td>
-                        <td>${publicGroup.getAdminUsername()}</td>
-                        <td>${publicGroup.getCreationDate()}</td>
-                        <td>${publicGroup.isIsPrivate()}</td>
+                            <td><a href="LoadPost?groupId=${publicGroup.getGroupId()}">${publicGroup.getGroupName()}</a></td>
+                            <td>${publicGroup.getAdminUsername()}</td>
+                            <td>${publicGroup.getCreationDate()}</td>
+                            <td>${publicGroup.isIsPrivate()}</td>
                         </tr>
                     </c:forEach>
                     <c:forEach items="${privateGroups}" var="privateGroup">
                         <tr>
-                        <td><a href="LoadPost?groupId=${privateGroup.getGroupId()}">${privateGroup.getGroupName()}</a></td>
-                        <td>${privateGroup.getAdminUsername()}</td>
-                        <td>${privateGroup.getCreationDate()}</td>
-                        <td>${privateGroup.isIsPrivate()}</td>
+                            <td><a href="LoadPost?groupId=${privateGroup.getGroupId()}">${privateGroup.getGroupName()}</a></td>
+                            <td>${privateGroup.getAdminUsername()}</td>
+                            <td>${privateGroup.getCreationDate()}</td>
+                            <td>${privateGroup.isIsPrivate()}</td>
                         </tr>
                     </c:forEach>
                 </table>

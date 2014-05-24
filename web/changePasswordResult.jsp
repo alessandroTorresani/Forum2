@@ -43,7 +43,7 @@
 
                                 <!-- Collect the nav links, forms, and other content for toggling -->
 
-                               
+
                                 <form class="navbar-form navbar-left" role="form" action="Login" method="post">
                                     <div class="form-group">
                                         <input type="email" class="form-control" id="email" placeholder="Email" name="email">
@@ -51,7 +51,7 @@
                                     </div>
                                     <button type="submit" class="btn btn-default">Login</button>
                                 </form>
-                                
+
                                 <ul class="nav navbar-nav navbar-right">
                                     <li><a href="#">Forget password</a></li>
                                     <li><a href="registration.jsp">Sign up</a></li>
@@ -66,13 +66,17 @@
                                             <li><a href="GetOwnerGroups?email=${sessionScope.user.getEmail()}">Your groups</a></li>
                                             <li><a href="ViewProfile?email=${sessionScope.user.getEmail()}">View profile</a></li>
                                             <li><a href="#moderator">Swith to moderator</a></li>
-                                            <li class="divider"></li>
+                                                <c:choose>
+                                                    <c:when test="${sessionScope.user.getIsModerator() == true}">
+                                                    <li><a href="#moderator">Switch to moderator</a></li>
+                                                    </c:when>
+                                                </c:choose>
                                             <li><a href="Logout">Logout</a></li>
                                         </ul>
                                     </li>
                                 </ul>
                             </c:otherwise>
-                                
+
                         </c:choose>
                     </div><!-- /.navbar-collapse -->
                 </div><!-- /.container-fluid -->
