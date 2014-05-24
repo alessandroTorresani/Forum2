@@ -6,6 +6,7 @@
 package servlets;
 
 import db.DBManager;
+import db.Group;
 import db.Post;
 import java.io.File;
 import java.io.IOException;
@@ -50,17 +51,19 @@ public class LoadPostServlet extends HttpServlet {
         List<Post> posts = null;
         int groupId = Integer.parseInt(request.getParameter("groupId"));
 
-        String groupName;
+        Group groupPage;
         String imgUrl = "0.jpg";
+        String imgUrlAdmin = "0.jpg";
 
         try {
             posts = manager.getPosts(groupId);
-            groupName = manager.getGroupName(groupId);
+            groupPage = manager.getGroup(groupId);
         } catch (SQLException ex) {
             log.error(ex.toString());
             throw new ServletException(ex);
         }
-
+        
+        
         for (int x = 0; x < posts.size(); x++) {
             File tmp = new File(request.getServletContext().getRealPath("/") + File.separator + "Avatars" + File.separator + posts.get(x).getUserId() + ".jpg");
             if (tmp.isFile()) {
@@ -69,9 +72,17 @@ public class LoadPostServlet extends HttpServlet {
                 posts.get(x).setImgUrl(imgUrl);
             }
         }
-
+        
+        //img per admin  
+        File tmp1 = new File(request.getServletContext().getRealPath("/") + File.separator + "Avatars" + File.separator + groupPage.getAdminId() + ".jpg");
+            if (tmp1.isFile()) {
+                imgUrlAdmin=groupPage.getAdminId() + ".jpg";
+            } 
+        
+            
+        request.setAttribute("imgUrlAdmin", imgUrlAdmin);
         request.setAttribute("posts", posts);
-        request.setAttribute("groupName", groupName);
+        request.setAttribute("groupPage", groupPage);
         RequestDispatcher rd = sc.getRequestDispatcher("/groupPage.jsp");
         rd.forward(request, response);
 

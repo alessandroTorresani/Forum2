@@ -494,16 +494,21 @@ public class DBManager implements Serializable {
 
     public Group getGroup(int groupId) throws SQLException {
         Group g = null;
-        PreparedStatement stm = con.prepareStatement("SELECT * FROM groups WHERE group_id = ?");
+        String adminUsername=null;
+        PreparedStatement stm = con.prepareStatement("SELECT * FROM groups JOIN users ON users.user_id = groups.administrator_id WHERE group_id = ?");
         try {
             stm.setInt(1, groupId);
             ResultSet rs = stm.executeQuery();
             try {
                 while (rs.next()) {
                     g = new Group();
+                    g.setAdminId(rs.getInt("administrator_id"));
+                    adminUsername = getUsernameByUserId(rs.getInt("administrator_id"));
+                    g.setAdminUsername(adminUsername);
                     g.setGroupName(rs.getString("groupname"));
                     g.setIsPrivate(rs.getBoolean("is_private"));
                     g.setGroupId(rs.getInt("group_id"));
+                    g.setCreationDate(rs.getString("creation_date"));
                 }
             } finally {
                 rs.close();
@@ -514,7 +519,7 @@ public class DBManager implements Serializable {
         return g;
     }
 
-    public String getGroupName(int groupId) throws SQLException {
+    public String getGroupPage(int groupId) throws SQLException {
         String groupName = null;
         PreparedStatement stm = con.prepareStatement("SELECT groupname FROM groups WHERE group_id = ?");
         try {
@@ -597,7 +602,7 @@ public class DBManager implements Serializable {
             try {
                 while (rs.next()) {
                     Bid b = new Bid();
-                    groupName = getGroupName(rs.getInt("group_id"));
+                    groupName = getGroupPage(rs.getInt("group_id"));
                     b.setGroupName(groupName);
                     b.setGroupId(rs.getInt("group_id"));
                     b.setAdminId(rs.getInt("administrator_id"));

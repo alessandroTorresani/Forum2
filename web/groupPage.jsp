@@ -13,7 +13,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="Style/css/bootstrap.css" rel="stylesheet">
-        <title>${groupName}</title>
+        <title>${groupPage.getGroupName()}</title>
     </head>
     <body>
 
@@ -58,7 +58,7 @@
                         <c:otherwise>
 
                             <ul class="nav navbar-nav navbar-left">
-                                <li><a href="createGroup.jsp"><span class="glyphicon glyphicon-th-list"></span><b> Create group</b></a></li>
+                                <li><a data-toggle="modal" data-target="#addPost"><span class="glyphicon glyphicon-th-list"></span><b> Add post</b></a></li>
                                 <li><a href="#"><span class="glyphicon glyphicon-th-list"></span><b> See invitations</b></a></li>
                             </ul>
 
@@ -76,6 +76,31 @@
                                     </ul>
                                 </li>
                             </ul>
+
+                            <div id="addPost" class="modal fade">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">Add Post</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form role="form" action="" method="post">
+                                                <div class="form-group"> 
+                                                    <label>Message</label>
+                                                    <textarea class="form-control" placeholder="Text input" rows="3"></textarea>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleInputFile">File input</label>
+                                                    <input type="file" name="avatar">
+                                                </div>
+                                                <button type="submit" class="btn btn-default">Send</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </c:otherwise>
 
                     </c:choose>
@@ -84,7 +109,7 @@
         </nav>
 
         <div style="width:80%; margin:0 auto;">
-            <h1>${groupName}</h1>
+            <h1>${groupPage.getGroupName()}</h1>
             <br>
 
             <c:forEach items="${posts}" var="post">
@@ -104,18 +129,16 @@
                     </table>
                 </div>
             </c:forEach>
-             <div class="panel panel-default">
-                    <!-- Table -->
-                    <table class="table table-condensed table-striped">
-                        <th class="col-sm-2" > Administrator </th>
-                        <th> Message</th>
-                        <th class="col-sm-1"> File </th>
-                        <tr>
-                            <td><img src="Avatars/0.jpg" class="img-thumbnail" style="height: 120px;width: 110px"></td>
-                            <td>${groupName} was created at ..</td>
-                            <td>File</td>
-                        </tr>
-                    </table>
-                </div>
+            <div class="panel panel-default">
+                <!-- Table -->
+                <table class="table table-condensed table-striped">
+                    <th class="col-sm-2" > ${(groupPage.getAdminUsername())} </th>
+                    <th> Message</th>
+                    <tr>
+                        <td><img src="Avatars/${imgUrlAdmin}" class="img-thumbnail" style="height: 120px;width: 110px"></td>
+                        <td>${groupPage.getGroupName()} was created at  ${groupPage.getCreationDate()}</td>
+                    </tr>
+                </table>
+            </div>
     </body>
 </html>
