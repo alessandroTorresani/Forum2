@@ -150,6 +150,26 @@ public class DBManager implements Serializable {
         return userId;
     }
 
+    public Boolean getIsModeratorByEmail(String email) throws SQLException {
+        Boolean isModerator = false;
+        PreparedStatement stm = con.prepareCall("SELECT is_Moderator FROM users WHERE email=?");
+        try {
+            stm.setString(1, email);
+            ResultSet rs = stm.executeQuery();
+            try {
+                while (rs.next()) {
+                    isModerator = rs.getBoolean("is_Moderator");
+                }
+            } finally {
+                rs.close();
+            }
+        } finally {
+            stm.close();
+        }
+
+        return isModerator;
+    }
+
     public String getUsernameByUserId(int userId) throws SQLException {
         String username = null;
         PreparedStatement stm = con.prepareCall("SELECT username FROM users WHERE user_id=?");
@@ -492,6 +512,27 @@ public class DBManager implements Serializable {
         return groups;
     }
 
+    public Boolean checkGroup(int groupId) throws SQLException {
+
+        Boolean isClosed = false;
+        PreparedStatement stm = con.prepareStatement("SELECT is_closed FROM groups WHERE group_id=?");
+
+        try {
+            stm.setInt(1, groupId);
+            ResultSet rs = stm.executeQuery();
+            try {
+                while (rs.next()) {
+                    isClosed = rs.getBoolean("is_closed");
+                }
+            } finally {
+                rs.close();
+            }
+        } finally {
+            stm.close();
+        }
+        return isClosed;
+    }
+
     public Group getGroup(int groupId) throws SQLException {
         Group g = null;
         String adminUsername = null;
@@ -520,6 +561,31 @@ public class DBManager implements Serializable {
         return g;
     }
 
+    public List<Group> getAllGroup() throws SQLException {
+        List<Group> groups = new ArrayList<Group>();;
+        String adminUsername = null;
+        PreparedStatement stm = con.prepareStatement("SELECT * FROM groups");
+        try {
+            ResultSet rs = stm.executeQuery();
+            try {
+                while (rs.next()) {
+                    Group g = new Group();
+                    g.setAdminId(rs.getInt("administrator_id"));
+                    g.setGroupName(rs.getString("groupname"));
+                    g.setIsClosed(rs.getBoolean("is_closed"));
+                    g.setIsPrivate(rs.getBoolean("is_private"));
+                    g.setGroupId(rs.getInt("group_id"));
+                    groups.add(g);
+                }
+            } finally {
+                rs.close();
+            }
+        } finally {
+            stm.close();
+        }
+        return groups;
+    }
+
     public String getGroupPage(int groupId) throws SQLException {
         String groupName = null;
         PreparedStatement stm = con.prepareStatement("SELECT groupname FROM groups WHERE group_id = ?");
@@ -537,6 +603,19 @@ public class DBManager implements Serializable {
             stm.close();
         }
         return groupName;
+    }
+
+    public void closeGroup(int groupId) throws SQLException {
+
+        PreparedStatement stm = con.prepareStatement("UPDATE groups SET is_closed=? WHERE group_id=?");
+        try {
+            stm.setBoolean(1, true);
+            stm.setInt(2, groupId);
+            stm.executeUpdate();
+        } finally {
+            stm.close();
+        }
+
     }
 
     public boolean isSubscribed(int userId, int groupId) throws SQLException {
@@ -740,6 +819,41 @@ public class DBManager implements Serializable {
             stm.close();
         }
         return postId;
+    }
+
+    public int getAllPosts(int groupId) throws SQLException {
+        int nrPosts = 0;
+        PreparedStatement stm = con.prepareStatement("SELECT * FROM posts WHERE group_id=?");
+        try {
+            stm.setInt(1, groupId);
+            ResultSet rs = stm.executeQuery();;
+
+            while (rs.next()) {
+                nrPosts++;
+            }
+
+        } finally {
+            stm.close();
+        }
+        return nrPosts;
+    }
+
+    public int getAllSubscribers(int groupId) throws SQLException {
+        int nrSubscribers = 0;
+        PreparedStatement stm = con.prepareStatement("SELECT * FROM users_groups WHERE group_id=?");
+        try {
+            stm.setInt(1, groupId);
+            ResultSet rs = stm.executeQuery();;
+
+            while (rs.next()) {
+                nrSubscribers++;
+            }
+
+        } finally {
+            stm.close();
+        }
+        return nrSubscribers;
+
     }
 
 }

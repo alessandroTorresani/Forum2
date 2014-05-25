@@ -1,7 +1,7 @@
 <%-- 
-    Document   : ownerGroups
-    Created on : May 15, 2014, 5:44:32 PM
-    Author     : Alessandro
+    Document   : moderatorPage
+    Created on : May 25, 2014, 12:09:09 PM
+    Author     : Marco
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -13,7 +13,8 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="Style/css/bootstrap.css" rel="stylesheet">
-        <title>Your groups</title>
+        <title>Moderator page</title>
+        <script src="sorttable.js"></script>
     </head>
     <body>
 
@@ -62,16 +63,16 @@
 
         <div style="width:80%; margin:0 auto;">
 
-            <h1>Your groups</h1>
+            <h1>Moderator page</h1>
 
             <div class="panel panel-default">
                 <!-- Table -->
-                <table class="table">
-                    <th> Group </th>
-                    <th> Created at </th>
-                    <th> Closed </th>
-                    <th>Private</th>
-                        <c:forEach items="${ownerGroups}" var="group">
+                <table class="table" class="sortable">
+                    <th> GroupName </th>
+                    <th> Subscribers </th>
+                    <th> Private </th>
+                    <th> Posts</th>
+                        <c:forEach items="${groups}" var="group">
                             <c:choose>
                                 <c:when test="${group.isIsClosed()==true}">
                                 <tr class="danger">
@@ -81,18 +82,18 @@
                                 </c:otherwise>
                             </c:choose>
                             <td><a href="LoadPost?groupId=${group.getGroupId()}">${group.getGroupName()}</a></td>
-                            <td>${group.getCreationDate()}</td>
-                            <td>${group.isIsClosed()}</td>
+                            <td>${group.getSubscribers()}</td>
                             <td>${group.isIsPrivate()}</td>
+                            <td>${group.getNrPosts()}</td>
                             <c:choose>
                                 <c:when test="${group.isIsClosed()==false}">
-                                    <td><a href="PreEditGroup?groupId=${group.getGroupId()}"><button type="button" class="btn btn-primary btn-xs">
-                                                <span class="glyphicon glyphicon-cog"></span> Manage</button></a></td>
-                                            </c:when>
+                                    <td><a href="CloseGroup?email=${sessionScope.user.getEmail()}&groupId=${group.getGroupId()}"><button type="button" class="btn btn-primary btn-xs">
+                                                <span class="glyphicon glyphicon-ban-circle"></span> Close</button></a></td></c:when>
                                             <c:otherwise>
                                     <td></td>
                                 </c:otherwise>
                             </c:choose>
+
                         </tr>
                     </c:forEach>
                 </table>

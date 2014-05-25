@@ -6,26 +6,27 @@
 package servlets;
 
 import db.DBManager;
+import db.Group;
 import db.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
-//import static servlets.AddPostServelet.log; non so perchè
 
 /**
  *
  * @author Marco
  */
-public class AddPostServlet extends HttpServlet {
+public class ModeratorPageServlet extends HttpServlet {
 
     private DBManager manager;
     static Logger log = Logger.getLogger(RegistrationServlet.class.getName());
@@ -46,40 +47,33 @@ public class AddPostServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        ServletContext sc = getServletContext();
+        
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
 
-        int groupId = Integer.parseInt(request.getParameter("groupId"));
-        String message = request.getParameter("message");
+        List<Group> groups = new ArrayList<Group>();
 
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = new Date();
+        try {
+            groups = manager.getAllGroup();
+        } catch (SQLException ex) {
+            log.error(ex.toString());
+            throw new ServletException(ex);
+        }
 
-        Boolean isSubscribed = null;
-        int postId = 0;
-
-        if (user != null) {
+        for (int x = 0; x < groups.size(); x++) {
             try {
-                isSubscribed = manager.isSubscribed(user.getUserId(), groupId);
+                groups.get(x).setSubscribers(manager.getAllSubscribers(groups.get(x).getGroupId()));
+                groups.get(x).setNrPosts(manager.getAllPosts(groups.get(x).getGroupId()));
             } catch (SQLException ex) {
                 log.error(ex.toString());
                 throw new ServletException(ex);
             }
-            if (isSubscribed) {
-                try {
-                    postId = manager.addPost(user.getUserId(), groupId, message, dateFormat.format(date));
-                    response.sendRedirect(request.getContextPath() + "/LoadPost?groupId=" + groupId);
-
-                } catch (SQLException ex) {
-                    log.error(ex.toString());
-                    throw new ServletException(ex);
-                }
-            } else {
-                response.sendRedirect(request.getContextPath() + "/LoadPost?groupId=" + groupId);
-            }
-        } else {
-            response.sendRedirect(request.getContextPath() + "/LoadPost?groupId=" + groupId);
         }
+        
+        request.setAttribute("groups", groups);
+        RequestDispatcher rd = sc.getRequestDispatcher("/moderatorPage.jsp");
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

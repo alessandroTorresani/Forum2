@@ -10,25 +10,21 @@ import db.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
-//import static servlets.AddPostServelet.log; non so perchè
 
 /**
  *
  * @author Marco
  */
-public class AddPostServlet extends HttpServlet {
+public class CloseGroupServlet extends HttpServlet {
 
     private DBManager manager;
-    static Logger log = Logger.getLogger(RegistrationServlet.class.getName());
+    static Logger log = Logger.getLogger(StartServlet.class.getName());
 
     public void init() throws ServletException {
         this.manager = (DBManager) super.getServletContext().getAttribute("dbmanager");
@@ -50,36 +46,15 @@ public class AddPostServlet extends HttpServlet {
         User user = (User) session.getAttribute("user");
 
         int groupId = Integer.parseInt(request.getParameter("groupId"));
-        String message = request.getParameter("message");
 
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = new Date();
-
-        Boolean isSubscribed = null;
-        int postId = 0;
-
-        if (user != null) {
-            try {
-                isSubscribed = manager.isSubscribed(user.getUserId(), groupId);
-            } catch (SQLException ex) {
-                log.error(ex.toString());
-                throw new ServletException(ex);
-            }
-            if (isSubscribed) {
-                try {
-                    postId = manager.addPost(user.getUserId(), groupId, message, dateFormat.format(date));
-                    response.sendRedirect(request.getContextPath() + "/LoadPost?groupId=" + groupId);
-
-                } catch (SQLException ex) {
-                    log.error(ex.toString());
-                    throw new ServletException(ex);
-                }
-            } else {
-                response.sendRedirect(request.getContextPath() + "/LoadPost?groupId=" + groupId);
-            }
-        } else {
-            response.sendRedirect(request.getContextPath() + "/LoadPost?groupId=" + groupId);
+        try {
+            manager.closeGroup(groupId);
+        } catch (SQLException ex) {
+            log.error(ex.toString());
+            throw new ServletException(ex);
         }
+        response.sendRedirect(request.getContextPath() + "/ModeratorPage?email=" + user.getEmail());
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

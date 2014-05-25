@@ -20,6 +20,8 @@ public class Group  implements Serializable {
     private boolean isClosed;
     private boolean isPrivate;
     private String adminUsername;
+    private int subscribers;
+    private int nrPosts;
 
     /**
      * @return the groupId
@@ -117,5 +119,33 @@ public class Group  implements Serializable {
      */
     public void setAdminUsername(String adminUsername) {
         this.adminUsername = adminUsername;
+    }
+
+    /**
+     * @return the subscribers
+     */
+    public int getSubscribers() {
+        return subscribers;
+    }
+
+    /**
+     * @param subscribers the subscribers to set
+     */
+    public void setSubscribers(int subscribers) {
+        this.subscribers = subscribers;
+    }
+
+    /**
+     * @return the nrPosts
+     */
+    public int getNrPosts() {
+        return nrPosts;
+    }
+
+    /**
+     * @param nrPosts the nrPosts to set
+     */
+    public void setNrPosts(int nrPosts) {
+        this.nrPosts = nrPosts;
     }
 }

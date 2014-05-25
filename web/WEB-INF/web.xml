@@ -28,6 +28,9 @@
         <url-pattern>/ChangePassword</url-pattern>
         <url-pattern>/GetOwnerGroups</url-pattern>
         <url-pattern>/ownerGroups.jsp</url-pattern>
+        <url-pattern>/ModeratorPage</url-pattern>
+        <url-pattern>/moderatorPage.jsp</url-pattern>
+        <url-pattern>/CloseGroup</url-pattern>
     </filter-mapping>
     <filter>
         <filter-name>adminFilter</filter-name>
@@ -58,6 +61,27 @@
         <url-pattern>/LoadPost</url-pattern>
         <url-pattern>/groupPage.jsp</url-pattern>
         <url-pattern>/AddPost</url-pattern>
+        <url-pattern>/CloseGroup</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>closedFilter</filter-name>
+        <filter-class>filters.ClosedFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>closedFilter</filter-name>
+        <url-pattern>/AddPost</url-pattern>
+        <url-pattern>/EditGroup</url-pattern>
+        <url-pattern>/CloseGroup</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>moderatorFilter</filter-name>
+        <filter-class> filters.ModeratorFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>moderatorFilter</filter-name>
+        <url-pattern>/ModeratorPage</url-pattern>
+        <url-pattern>/moderatorPage.jsp</url-pattern>
+        <url-pattern>/CloseGroup</url-pattern>
     </filter-mapping>
     <welcome-file-list>
         <welcome-file>Start</welcome-file>
@@ -126,6 +150,14 @@
         <servlet-name>AddPost</servlet-name>
         <servlet-class>servlets.AddPostServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ModeratorPage</servlet-name>
+        <servlet-class>servlets.ModeratorPageServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CloseGroup</servlet-name>
+        <servlet-class>servlets.CloseGroupServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -190,7 +222,14 @@
         <servlet-name>AddPost</servlet-name>
         <url-pattern>/AddPost</url-pattern>
     </servlet-mapping>
-
+    <servlet-mapping>
+        <servlet-name>ModeratorPage</servlet-name>
+        <url-pattern>/ModeratorPage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CloseGroup</servlet-name>
+        <url-pattern>/CloseGroup</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

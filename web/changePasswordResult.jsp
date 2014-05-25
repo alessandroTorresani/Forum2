@@ -68,7 +68,7 @@
                                             <li><a href="#moderator">Swith to moderator</a></li>
                                                 <c:choose>
                                                     <c:when test="${sessionScope.user.getIsModerator() == true}">
-                                                    <li><a href="#moderator">Switch to moderator</a></li>
+                                                    <li><a href="ModeratorPage?email=${sessionScope.user.getEmail()}">Switch to moderator</a></li>
                                                     </c:when>
                                                 </c:choose>
                                             <li><a href="Logout">Logout</a></li>
