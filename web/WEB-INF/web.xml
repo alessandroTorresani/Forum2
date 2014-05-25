@@ -60,9 +60,7 @@
         <filter-name>groupFilter</filter-name>
         <url-pattern>/LoadPost</url-pattern>
         <url-pattern>/groupPage.jsp</url-pattern>
-        <url-pattern>/AddPost</url-pattern>
-        <url-pattern>/CloseGroup</url-pattern>
-    </filter-mapping>
+        <url-pattern>/AddPost</url-pattern></filter-mapping>
     <filter>
         <filter-name>closedFilter</filter-name>
         <filter-class>filters.ClosedFilter</filter-class>

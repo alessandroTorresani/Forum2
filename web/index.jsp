@@ -191,12 +191,9 @@
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
                 </c:when>
-                <c:when test="${sessionScope.user == null}">
-
-                </c:when>
-                <c:otherwise>
+                <c:when test="${sessionScope.user != null}">
                     <p> no invitation </p>
-                </c:otherwise>
+                </c:when>
             </c:choose>
         </div>
 
