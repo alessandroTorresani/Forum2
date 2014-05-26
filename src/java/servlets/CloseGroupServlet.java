@@ -49,6 +49,7 @@ public class CloseGroupServlet extends HttpServlet {
 
         try {
             manager.closeGroup(groupId);
+            log.info("Moderator " + user.getEmail() + " closed group: " + groupId);
         } catch (SQLException ex) {
             log.error(ex.toString());
             throw new ServletException(ex);

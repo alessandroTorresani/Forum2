@@ -48,9 +48,10 @@ public class EnterModeratorModeServlet extends HttpServlet {
         String email = request.getParameter("email");
 
         try {
-            isModerator = manager.getIsModeratorByEmail(email);
+            isModerator = manager.getIsModeratorByEmail(email); //if the user connected is a moderator
             if (isModerator == true) {
-                user.setModeratorMode(true);
+                user.setModeratorMode(true);//enter in moderator mode
+                log.info("User " + user.getEmail()+" entered in moderator mode");
             }
         } catch (SQLException ex) {
             log.error(ex.toString());
