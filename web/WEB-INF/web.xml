@@ -28,6 +28,8 @@
         <url-pattern>/ChangePassword</url-pattern>
         <url-pattern>/GetOwnerGroups</url-pattern>
         <url-pattern>/ownerGroups.jsp</url-pattern>
+        <url-pattern>/EnterModeratorMode</url-pattern>
+        <url-pattern>/ExitModeratorMode</url-pattern>
         <url-pattern>/ModeratorPage</url-pattern>
         <url-pattern>/moderatorPage.jsp</url-pattern>
         <url-pattern>/CloseGroup</url-pattern>
@@ -60,7 +62,8 @@
         <filter-name>groupFilter</filter-name>
         <url-pattern>/LoadPost</url-pattern>
         <url-pattern>/groupPage.jsp</url-pattern>
-        <url-pattern>/AddPost</url-pattern></filter-mapping>
+        <url-pattern>/AddPost</url-pattern>
+    </filter-mapping>
     <filter>
         <filter-name>closedFilter</filter-name>
         <filter-class>filters.ClosedFilter</filter-class>
@@ -80,6 +83,7 @@
         <url-pattern>/ModeratorPage</url-pattern>
         <url-pattern>/moderatorPage.jsp</url-pattern>
         <url-pattern>/CloseGroup</url-pattern>
+        <url-pattern>/ExitModeratorMode</url-pattern>
     </filter-mapping>
     <welcome-file-list>
         <welcome-file>Start</welcome-file>
@@ -156,6 +160,14 @@
         <servlet-name>CloseGroup</servlet-name>
         <servlet-class>servlets.CloseGroupServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ExitModeratorMode</servlet-name>
+        <servlet-class>servlets.ExitModeratorModeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EnterModeratorMode</servlet-name>
+        <servlet-class>servlets.EnterModeratorModeServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -227,6 +239,14 @@
     <servlet-mapping>
         <servlet-name>CloseGroup</servlet-name>
         <url-pattern>/CloseGroup</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ExitModeratorMode</servlet-name>
+        <url-pattern>/ExitModeratorMode</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EnterModeratorMode</servlet-name>
+        <url-pattern>/EnterModeratorMode</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

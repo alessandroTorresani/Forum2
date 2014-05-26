@@ -10,9 +10,6 @@ import db.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,12 +19,12 @@ import org.apache.log4j.Logger;
 
 /**
  *
- * @author Marco
+ * @author Alessandro
  */
-public class AddPostServlet extends HttpServlet {
+public class EnterModeratorModeServlet extends HttpServlet {
 
     private DBManager manager;
-    static Logger log = Logger.getLogger(RegistrationServlet.class.getName());
+    static Logger log = Logger.getLogger(StartServlet.class.getName());
 
     public void init() throws ServletException {
         this.manager = (DBManager) super.getServletContext().getAttribute("dbmanager");
@@ -47,38 +44,25 @@ public class AddPostServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
+        boolean isModerator;
+        String email = request.getParameter("email");
 
-        int groupId = Integer.parseInt(request.getParameter("groupId"));
-        String message = request.getParameter("message");
-
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = new Date();
-
-        Boolean isSubscribed = null;
-        int postId = 0;
-
-        if (user != null) {
-            try {
-                isSubscribed = manager.isSubscribed(user.getUserId(), groupId);
-            } catch (SQLException ex) {
-                log.error(ex.toString());
-                throw new ServletException(ex);
+        try {
+            isModerator = manager.getIsModeratorByEmail(email);
+            if (isModerator == true) {
+                user.setModeratorMode(true);
             }
-            if (isSubscribed) {
-                try {
-                    postId = manager.addPost(user.getUserId(), groupId, message, dateFormat.format(date));
-                    response.sendRedirect(request.getContextPath() + "/LoadPost?groupId=" + groupId);
-
-                } catch (SQLException ex) {
-                    log.error(ex.toString());
-                    throw new ServletException(ex);
-                }
-            } else {
-                response.sendRedirect(request.getContextPath() + "/LoadPost?groupId=" + groupId);
-            }
-        } else {
-            response.sendRedirect(request.getContextPath() + "/LoadPost?groupId=" + groupId);
+        } catch (SQLException ex) {
+            log.error(ex.toString());
+            throw new ServletException(ex);
         }
+
+        if (isModerator) {
+            response.sendRedirect(request.getContextPath() + "/ModeratorPage?email=" + email);
+        } else {
+            response.sendRedirect(request.getContextPath() + "/");
+        }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -65,6 +65,7 @@ public class DBManager implements Serializable {
                     user.setEmail(rs.getString("email"));
                     user.setIsModerator(rs.getBoolean("is_moderator"));
                     user.setLastLogin(rs.getString("last_login"));
+                    user.setModeratorMode(false);
                     return user;
 
                 } else {

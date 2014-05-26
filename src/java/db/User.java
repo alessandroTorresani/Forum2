@@ -19,6 +19,7 @@ public class User implements Serializable {
     private String email;
     private String lastLogin;
     private boolean isModerator;
+    private boolean moderatorMode;
 
     /**
      * @return the userId
@@ -102,6 +103,20 @@ public class User implements Serializable {
      */
     public void setIsModerator(boolean isModerator) {
         this.isModerator = isModerator;
+    }
+
+    /**
+     * @return the moderatorMode
+     */
+    public boolean isModeratorMode() {
+        return moderatorMode;
+    }
+
+    /**
+     * @param moderatorMode the moderatorMode to set
+     */
+    public void setModeratorMode(boolean moderatorMode) {
+        this.moderatorMode = moderatorMode;
     }
     
 }

@@ -66,7 +66,7 @@ public class GroupFilter implements Filter {
                 
                 if (g.isIsPrivate()) {
                     try {
-                        if ((user!=null)&&((manager.isSubscribed(user.getUserId(), groupId))||(user.getIsModerator()))) {
+                        if ((user!=null)&&((manager.isSubscribed(user.getUserId(), groupId))||((user.getIsModerator())&&(user.isModeratorMode())))) {
                             chain.doFilter(request, response);
                         }
                         else{

@@ -55,7 +55,7 @@ public class ModeratorFilter implements Filter {
             throw new ServletException(ex);
         }
         
-        if (isModerator == true){
+        if ((isModerator == true)&&(user.isModeratorMode())){ //if the user is modetator AND is in moderatorMode
              chain.doFilter(request, response);
         } else {
             ((HttpServletResponse) response).sendRedirect(((HttpServletRequest) request).getContextPath() + "/Start");
