@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
+import utils.MyUtility;
 
 /**
  *
@@ -57,24 +58,22 @@ public class AddPostServlet extends HttpServlet {
         Boolean isSubscribed = null;
         int postId = 0;
 
-        if (user != null) {
+        try {
+            isSubscribed = manager.isSubscribed(user.getUserId(), groupId);
+        } catch (SQLException ex) {
+            log.error(ex.toString());
+            throw new ServletException(ex);
+        }
+        if (isSubscribed) {
             try {
-                isSubscribed = manager.isSubscribed(user.getUserId(), groupId);
+                message = MyUtility.cleanHTMLTags(message);
+                message = MyUtility.checkMultiLink(message);
+                message = message.replaceAll("[\n\r]+", "<br>");
+                postId = manager.addPost(user.getUserId(), groupId, message, dateFormat.format(date));
+                response.sendRedirect(request.getContextPath() + "/LoadPost?groupId=" + groupId);
             } catch (SQLException ex) {
                 log.error(ex.toString());
                 throw new ServletException(ex);
-            }
-            if (isSubscribed) {
-                try {
-                    postId = manager.addPost(user.getUserId(), groupId, message, dateFormat.format(date));
-                    response.sendRedirect(request.getContextPath() + "/LoadPost?groupId=" + groupId);
-
-                } catch (SQLException ex) {
-                    log.error(ex.toString());
-                    throw new ServletException(ex);
-                }
-            } else {
-                response.sendRedirect(request.getContextPath() + "/LoadPost?groupId=" + groupId);
             }
         } else {
             response.sendRedirect(request.getContextPath() + "/LoadPost?groupId=" + groupId);

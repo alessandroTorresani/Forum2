@@ -14,7 +14,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="Style/css/bootstrap.css" rel="stylesheet">
         <title>Moderator page</title>
-        <script src="sorttable.js"></script>
     </head>
     <body>
 
@@ -81,7 +80,7 @@
 
             <div class="panel panel-default">
                 <!-- Table -->
-                <table class="table" class="sortable">
+                <table class="table">
                     <th> GroupName </th>
                     <th> Subscribers </th>
                     <th> Private </th>
