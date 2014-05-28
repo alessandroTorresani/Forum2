@@ -6,6 +6,8 @@
 
 package db;
 
+import java.util.List;
+
 /**
  *
  * @author Alessandro
@@ -19,6 +21,7 @@ public class Post {//manca il file
     private String creationDate;
     private String username;
     private String imgUrl;
+    private List<String> fileUrls;
 
     /**
      * @return the postId
@@ -116,6 +119,20 @@ public class Post {//manca il file
      */
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    /**
+     * @return the fileUrl
+     */
+    public List<String> getFileUrls() {
+        return fileUrls;
+    }
+
+    /**
+     * @param fileUrl the fileUrl to set
+     */
+    public void setFileUrls(List<String> fileUrls) {
+        this.fileUrls = fileUrls;
     }
 
     

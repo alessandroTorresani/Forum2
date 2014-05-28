@@ -104,7 +104,7 @@
                                             <h4 class="modal-title">Add Post</h4>
                                         </div>
                                         <div class="modal-body">
-                                            <form role="form" action="AddPost?groupId=${groupPage.getGroupId()}" method="post">
+                                            <form role="form" action="AddPost?groupId=${groupPage.getGroupId()}" method="post" enctype="multipart/form-data">
                                                 <div class="form-group"> 
                                                     <label>Message</label>
                                                     <textarea class="form-control" name="message" placeholder="Text input" rows="3"></textarea>
@@ -130,6 +130,17 @@
         <div style="width:80%; margin:0 auto;">
             <h1>${groupPage.getGroupName()}</h1>
             <br>
+            
+            <c:choose>
+                <c:when test="${sessionScope.user != null}">
+                    <c:choose>
+                        <c:when test="${param.result == 'fileSizeError'}">
+                            <div class="alert alert-danger">File size is too big. The limit is 10 MB</div>
+                        </c:when>
+                    </c:choose>
+                </c:when>
+            </c:choose>
+                            
             <c:choose>
                 <c:when test="${groupPage.isIsClosed() == true}">
                     <div class="panel panel-default">
@@ -157,7 +168,11 @@
                             <td>${post.getMessage()}
                                 <br>
                                 <p style="font-size: 10px">Message posted at ${post.getCreationDate()}</p></td>
-                            <td>File</td>
+                            <td>
+                                <c:forEach items="${post.fileUrls}" var="fileUrl">
+                                    <p>${fileUrl}</p>
+                                </c:forEach>
+                            </td>
                         </tr>
                     </table>
                 </div>

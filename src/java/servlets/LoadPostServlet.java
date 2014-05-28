@@ -70,11 +70,25 @@ public class LoadPostServlet extends HttpServlet {
         }
 
         for (int x = 0; x < posts.size(); x++) {
-            File tmp = new File(request.getServletContext().getRealPath("/") + File.separator + "Avatars" + File.separator + posts.get(x).getUserId() + ".jpg");
+            File tmp = new File(request.getServletContext().getRealPath("/") + File.separator + "Avatars" + File.separator + posts.get(x).getUserId() + ".jpg"); //imgUrl manage
             if (tmp.isFile()) {
                 posts.get(x).setImgUrl(posts.get(x).getUserId() + ".jpg");
             } else {
                 posts.get(x).setImgUrl(imgUrl);
+            }
+            List<String> filePaths = null;
+            
+            try {
+                filePaths = manager.getAllFilesFromPostId(posts.get(x).getPostId());
+            } catch(SQLException ex){
+                log.error(ex.toString());
+                throw new ServletException(ex);
+            }
+            
+            if (filePaths != null){
+                posts.get(x).setFileUrls(filePaths);
+            } else {
+                posts.get(x).setFileUrls(null);
             }
         }
 

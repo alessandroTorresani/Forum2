@@ -84,12 +84,12 @@
                                                     <c:choose>
                                                         <c:when test="${sessionScope.user.isModeratorMode()}">
                                                         <li><a href="ModeratorPage?email=${sessionScope.user.getEmail()}">Moderator page</a></li>
-                                                          <li><a href="ExitModeratorMode?email=${sessionScope.user.getEmail()}">Exit moderator mode</a></li>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                         <li><a href="EnterModeratorMode?email=${sessionScope.user.getEmail()}">Switch to moderator mode</a></li>
-                                                    </c:otherwise>
-                                                </c:choose>
+                                                        <li><a href="ExitModeratorMode?email=${sessionScope.user.getEmail()}">Exit moderator mode</a></li>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                        <li><a href="EnterModeratorMode?email=${sessionScope.user.getEmail()}">Switch to moderator mode</a></li>
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                 </c:when>
                                             </c:choose><li class="divider"></li>
                                         <li><a href="Logout">Logout</a></li>
@@ -106,22 +106,16 @@
         <div style="width:80%; margin:0 auto;">
 
             <h1>Forum</h1>
-
             <c:choose>
                 <c:when test="${sessionScope.user == null}">
                     <c:choose>
-                        <c:when test="${sessionScope.login == 'error'}">
-                            <div class="alert alert-danger">You inserted a non valid username and/or an invalid password</div>
-                            <%HttpSession servletSession = request.getSession();
-                                servletSession.removeAttribute("login");%>
+                        <c:when test="${param.login == 'failure'}">
+                            <div class="alert alert-danger">You inserted a non valid username and/or an invalid password using message</div>
                         </c:when>
-                        <c:otherwise>
-                            <%HttpSession servletSession1 = request.getSession();
-                                servletSession1.removeAttribute("login");%>
-                        </c:otherwise>
-                    </c:choose> 
+                    </c:choose>
                 </c:when>
             </c:choose>
+                            
             <br>
             <c:choose>
                 <c:when test="${sessionScope.user != null}">

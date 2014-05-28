@@ -857,4 +857,34 @@ public class DBManager implements Serializable {
 
     }
 
+    public void addFileToPost(int postId, String filename) throws SQLException {
+        PreparedStatement stm = con.prepareStatement("INSERT INTO post_files (post_id, filename) VALUES (?,?)");
+        try {
+            stm.setInt(1, postId);
+            stm.setString(2, filename);
+            stm.executeUpdate();
+        } finally {
+            stm.close();
+        }
+    }
+    
+    public List<String> getAllFilesFromPostId(int postId) throws SQLException{
+        List<String> filePaths = new ArrayList<String>();
+        PreparedStatement stm = con.prepareStatement("SELECT filename FROM post_files WHERE post_id = ?");
+        try {
+            stm.setInt(1, postId);
+            ResultSet rs = stm.executeQuery();
+            try {
+                while(rs.next()){
+                    String filePath = rs.getString("filename");
+                    filePaths.add(filePath);
+                }
+            } finally {
+                rs.close();
+            }
+        } finally {
+            stm.close();
+        }
+        return filePaths;
+    }
 }

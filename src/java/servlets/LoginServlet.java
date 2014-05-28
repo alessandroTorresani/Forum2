@@ -55,6 +55,7 @@ public class LoginServlet extends HttpServlet {
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
+        String result;
 
         try {
             user = manager.authenticate(email, password, dateFormat.format(date));
@@ -69,11 +70,12 @@ public class LoginServlet extends HttpServlet {
 
         if (user != null) {
             session.setAttribute("user", user);
+            result="success";
             log.info("login corretto, user:" + user.getEmail());
         } else {
-            session.setAttribute("login", "error");
+            result="failure";
         }
-        response.sendRedirect(request.getContextPath() + "/");
+        response.sendRedirect(request.getContextPath() + "/?login="+ result);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
