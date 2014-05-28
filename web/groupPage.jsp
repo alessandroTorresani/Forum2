@@ -83,12 +83,12 @@
                                                     <c:choose>
                                                         <c:when test="${sessionScope.user.isModeratorMode()}">
                                                         <li><a href="ModeratorPage?email=${sessionScope.user.getEmail()}">Moderator page</a></li>
-                                                          <li><a href="ExitModeratorMode?email=${sessionScope.user.getEmail()}">Exit moderator mode</a></li>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                         <li><a href="EnterModeratorMode?email=${sessionScope.user.getEmail()}">Switch to moderator mode</a></li>
-                                                    </c:otherwise>
-                                                </c:choose>
+                                                        <li><a href="ExitModeratorMode?email=${sessionScope.user.getEmail()}">Exit moderator mode</a></li>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                        <li><a href="EnterModeratorMode?email=${sessionScope.user.getEmail()}">Switch to moderator mode</a></li>
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                 </c:when>
                                             </c:choose><li class="divider"></li>
                                         <li><a href="Logout">Logout</a></li>
@@ -111,7 +111,15 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="exampleInputFile">File input</label>
-                                                    <input type="file" name="avatar">
+                                                    <input type="file" name="file1">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleInputFile">File input</label>
+                                                    <input type="file" name="file2">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleInputFile">File input</label>
+                                                    <input type="file" name="file3">
                                                 </div>
                                                 <button type="submit" class="btn btn-default">Send</button>
                                             </form>
@@ -130,7 +138,7 @@
         <div style="width:80%; margin:0 auto;">
             <h1>${groupPage.getGroupName()}</h1>
             <br>
-            
+
             <c:choose>
                 <c:when test="${sessionScope.user != null}">
                     <c:choose>
@@ -140,7 +148,7 @@
                     </c:choose>
                 </c:when>
             </c:choose>
-                            
+
             <c:choose>
                 <c:when test="${groupPage.isIsClosed() == true}">
                     <div class="panel panel-default">
@@ -162,16 +170,16 @@
                     <table class="table table-condensed table-striped">
                         <th class="col-sm-2" > ${post.getUsername()} </th>
                         <th> Message</th>
-                        <th class="col-sm-1"> File </th>
+                        
                         <tr>
                             <td><img src="Avatars/${post.getImgUrl()}" class="img-thumbnail" style="height: 120px;width: 110px"></td>
                             <td>${post.getMessage()}
                                 <br>
-                                <p style="font-size: 10px">Message posted at ${post.getCreationDate()}</p></td>
-                            <td>
+                                
                                 <c:forEach items="${post.fileUrls}" var="fileUrl">
-                                    <p>${fileUrl}</p>
+                                    <a href="Files/${fileUrl}" target="_blank"><span class="glyphicon glyphicon-paperclip"></span></a>${fileUrl}
                                 </c:forEach>
+                                    <p style="font-size: 10px">Message posted at ${post.getCreationDate()}</p>
                             </td>
                         </tr>
                     </table>
