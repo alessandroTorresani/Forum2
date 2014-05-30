@@ -62,6 +62,7 @@ public class EditGroupServlet extends HttpServlet {
                 manager.editGroup(groupId, groupName, is_private);
                 res = true;
             } catch (SQLException ex) {
+                res = false;
                 log.error(ex.toString());
                 throw new ServletException(ex);
             }
@@ -73,7 +74,7 @@ public class EditGroupServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/GetOwnerGroups?email=" + user.getEmail());
         }
 
-        if (checkbox_params != null) {
+        if ((res) && (checkbox_params != null)) {
             for (int x = 0; x < checkbox_params.length; x++) { // metto i dati in una List<String> per la funzione sendbids
                 bids.add(checkbox_params[x]);
             }

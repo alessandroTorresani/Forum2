@@ -117,7 +117,7 @@ public class AddPostServlet extends HttpServlet {
                                 }
                             }
                         } else if (f != null) {
-                            //bisogna comunque cancellare il file
+                            //in caso of post failure, delete anyway the file uploaded
                             f.delete();
                         }
                         response.sendRedirect(request.getContextPath() + "/LoadPost?groupId=" + groupId);

@@ -29,7 +29,7 @@ import org.apache.log4j.Logger;
 public class CreateGroupServlet extends HttpServlet {
     
     private DBManager manager;
-    private String GROUPNAME_REGEX = "^[a-zA-Z0-9_-]{3,20}$";
+    private String GROUPNAME_REGEX = "^[[a-zA-Z0-9_-]+(\\s[a-zA-Z0-9_-]+)*]{3,20}$";
     static Logger log = Logger.getLogger(RegistrationServlet.class.getName());
     
     public void init() throws ServletException {
@@ -70,6 +70,7 @@ public class CreateGroupServlet extends HttpServlet {
             if (groupId > 0){
                 try {
                 manager.subscribeAdmin(groupId, user.getUserId());
+                log.info("User " + user.getEmail() + " create a new group with id: " + groupId);
                 } catch (SQLException ex){
                     log.error(ex.toString());
                     throw new ServletException(ex);
