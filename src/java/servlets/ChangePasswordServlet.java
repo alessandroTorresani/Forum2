@@ -68,17 +68,14 @@ public class ChangePasswordServlet extends HttpServlet {
             }
             if (res == true){
                 log.info("User: " + user.getEmail() + " has changed the password successfully");
-                session.setAttribute("passwordChange", true);
-                response.sendRedirect(request.getContextPath() + "/ViewProfile?email="+user.getEmail());
+                response.sendRedirect(request.getContextPath() + "/ViewProfile?email="+user.getEmail()+"&changePassword=success");
             } else {
                 log.info("User: " + user.getEmail() + " had an error changing his password");
-                 session.setAttribute("passwordChange", false);
-                 response.sendRedirect(request.getContextPath() + "/ViewProfile?email="+user.getEmail());
+                 response.sendRedirect(request.getContextPath() + "/ViewProfile?email="+user.getEmail()+"&changePassword=error");
             } 
         }
         else {
-            session.setAttribute("passwordChange", false);
-            response.sendRedirect(request.getContextPath() + "/ViewProfile?email="+user.getEmail());
+            response.sendRedirect(request.getContextPath() + "/ViewProfile?email="+user.getEmail()+"&changePassword=error");
         }
     }
 

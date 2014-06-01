@@ -105,7 +105,7 @@ public class CreateGroupServlet extends HttpServlet {
             }
         } else {
             System.out.println("no correct name");
-            response.sendRedirect(request.getContextPath() + "/createGroup.jsp");
+            response.sendRedirect(request.getContextPath() + "/createGroup.jsp?groupName=error");
         }
 
     }

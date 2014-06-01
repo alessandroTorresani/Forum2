@@ -76,48 +76,29 @@
         </nav>
 
         <div style="width:80%; margin:0 auto;">
-
-            <% /*<ul class="nav nav-pills">
-                 <li class="active"><a href="Start">Home</a></li>
-
-
-                 <li class="dropdown">
-                 <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">${sessionScope.user.getUsername()}<b class="caret"></b></a>
-                 <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
-                 <li role="presentation"><a role="menuitem" tabindex="-1" href="GetOwnerGroups?email=${sessionScope.user.getEmail()}">Your groups</a></li>
-                 <li role="presentation"><a role="menuitem" tabindex="-1" href="ViewProfile?email=${sessionScope.user.getEmail()}">View profile</a></li>
-                 <li role="presentation"><a role="menuitem" tabindex="-1" href="#Switch moderator">Switch to moderator</a></li>
-                 <li role="presentation" class="divider"></li>
-                 <li role="presentation"><a role="menuitem" tabindex="-1" href="Logout">Logout</a></li>
-                 </ul>
-                 </li>
-
-                 <li><a href=""><c:out value="${sessionScope.user.getLastLogin()}"/></a></li>
-                 </ul>*/%>
             <c:choose>
-                <c:when test="${sessionScope.passwordChange == true}">
-                    <div class="alert alert-success">Password changes successfully</div>
-                    <%HttpSession session1 = request.getSession();
-                        session1.removeAttribute("passwordChange");%>
-                </c:when>
-            </c:choose>
-            <c:choose>
-                <c:when test="${sessionScope.passwordChange == false}">
+                <c:when test="${param.changePassword=='error'}">
                     <div class="alert alert-danger">You inserted a non valid password, or passwords don't coincide</div>
-                    <%HttpSession session2 = request.getSession();
-                        session2.removeAttribute("passwordChange");%>
+                </c:when>
+                <c:when test="${param.changePassword=='success'}">
+                    <div class="alert alert-success">Password changes successfully</div>
                 </c:when>
             </c:choose>
-
+            <c:choose>
+                <c:when test="${param.changeAvatar=='error-filesize'}">
+                    <div class="alert alert-danger">The image that you uploaded was to big. The limit is 10 MB</div>
+                </c:when>
+                <c:when test="${param.changeAvatar=='error-filetype'}">
+                    <div class="alert alert-danger">You did not upload an image, please retry</div>
+                </c:when>
+                <c:when test="${param.changeAvatar=='error-no-file'}">
+                    <div class="alert alert-danger">Please select an image to change the avatar</div>
+                </c:when>
+            </c:choose>
 
             <h1>Your Profile</h1>
             <div style="width: 40%; float:left;">
                 <img src="Avatars/${imgUrl}" class="img-thumbnail" style="height: 100%;width: 100%">
-                <br>
-                <button class="btn btn-primary" data-toggle="modal" data-target="#changeAvatar">Change avatar</button>
-                <br>
-                <br>
-                <button class="btn btn-primary" data-toggle="modal" data-target="#changePassword">Change password</button>
             </div>
             <br>
             <div style="width:55%; float:right">

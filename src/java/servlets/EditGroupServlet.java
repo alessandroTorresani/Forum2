@@ -71,7 +71,7 @@ public class EditGroupServlet extends HttpServlet {
             }
         } else {
             System.out.println("Errore nome o id");
-            response.sendRedirect(request.getContextPath() + "/GetOwnerGroups?email=" + user.getEmail());
+            response.sendRedirect(request.getContextPath() + "/GetOwnerGroups?email=" + user.getEmail()+"&groupName=error");
         }
 
         if ((res) && (checkbox_params != null)) {

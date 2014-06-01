@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package servlets;
 
 import com.oreilly.servlet.MultipartRequest;
@@ -31,10 +30,10 @@ import static servlets.RegistrationServlet.log;
  * @author Alessandro
  */
 public class ChangeAvatarServlet extends HttpServlet {
-    
+
     static Logger log = Logger.getLogger(RegistrationServlet.class.getName());
     private DBManager manager;
-    
+
     public void init() throws ServletException {
 // inizializza il DBManager dagli attributi di Application
         this.manager = (DBManager) super.getServletContext().getAttribute("dbmanager");
@@ -51,50 +50,55 @@ public class ChangeAvatarServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
+
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         MultipartRequest multi = null;
-         
-         try {
-            multi = new MultipartRequest(request, request.getServletContext().getRealPath("/") + File.separator + "Avatars", 10 * 1024 * 1024, "ISO-8859-1", new DefaultFileRenamePolicy());
-        } catch (Exception ex) {
-            log.error(ex.toString());
-        }
-         
-        if (multi != null){
-            Enumeration files = multi.getFileNames(); //file management
+
+        if (request.getMethod() == "POST" && request.getContentType() != "multipart/form-data") {
+
+            try {
+                multi = new MultipartRequest(request, request.getServletContext().getRealPath("/") + File.separator + "Avatars", 10 * 1024 * 1024, "ISO-8859-1", new DefaultFileRenamePolicy());
+            } catch (Exception ex) {
+                log.error(ex.toString());
+            }
+
+            if (multi != null) {
+                Enumeration files = multi.getFileNames(); //file management
                 while (files.hasMoreElements()) {
                     String name = (String) files.nextElement();
                     String filename = multi.getFilesystemName(name);
                     String originalFilename = multi.getOriginalFileName(name);
                     String type = multi.getContentType(name);
                     File f = multi.getFile(name);
-                     if (f != null) {
+                    if (f != null) {
                         if (type.startsWith("image")) {
                             Path source = f.toPath(); //path to the uploaded file
-                            File tmp = new File(request.getServletContext().getRealPath("/") + File.separator + "Avatars" + File.separator + user.getUserId()+".jpg");
-                            if(tmp.isFile()){
+                            File tmp = new File(request.getServletContext().getRealPath("/") + File.separator + "Avatars" + File.separator + user.getUserId() + ".jpg");
+                            if (tmp.isFile()) {
                                 tmp.delete();
                             }
                             log.info("User: " + user.getEmail() + " Changed his avatar");
                             Files.move(source, source.resolveSibling("" + user.getUserId() + ".jpg")); // copy the file with a new name
                             f.delete();  // delete source file
-                            response.sendRedirect(request.getContextPath()+"/ViewProfile?email="+user.getEmail());
+                            response.sendRedirect(request.getContextPath() + "/ViewProfile?email=" + user.getEmail());
                         } else {
                             log.warn("User: " + user.getEmail() + " tried to change the avatar without uploading an image");
                             f.delete(); //if is not an image, it must be deleted
-                            response.sendRedirect(request.getContextPath()+"/ViewProfile?email="+user.getEmail());
+                            response.sendRedirect(request.getContextPath() + "/ViewProfile?email=" + user.getEmail()+"&changeAvatar=error-filetype");
                         }
                     } else {
-                         log.warn("User: " + user.getEmail() + " tried to change the avatar without uploading a file");
-                         response.sendRedirect(request.getContextPath()+"/ViewProfile?email="+user.getEmail());
-                    }   
+                        log.warn("User: " + user.getEmail() + " tried to change the avatar without uploading a file");
+                        response.sendRedirect(request.getContextPath() + "/ViewProfile?email=" + user.getEmail()+"&changeAvatar=error-no-file");
+                    }
                 }
+            } else {
+                response.sendRedirect(request.getContextPath() + "/ViewProfile?email=" + user.getEmail()+"&changeAvatar=error-filesize");
+            }
         } else {
-            System.out.println("Errore non chiamato in modo legito");
+            response.sendRedirect(request.getContextPath() + "/ViewProfile?email=" + user.getEmail()); //illecit call of the servlet
         }
-        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
