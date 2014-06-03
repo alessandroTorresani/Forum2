@@ -90,47 +90,51 @@ public class AddPostServlet extends HttpServlet {
                     throw new ServletException(ex);
                 }
 
-                if (isSubscribed) {
-                    try {
-                        message = MyUtility.cleanHTMLTags(message);
-                        message = MyUtility.checkMultiLink(message);
-                        message = message.replaceAll("[\n\r]+", "<br>");
+                if (message.length() < 4000) {
+                    if (isSubscribed) {
+                        try {
+                            message = MyUtility.cleanHTMLTags(message);
+                            message = MyUtility.checkMultiLink(message);
+                            message = message.replaceAll("[\n\r]+", "<br>");
 
-                        postId = manager.addPost(user.getUserId(), groupId, message, dateFormat.format(date));
-                        File f = null;
+                            postId = manager.addPost(user.getUserId(), groupId, message, dateFormat.format(date));
+                            File f = null;
 
-                        if (postId > 0) {
-                            Enumeration files = multi.getFileNames(); //file management
+                            if (postId > 0) {
+                                Enumeration files = multi.getFileNames(); //file management
 
-                            while (files.hasMoreElements()) {
-                                String name = (String) files.nextElement();
-                                String filename = multi.getFilesystemName(name);
-                                String originalFilename = multi.getOriginalFileName(name);
-                                f = multi.getFile(name);
-                                if (f != null) {
-                                    try {
-                                        manager.addFileToPost(postId, filename);
-                                    } catch (SQLException ex) {
-                                        log.error(ex.toString());
-                                        throw new ServletException(ex);
-                                    }
+                                while (files.hasMoreElements()) {
+                                    String name = (String) files.nextElement();
+                                    String filename = multi.getFilesystemName(name);
+                                    String originalFilename = multi.getOriginalFileName(name);
+                                    f = multi.getFile(name);
+                                    if (f != null) {
+                                        try {
+                                            manager.addFileToPost(postId, filename);
+                                        } catch (SQLException ex) {
+                                            log.error(ex.toString());
+                                            throw new ServletException(ex);
+                                        }
+                                    } 
                                 }
+                            } else if (f != null) {
+                                //in caso of post failure, delete anyway the file uploaded
+                                f.delete();
                             }
-                        } else if (f != null) {
-                            //in caso of post failure, delete anyway the file uploaded
-                            f.delete();
+                            response.sendRedirect(request.getContextPath() + "/LoadPost?groupId=" + groupId);
+                        } catch (SQLException ex) {
+                            log.error(ex.toString());
+                            throw new ServletException(ex);
                         }
-                        response.sendRedirect(request.getContextPath() + "/LoadPost?groupId=" + groupId);
-                    } catch (SQLException ex) {
-                        log.error(ex.toString());
-                        throw new ServletException(ex);
+                    } else {
+                        response.sendRedirect(request.getContextPath() + "/LoadPost?groupId=" + groupId + "&addPost=error-notSubscribed");
                     }
                 } else {
-                    response.sendRedirect(request.getContextPath() + "/LoadPost?groupId=" + groupId);
+                    response.sendRedirect(request.getContextPath() + "/LoadPost?groupId=" + groupId + "&addPost=error-messageLenght");
                 }
             } else {
                 //rimandare alla groupPage con errore
-                response.sendRedirect(request.getContextPath() + "/LoadPost?groupId=" + groupId + "&result="+URLEncoder.encode("fileSizeError", "UTF-8"));
+                response.sendRedirect(request.getContextPath() + "/LoadPost?groupId=" + groupId + "&result=" + URLEncoder.encode("fileSizeError", "UTF-8"));
             }
         } else {
             response.sendRedirect(request.getContextPath() + "/LoadPost?groupId=" + groupId);

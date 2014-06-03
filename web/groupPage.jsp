@@ -139,93 +139,103 @@
             <h1>${groupPage.getGroupName()}</h1>
             <br>
 
-            <c:choose>
-                <c:when test="${sessionScope.user != null}">
-                    <c:choose>
-                        <c:when test="${param.result == 'fileSizeError'}">
-                            <div class="alert alert-danger">File size is too big. The limit is 10 MB</div>
-                        </c:when>
-                    </c:choose>
-                </c:when>
-            </c:choose>
+        <c:choose>
+            <c:when test="${sessionScope.user != null}">
+                <c:choose>
+                    <c:when test="${param.addPost=='error-notSubscribed'}">
+                        <div class="alert alert-danger">You are not subscribed in this group</div>
+                    </c:when>
+                    <c:otherwise>
+                        <c:choose>
+                            <c:when test="${param.result == 'fileSizeError'}">
+                                <div class="alert alert-danger">File size is too big. The limit is 10 MB for each file</div>
+                            </c:when>
+                            <c:when test="${param.addPost == 'error-messageLenght'}">
+                                <div class="alert alert-danger">The post content is too long, max 4000 characters</div>
+                            </c:when>
+                        </c:choose>
+                    </c:otherwise>
+                </c:choose>
+            </c:when>
+        </c:choose>
 
-            <c:choose>
-                <c:when test="${groupPage.isIsClosed() == true}">
-                    <div class="panel panel-default">
-                        <!-- Table -->
-                        <table class="table table-condensed table-striped">
-                            <th class="col-sm-2" > ${(groupPage.getAdminUsername())} </th>
-                            <th> Message</th>
-                            <tr class="danger">
-                                <td><img src="Avatars/${imgUrlAdmin}" class="img-thumbnail" style="height: 120px;width: 110px"></td>
-                                <td>${groupPage.getGroupName()} is CLOSED  </td>
-                            </tr>
-                        </table>
-                    </div>
-                </c:when>
-            </c:choose>
-            <c:forEach items="${posts}" var="post">
+        <c:choose>
+            <c:when test="${groupPage.isIsClosed() == true}">
                 <div class="panel panel-default">
                     <!-- Table -->
                     <table class="table table-condensed table-striped">
-                        <th class="col-sm-2" > ${post.getUsername()} </th>
+                        <th class="col-sm-2" > ${(groupPage.getAdminUsername())} </th>
                         <th> Message</th>
-                        
-                        <tr>
-                            <td><img src="Avatars/${post.getImgUrl()}" class="img-thumbnail" style="height: 120px;width: 110px"></td>
-                            <td>${post.getMessage()}
-                                <br>
-                                
-                                <c:forEach items="${post.fileUrls}" var="fileUrl">
-                                    <a href="Files/${fileUrl}" target="_blank"><span class="glyphicon glyphicon-paperclip"></span></a>${fileUrl}
-                                </c:forEach>
-                                    <p style="font-size: 10px">Message posted at ${post.getCreationDate()}</p>
-                            </td>
+                        <tr class="danger">
+                            <td><img src="Avatars/${imgUrlAdmin}" class="img-thumbnail" style="height: 120px;width: 110px"></td>
+                            <td>${groupPage.getGroupName()} is CLOSED  </td>
                         </tr>
                     </table>
                 </div>
-            </c:forEach>
+            </c:when>
+        </c:choose>
+        <c:forEach items="${posts}" var="post">
             <div class="panel panel-default">
                 <!-- Table -->
                 <table class="table table-condensed table-striped">
-                    <th class="col-sm-2" > ${(groupPage.getAdminUsername())} </th>
+                    <th class="col-sm-2" > ${post.getUsername()} </th>
                     <th> Message</th>
+
                     <tr>
-                        <td><img src="Avatars/${imgUrlAdmin}" class="img-thumbnail" style="height: 120px;width: 110px"></td>
-                        <td>${groupPage.getGroupName()} was created at  ${groupPage.getCreationDate()}</td>
+                        <td><img src="Avatars/${post.getImgUrl()}" class="img-thumbnail" style="height: 120px;width: 110px"></td>
+                        <td>${post.getMessage()}
+                            <br>
+
+                            <c:forEach items="${post.fileUrls}" var="fileUrl">
+                                <a href="Files/${fileUrl}?groupId=${groupPage.getGroupId()}" target="_blank"><span class="glyphicon glyphicon-paperclip"></span></a>${fileUrl}
+                                </c:forEach>
+                            <p style="font-size: 10px">Message posted at ${post.getCreationDate()}</p>
+                        </td>
                     </tr>
                 </table>
             </div>
-            <div id="forgetPassword" class="modal fade">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Password recovery</h4>
-                        </div>
-                        <div class="modal-body">
-                            <p> Insert your email and your new password</p>
-                            <p>If you visit the link that we will send to your email in 90 seconds, your modification will be applied</p>
-                            <form role="form" action="ForgotPassword" method="post">
-                                <div class="form-group">
-                                    <label for="email">Email</label>
-                                    <input type="email" class="form-control" id="email1" placeholder="Email" name="email">
-                                </div>
-                                <div class="form-group">
-                                    <label for="password1">Password</label>
-                                    <input type="password" class="form-control" id="password1" placeholder="Password" name="password1">
-                                </div>
-                                <div class="form-group">
-                                    <label for="password2">Reinsert Password</label>
-                                    <input type="password" class="form-control" id="password2" placeholder="Password" name="password2">
-                                </div>
-                                <br>
-                                <button type="submit" class="btn btn-default">Submit</button>
-                            </form>
-                        </div>
+        </c:forEach>
+        <div class="panel panel-default">
+            <!-- Table -->
+            <table class="table table-condensed table-striped">
+                <th class="col-sm-2" > ${(groupPage.getAdminUsername())} </th>
+                <th> Message</th>
+                <tr>
+                    <td><img src="Avatars/${imgUrlAdmin}" class="img-thumbnail" style="height: 120px;width: 110px"></td>
+                    <td>${groupPage.getGroupName()} was created at  ${groupPage.getCreationDate()}</td>
+                </tr>
+            </table>
+        </div>
+        <div id="forgetPassword" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Password recovery</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p> Insert your email and your new password</p>
+                        <p>If you visit the link that we will send to your email in 90 seconds, your modification will be applied</p>
+                        <form role="form" action="ForgotPassword" method="post">
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email1" placeholder="Email" name="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="password1">Password</label>
+                                <input type="password" class="form-control" id="password1" placeholder="Password" name="password1">
+                            </div>
+                            <div class="form-group">
+                                <label for="password2">Reinsert Password</label>
+                                <input type="password" class="form-control" id="password2" placeholder="Password" name="password2">
+                            </div>
+                            <br>
+                            <button type="submit" class="btn btn-default">Submit</button>
+                        </form>
                     </div>
                 </div>
             </div>
+        </div>
 
-    </body>
+</body>
 </html>

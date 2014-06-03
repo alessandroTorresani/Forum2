@@ -88,7 +88,7 @@ public class AcceptBidsServlet extends HttpServlet {
 
             for (int x = 0; x < accBids.size(); x++) {
                 try {
-                    if (manager.checkBids(user.getUserId(), Integer.parseInt(accBids.get(x))) == true) {
+                    if (manager.checkBids(user.getUserId(), Integer.parseInt(accBids.get(x))) == true) { //check if those bids are present and are referred to this user
                         accBids.remove(x);
                     }
                 } catch(SQLException ex){

@@ -13,12 +13,17 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="Style/css/bootstrap.css" rel="stylesheet">
+        <link href="DataTable/css/jquery.dataTables.min.css" rel="stylesheet">
         <title>Moderator page</title>
     </head>
     <body>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script src='Style/js/bootstrap.min.js'></script>
+
+        <script src="DataTable/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src='DataTables/js/jquery.js"/>'></script>
+
 
         <nav class="navbar navbar-default" role="navigation">
             <div class="container-fluid">
@@ -78,7 +83,13 @@
 
             <h1>Moderator page</h1>
 
-            <div class="panel panel-default">
+            <script>
+                $(document).ready(function() {
+                    $("#moderatorTable").dataTable();
+                });
+            </script> 
+
+           <% /* <div class="panel panel-default">
                 <!-- Table -->
                 <table class="table">
                     <th> GroupName </th>
@@ -101,8 +112,10 @@
                             <c:choose>
                                 <c:when test="${group.isIsClosed()==false}">
                                     <td><a href="CloseGroup?email=${sessionScope.user.getEmail()}&groupId=${group.getGroupId()}"><button type="button" class="btn btn-primary btn-xs">
-                                                <span class="glyphicon glyphicon-ban-circle"></span> Close</button></a></td></c:when>
-                                            <c:otherwise>
+                                                <span class="glyphicon glyphicon-ban-circle"></span> Close</button></a>
+                                    </td>
+                                </c:when>
+                                <c:otherwise>
                                     <td></td>
                                 </c:otherwise>
                             </c:choose>
@@ -110,7 +123,60 @@
                         </tr>
                     </c:forEach>
                 </table>
-            </div>
+            </div> */%>
+            <table id="moderatorTable">
+                <thead>
+                    <tr>
+                        <th>
+                            GroupName
+                        </th>
+                        <th>
+                            Subscribers
+                        </th>
+                        <th>
+                            Posts
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach var="g" items ="${groups}">
+                        <tr>
+                            <td><a href="LoadPost?groupId=${g.getGroupId()}">${g.getGroupName()}</a></td>
+                            <td>${g.getSubscribers()}</td>
+                            <td>${g.getNrPosts()}</td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${g.isIsPrivate()}">
+                                        Private
+                                    </c:when>
+                                    <c:otherwise>
+                                        Public
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
+                            <c:choose>
+                                <c:when test="${g.isIsClosed()==false}">
+                                    <td>
+                                        <a href="CloseGroup?email=${sessionScope.user.getEmail()}&groupId=${g.getGroupId()}">
+                                            Close</button
+                                        </a>
+                                    </td>
+                                </c:when>
+                                <c:otherwise>
+                                    <td>
+                                        <b>Closed</b>
+                                    </td>
+                                </c:otherwise>
+                            </c:choose>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
         </div>
     </body>
 </html>

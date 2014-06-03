@@ -17,6 +17,32 @@
         <listener-class>listeners.AppContextListener</listener-class>
     </listener>
     <filter>
+        <filter-name>loginFilter</filter-name>
+        <filter-class> filters.LoginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>loginFilter</filter-name>
+        <url-pattern>/CreateGroup</url-pattern>
+        <url-pattern>/createGroup.jsp</url-pattern>
+        <url-pattern>/AcceptBids</url-pattern>
+        <url-pattern>/AddPost</url-pattern>
+        <url-pattern>/ViewProfile</url-pattern>
+        <url-pattern>/viewProfile.jsp</url-pattern>
+        <url-pattern>/ChangeAvatar</url-pattern>
+        <url-pattern>/ChangePassword</url-pattern>
+        <url-pattern>/GetOwnerGroups</url-pattern>
+        <url-pattern>/ownerGroups.jsp</url-pattern>
+        <url-pattern>/EnterModeratorMode</url-pattern>
+        <url-pattern>/ExitModeratorMode</url-pattern>
+        <url-pattern>/ModeratorPage</url-pattern>
+        <url-pattern>/moderatorPage.jsp</url-pattern>
+        <url-pattern>/CloseGroup</url-pattern>
+        <url-pattern>/EditGroup</url-pattern>
+        <url-pattern>/PreEditGroup</url-pattern>
+        <url-pattern>/editGroup.jsp</url-pattern>
+        <url-pattern>/Logout</url-pattern>      
+    </filter-mapping>
+    <filter>
         <filter-name>profileFilter</filter-name>
         <filter-class> filters.ProfileFilter</filter-class>
     </filter>
@@ -44,16 +70,7 @@
         <url-pattern>/editGroup.jsp</url-pattern>
         <url-pattern>/PreEditGroup</url-pattern>
     </filter-mapping>
-    <filter>
-        <filter-name>loginFilter</filter-name>
-        <filter-class> filters.LoginFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>loginFilter</filter-name>
-        <url-pattern>/CreateGroup</url-pattern>
-        <url-pattern>/createGroup.jsp</url-pattern>
-        <url-pattern>/AcceptBids</url-pattern>
-    </filter-mapping>
+    
     <filter>
         <filter-name>groupFilter</filter-name>
         <filter-class>filters.GroupFilter</filter-class>
@@ -63,6 +80,7 @@
         <url-pattern>/LoadPost</url-pattern>
         <url-pattern>/groupPage.jsp</url-pattern>
         <url-pattern>/AddPost</url-pattern>
+        <url-pattern>/Files/*</url-pattern>
     </filter-mapping>
     <filter>
         <filter-name>closedFilter</filter-name>

@@ -46,17 +46,13 @@ public class ProfileFilter implements Filter {
         String email = request.getParameter("email");
         int userId = 0;
 
-        if (user != null) {
-            try {
-                userId = manager.getUserIdByEmail(email);
-            } catch (SQLException ex) {
-                log.error(ex.toString());
-            }
-            if (user.getUserId() == userId) {
-                chain.doFilter(request, response);
-            } else {
-                ((HttpServletResponse) response).sendRedirect(((HttpServletRequest) request).getContextPath() + "/Start");
-            }
+        try {
+            userId = manager.getUserIdByEmail(email);
+        } catch (SQLException ex) {
+            log.error(ex.toString());
+        }
+        if (user.getUserId() == userId) {
+            chain.doFilter(request, response);
         } else {
             ((HttpServletResponse) response).sendRedirect(((HttpServletRequest) request).getContextPath() + "/Start");
         }
