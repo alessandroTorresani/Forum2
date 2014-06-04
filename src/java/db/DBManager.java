@@ -12,7 +12,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -50,7 +53,7 @@ public class DBManager implements Serializable {
         }
     }
 
-    public User authenticate(String email, String password, String loginDate) throws SQLException {
+    public User authenticate(String email, String password) throws SQLException {
 
         PreparedStatement stm = con.prepareStatement("SELECT * FROM users WHERE email = ? AND password = ?");
         try {
@@ -101,16 +104,76 @@ public class DBManager implements Serializable {
         return email;
     }
 
-    public void setLoginDate(int userId, String loginDate) throws SQLException {
+    public String setLoginDate(int userId, String loginDate) throws SQLException {
 
-        PreparedStatement stm = con.prepareStatement("UPDATE users SET last_login = ?  WHERE user_id = ?");
+        String lastLogin = null;
+        PreparedStatement stm = con.prepareStatement("SELECT last_login FROM users WHERE user_id = ?");
         try {
-            stm.setString(1, loginDate);
-            stm.setInt(2, userId);
-            stm.executeUpdate();
+            stm.setInt(1, userId);
+            ResultSet rs = stm.executeQuery();
+            try {
+                while (rs.next()) {
+                    lastLogin = rs.getString("last_login");
+                }
+            } finally {
+                rs.close();
+            }
         } finally {
             stm.close();
         }
+
+        PreparedStatement stm1 = con.prepareStatement("UPDATE users SET last_login = ?  WHERE user_id = ?");
+        try {
+            stm1.setString(1, loginDate);
+            stm1.setInt(2, userId);
+            stm1.executeUpdate();
+        } finally {
+            stm1.close();
+        }
+        return lastLogin;
+    }
+
+    public List<Post> getLastPosts(int userId, String lastLogin) throws SQLException {
+        List<Integer> subscribedGroups = new ArrayList<Integer>();
+        List<Post> lastPosts = new ArrayList<Post>();
+
+        PreparedStatement stm = con.prepareStatement("SELECT group_id FROM users_groups WHERE user_id = ? "); //groups subscribed by the user
+        try {
+            stm.setInt(1, userId);
+            ResultSet rs = stm.executeQuery();
+            try {
+                while (rs.next()) {
+                    subscribedGroups.add(rs.getInt("group_id"));
+                }
+            } finally {
+                rs.close();
+            }
+        } finally {
+            stm.close();
+        }
+
+        for (int x = 0; x < subscribedGroups.size(); x++) {
+            PreparedStatement stm1 = con.prepareStatement("SELECT creation_date FROM posts WHERE group_id = ? AND post_id IN (SELECT MAX(post_id) FROM posts WHERE group_id = ? AND user_id <> ?)");
+            try {
+                stm1.setInt(1, subscribedGroups.get(x));
+                stm1.setInt(2, subscribedGroups.get(x));
+                stm1.setInt(3, userId);
+                ResultSet rs1 = stm1.executeQuery();
+                try {
+                    while (rs1.next()) {
+                        Post p = new Post();
+                        p.setCreationDate(rs1.getString("creation_date"));
+                        p.setGroupId(subscribedGroups.get(x));
+                        lastPosts.add(p);
+                    }
+                } finally {
+                    rs1.close();
+                }
+            } finally {
+                stm1.close();
+            }
+        }
+        return lastPosts;
     }
 
     public boolean checkEmail(String email) throws SQLException {
@@ -736,7 +799,6 @@ public class DBManager implements Serializable {
                     try {
                         while (rs.next()) {
                             groupId = rs.getInt("group_id");
-                            System.out.println("groupid= " + groupId);
                         }
                     } finally {
                         rs.close();
@@ -867,15 +929,15 @@ public class DBManager implements Serializable {
             stm.close();
         }
     }
-    
-    public List<String> getAllFilesFromPostId(int postId) throws SQLException{
+
+    public List<String> getAllFilesFromPostId(int postId) throws SQLException {
         List<String> filePaths = new ArrayList<String>();
         PreparedStatement stm = con.prepareStatement("SELECT filename FROM post_files WHERE post_id = ?");
         try {
             stm.setInt(1, postId);
             ResultSet rs = stm.executeQuery();
             try {
-                while(rs.next()){
+                while (rs.next()) {
                     String filePath = rs.getString("filename");
                     filePaths.add(filePath);
                 }
@@ -887,4 +949,5 @@ public class DBManager implements Serializable {
         }
         return filePaths;
     }
+
 }

@@ -11,6 +11,7 @@ import db.Group;
 import db.User;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -48,24 +49,44 @@ public class StartServlet extends HttpServlet {
 
         ServletContext sc = getServletContext();
         List<Group> publicGroups = null;
-        List<Group> privateGroups= null;
+        List<Group> privateGroups = null;
         List<Bid> bids = null;
+        List<String> updatedGroups = new ArrayList<String>();
 
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
+        updatedGroups = (List<String>) session.getAttribute("updatedGroups");
 
         try {
             publicGroups = manager.getPublicGroups(); // get all public groups
-            
+
             if (user != null) {
                 privateGroups = manager.getPrivateGroups(user.getUserId());
                 bids = manager.getBids(user.getUserId());
                 request.setAttribute("bids", bids);
+
+               for (int x =0; x < publicGroups.size(); x++){
+                   if (updatedGroups.contains(""+publicGroups.get(x).getGroupId())){
+                       publicGroups.get(x).setUpdated(true);
+                   }
+                   else {
+                       publicGroups.get(x).setUpdated(false);
+                   }
+               }
+               
+               for (int x =0; x < privateGroups.size(); x++){
+                   if (updatedGroups.contains(""+privateGroups.get(x).getGroupId())){
+                       privateGroups.get(x).setUpdated(true);
+                   }
+                    else {
+                       privateGroups.get(x).setUpdated(false);
+                   }
+               }
             }
         } catch (Exception ex) {
             log.error(ex.toString());
         }
-        
+
         request.setAttribute("publicGroups", publicGroups);
         request.setAttribute("privateGroups", privateGroups);
         RequestDispatcher rd = sc.getRequestDispatcher("/index.jsp");

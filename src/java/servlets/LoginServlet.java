@@ -5,14 +5,19 @@
  */
 package servlets;
 
+import com.sun.mail.iap.ParsingException;
 import db.DBManager;
+import db.Post;
 import db.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -46,21 +51,26 @@ public class LoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-   
+
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
         User user = null;
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+        String lastLogin = null;
+        List<Post> lastPosts = null;
+        List<String> updatedGroups = null;
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = new Date();
+        Date loginDate = new Date();
+        Date lastLoginDate;
+        Date lastPostDate;
         String result;
 
         try {
-            user = manager.authenticate(email, password, dateFormat.format(date));
+            user = manager.authenticate(email, password);
             if (user != null) {
-                manager.setLoginDate(user.getUserId(), dateFormat.format(date));
+                lastLogin = manager.setLoginDate(user.getUserId(), dateFormat.format(loginDate));
                 String requestId = manager.getPasswordRequestIdbyUserId(user.getUserId());
                 manager.deletePasswordRequest(requestId);
             }
@@ -69,13 +79,49 @@ public class LoginServlet extends HttpServlet {
         }
 
         if (user != null) {
+
+            if (lastLogin != null) {
+                lastPosts = new ArrayList<Post>();
+
+                try {
+                    lastPosts = manager.getLastPosts(user.getUserId(), lastLogin);
+                } catch (SQLException ex) {
+                    log.error(ex.toString());
+                    throw new ServletException(ex);
+                }
+
+                updatedGroups = new ArrayList<String>();
+
+                try {
+                    lastLoginDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(lastLogin);
+                } catch (ParseException ex) {
+                    log.error(ex.toString());
+                    throw new ServletException(ex);
+                }
+                for (int x = 0; x < lastPosts.size(); x++) {
+                    try {
+                        lastPostDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(lastPosts.get(x).getCreationDate());
+                    } catch (ParseException ex) {
+                        log.error(ex.toString());
+                        throw new ServletException(ex);
+                    }
+                    if ((lastLoginDate != null)&&(lastPostDate != null)){
+                        long differanceDate = (lastPostDate.getTime() - lastLoginDate.getTime())/1000;
+                        if (differanceDate > 0){
+                            updatedGroups.add(""+lastPosts.get(x).getGroupId());
+                        }
+                    }
+                }
+                session.setAttribute("updatedGroups", updatedGroups);
+            }
+            
             session.setAttribute("user", user);
-            result="success";
+            result = "success";
             log.info("login corretto, user:" + user.getEmail());
         } else {
-            result="failure";
+            result = "failure";
         }
-        response.sendRedirect(request.getContextPath() + "/?login="+ result);
+        response.sendRedirect(request.getContextPath() + "/?login=" + result);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

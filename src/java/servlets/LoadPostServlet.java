@@ -77,15 +77,15 @@ public class LoadPostServlet extends HttpServlet {
                 posts.get(x).setImgUrl(imgUrl);
             }
             List<String> filePaths = null;
-            
+
             try {
                 filePaths = manager.getAllFilesFromPostId(posts.get(x).getPostId());
-            } catch(SQLException ex){
+            } catch (SQLException ex) {
                 log.error(ex.toString());
                 throw new ServletException(ex);
             }
-            
-            if (filePaths != null){
+
+            if (filePaths != null) {
                 posts.get(x).setFileUrls(filePaths);
             } else {
                 posts.get(x).setFileUrls(null);
@@ -100,6 +100,11 @@ public class LoadPostServlet extends HttpServlet {
 
         //is_subscibed for the current user and group
         if (user != null) {
+            
+            List<String> updatedGroups = (List<String>) session.getAttribute("updatedGroups"); //get the updated groups
+            updatedGroups.remove("" + groupId); //remove this groups
+            session.setAttribute("updatedGroups", updatedGroups); //repost the updatedGroups session attribute
+            
             try {
                 isSubscribed = manager.isSubscribed(user.getUserId(), groupId);
             } catch (SQLException ex) {

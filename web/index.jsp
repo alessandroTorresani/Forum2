@@ -115,7 +115,7 @@
                     </c:choose>
                 </c:when>
             </c:choose>
-                            
+
             <br>
             <c:choose>
                 <c:when test="${sessionScope.user != null}">
@@ -131,21 +131,45 @@
                     <th> Group </th>
                     <th> Owner </th>
                     <th> Created at </th>
-                    <th> Private </th>
+                    <th> Status </th>
+                    
                         <c:forEach items="${publicGroups}" var="publicGroup">
-                            <c:choose>
-                                <c:when test="${publicGroup.isIsClosed()==true}">
+
+                        <c:choose>
+                            <c:when test="${publicGroup.isIsClosed()==true}">
                                 <tr class="danger">
                                 </c:when>
                                 <c:otherwise>
-                                <tr>
+                                    <c:choose>
+                                        <c:when test="${publicGroup.isUpdated()}" >
+                                        <tr  style="font-weight:bold;">
+                                        </c:when>
+                                        <c:otherwise>
+                                        <tr>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </c:otherwise>
                             </c:choose>
                             <td><a href="LoadPost?groupId=${publicGroup.getGroupId()}">${publicGroup.getGroupName()}</a></td>
                             <td>${publicGroup.getAdminUsername()}</td>
                             <td>${publicGroup.getCreationDate()}</td>
-                            <td>${publicGroup.isIsPrivate()}</td>
+                            <td>Public</td>
+                            <td>
+                            <c:choose>
+                            <c:when test="${publicGroup.isIsClosed()==true}">
+                            <span class="glyphicon glyphicon-ban-circle"></span>
+                                </c:when>
+                                <c:otherwise>
+                                    <c:choose>
+                                        <c:when test="${publicGroup.isUpdated()}" >
+                                            <span class="glyphicon glyphicon-exclamation-sign"></span>
+                                        </c:when>
+                                    </c:choose>
+                                </c:otherwise>
+                            </c:choose>
+                           </td>
                         </tr>
+
                     </c:forEach>
                     <c:forEach items="${privateGroups}" var="privateGroup">
                         <c:choose>
@@ -153,13 +177,34 @@
                                 <tr class="danger">
                                 </c:when>
                                 <c:otherwise>
-                                <tr>
+                                     <c:choose>
+                                        <c:when test="${privateGroup.isUpdated()}" >
+                                        <tr  style="font-weight:bold;">
+                                        </c:when>
+                                        <c:otherwise>
+                                        <tr>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </c:otherwise>
                             </c:choose>
                             <td><a href="LoadPost?groupId=${privateGroup.getGroupId()}">${privateGroup.getGroupName()}</a></td>
                             <td>${privateGroup.getAdminUsername()}</td>
                             <td>${privateGroup.getCreationDate()}</td>
-                            <td>${privateGroup.isIsPrivate()}</td>
+                            <td>Private</td>
+                            <td>
+                            <c:choose>
+                            <c:when test="${privateGroup.isIsClosed()==true}">
+                            <span class="glyphicon glyphicon-ban-circle"></span>
+                                </c:when>
+                                <c:otherwise>
+                                    <c:choose>
+                                        <c:when test="${privateGroup.isUpdated()}" >
+                                            <span class="glyphicon glyphicon-exclamation-sign"></span>
+                                        </c:when>
+                                    </c:choose>
+                                </c:otherwise>
+                            </c:choose>
+                           </td>
                         </tr>
 
                     </c:forEach>

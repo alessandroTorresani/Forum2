@@ -42,6 +42,7 @@ public class LogoutServlet extends HttpServlet {
         if (user != null) {
             log.info("User: " + user.getEmail() + " has logout");
             session.removeAttribute("user"); // remove the attribute user
+            session.removeAttribute("updatedGroups");
         }
         session.invalidate(); // invalid the session
         response.sendRedirect(request.getContextPath()+"/");

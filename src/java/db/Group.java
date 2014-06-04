@@ -22,6 +22,7 @@ public class Group  implements Serializable {
     private String adminUsername;
     private int subscribers;
     private int nrPosts;
+    private boolean updated;
 
     /**
      * @return the groupId
@@ -147,5 +148,19 @@ public class Group  implements Serializable {
      */
     public void setNrPosts(int nrPosts) {
         this.nrPosts = nrPosts;
+    }
+
+    /**
+     * @return the updated
+     */
+    public boolean isUpdated() {
+        return updated;
+    }
+
+    /**
+     * @param updated the updated to set
+     */
+    public void setUpdated(boolean updated) {
+        this.updated = updated;
     }
 }

@@ -88,8 +88,7 @@
                 <table class="table">
                     <th> Group </th>
                     <th> Created at </th>
-                    <th> Closed </th>
-                    <th>Private</th>
+                    <th> Status </th>
                         <c:forEach items="${ownerGroups}" var="group">
                             <c:choose>
                                 <c:when test="${group.isIsClosed()==true}">
@@ -101,15 +100,25 @@
                             </c:choose>
                             <td><a href="LoadPost?groupId=${group.getGroupId()}">${group.getGroupName()}</a></td>
                             <td>${group.getCreationDate()}</td>
-                            <td>${group.isIsClosed()}</td>
-                            <td>${group.isIsPrivate()}</td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${group.isIsPrivate()}">
+                                        Private
+                                    </c:when>
+                                    <c:otherwise>
+                                        Public
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
                             <c:choose>
                                 <c:when test="${group.isIsClosed()==false}">
                                     <td><a href="PreEditGroup?groupId=${group.getGroupId()}"><button type="button" class="btn btn-primary btn-xs">
                                                 <span class="glyphicon glyphicon-cog"></span> Manage</button></a></td>
                                             </c:when>
                                             <c:otherwise>
-                                    <td></td>
+                                                <td>
+                                                    <span class="glyphicon glyphicon-ban-circle"></span>
+                                                </td>
                                 </c:otherwise>
                             </c:choose>
                         </tr>
