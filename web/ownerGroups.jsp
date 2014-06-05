@@ -112,13 +112,16 @@
                             </td>
                             <c:choose>
                                 <c:when test="${group.isIsClosed()==false}">
-                                    <td><a href="PreEditGroup?groupId=${group.getGroupId()}"><button type="button" class="btn btn-primary btn-xs">
-                                                <span class="glyphicon glyphicon-cog"></span> Manage</button></a></td>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <td>
-                                                    <span class="glyphicon glyphicon-ban-circle"></span>
-                                                </td>
+                                    <td>
+                                        <a href="PreEditGroup?groupId=${group.getGroupId()}"><button type="button" class="btn btn-primary btn-xs">
+                                                <span class="glyphicon glyphicon-cog"></span> Manage</button>
+                                        </a>
+                                    </td>
+                                </c:when>
+                                <c:otherwise>
+                                    <td>
+                                        <span class="glyphicon glyphicon-ban-circle"></span>
+                                    </td>
                                 </c:otherwise>
                             </c:choose>
                         </tr>

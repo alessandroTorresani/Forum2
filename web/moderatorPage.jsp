@@ -89,46 +89,11 @@
                 });
             </script> 
 
-           <% /* <div class="panel panel-default">
-                <!-- Table -->
-                <table class="table">
-                    <th> GroupName </th>
-                    <th> Subscribers </th>
-                    <th> Private </th>
-                    <th> Posts</th>
-                        <c:forEach items="${groups}" var="group">
-                            <c:choose>
-                                <c:when test="${group.isIsClosed()==true}">
-                                <tr class="danger">
-                                </c:when>
-                                <c:otherwise>
-                                <tr>
-                                </c:otherwise>
-                            </c:choose>
-                            <td><a href="LoadPost?groupId=${group.getGroupId()}">${group.getGroupName()}</a></td>
-                            <td>${group.getSubscribers()}</td>
-                            <td>${group.isIsPrivate()}</td>
-                            <td>${group.getNrPosts()}</td>
-                            <c:choose>
-                                <c:when test="${group.isIsClosed()==false}">
-                                    <td><a href="CloseGroup?email=${sessionScope.user.getEmail()}&groupId=${group.getGroupId()}"><button type="button" class="btn btn-primary btn-xs">
-                                                <span class="glyphicon glyphicon-ban-circle"></span> Close</button></a>
-                                    </td>
-                                </c:when>
-                                <c:otherwise>
-                                    <td></td>
-                                </c:otherwise>
-                            </c:choose>
-
-                        </tr>
-                    </c:forEach>
-                </table>
-            </div> */%>
             <table id="moderatorTable">
                 <thead>
                     <tr>
                         <th>
-                            GroupName
+                            Group name
                         </th>
                         <th>
                             Subscribers

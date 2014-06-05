@@ -68,11 +68,11 @@ public class LoginServlet extends HttpServlet {
         String result;
 
         try {
-            user = manager.authenticate(email, password);
+            user = manager.authenticate(email, password); //authenticate the user
             if (user != null) {
-                lastLogin = manager.setLoginDate(user.getUserId(), dateFormat.format(loginDate));
-                String requestId = manager.getPasswordRequestIdbyUserId(user.getUserId());
-                manager.deletePasswordRequest(requestId);
+                lastLogin = manager.setLoginDate(user.getUserId(), dateFormat.format(loginDate)); //if the user exits set the the login date and get the last login date
+                String requestId = manager.getPasswordRequestIdbyUserId(user.getUserId()); // if there is a request to restore password, get it
+                manager.deletePasswordRequest(requestId); // and remove it
             }
         } catch (SQLException ex) {
             log.error(ex.toString());
@@ -80,35 +80,35 @@ public class LoginServlet extends HttpServlet {
 
         if (user != null) {
 
-            if (lastLogin != null) {
-                lastPosts = new ArrayList<Post>();
+            if (lastLogin != null) {    // if the user has a last login info in database
+                lastPosts = new ArrayList<Post>(); 
 
                 try {
-                    lastPosts = manager.getLastPosts(user.getUserId(), lastLogin);
+                    lastPosts = manager.getLastPosts(user.getUserId(), lastLogin); //get the last posts of the groups subscribed by the user
                 } catch (SQLException ex) {
                     log.error(ex.toString());
                     throw new ServletException(ex);
                 }
 
-                updatedGroups = new ArrayList<String>();
+                updatedGroups = new ArrayList<String>(); //list of the updated groups respect to the last login of the user
 
                 try {
-                    lastLoginDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(lastLogin);
+                    lastLoginDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(lastLogin); //parsing of the last login date
                 } catch (ParseException ex) {
                     log.error(ex.toString());
                     throw new ServletException(ex);
                 }
                 for (int x = 0; x < lastPosts.size(); x++) {
                     try {
-                        lastPostDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(lastPosts.get(x).getCreationDate());
+                        lastPostDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(lastPosts.get(x).getCreationDate()); // parsing of each last post creation date
                     } catch (ParseException ex) {
                         log.error(ex.toString());
                         throw new ServletException(ex);
                     }
-                    if ((lastLoginDate != null)&&(lastPostDate != null)){
+                    if ((lastLoginDate != null)&&(lastPostDate != null)){ //check if the post was created after the last login date
                         long differanceDate = (lastPostDate.getTime() - lastLoginDate.getTime())/1000;
                         if (differanceDate > 0){
-                            updatedGroups.add(""+lastPosts.get(x).getGroupId());
+                            updatedGroups.add(""+lastPosts.get(x).getGroupId()); // if it's true, add the group containing  this post to the updated groups
                         }
                     }
                 }
