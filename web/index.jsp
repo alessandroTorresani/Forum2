@@ -121,7 +121,7 @@
             </c:choose>
 
             <br>
-
+            <h3>Groups</h3>
             <div class="panel panel-default">
                 <!-- Table -->
                 <table class="table">
@@ -208,8 +208,10 @@
                 </table>
             </div>
             <br>
+           
             <c:choose>
                 <c:when test="${bids.size()>0}">
+                     <h3>Inviations</h3>
                     <form action="AcceptBids" method="post">
                         <div class="panel panel-default">
                             <!-- Table -->

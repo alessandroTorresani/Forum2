@@ -63,7 +63,7 @@
                             </c:choose>
 
                             <c:choose>
-                                <c:when test="${sessionScope.user.isModeratorMode()}">
+                                <c:when test="${sessionScope.user.isModeratorMode() && groupPage.isIsClosed() == false}">
                                     <ul class="nav navbar-nav navbar-left">
                                         <li><a href="CloseGroup?email=${sessionScope.user.getEmail()}&groupId=${groupPage.getGroupId()}"><span class="glyphicon glyphicon-off"></span><b> Close group</b></a></li>
                                     </ul>
