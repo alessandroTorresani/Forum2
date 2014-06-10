@@ -108,7 +108,7 @@
                                         <span class="input-group-addon">
                                             <input type="checkbox" name="users" value="${user.getUserId()}">
                                         </span>
-                                        <input type="text" class="form-control" placeholder="${user.getUsername()}" disabled>
+                                            <label type="text" class="form-control"> ${user.getUsername()}</label>
                                     </div><!-- /input-group -->
                                 </div><!-- /.col-lg-6 -->
                             </c:forEach>
@@ -139,7 +139,7 @@
                                         <span class="input-group-addon">
                                             <input type="checkbox" name="users" value="${user.getUserId()}">
                                         </span>
-                                        <input type="text" class="form-control" placeholder="${user.getUsername()}" disabled>
+                                            <label type="text" class="form-control"> ${user.getUsername()}</label>
                                     </div><!-- /input-group -->
                                 </div><!-- /.col-lg-6 -->
                             </c:forEach>
