@@ -57,7 +57,7 @@
                             <c:choose>
                                 <c:when test="${(isSubscribed == true) && (groupPage.isIsClosed() == false)}">
                                     <ul class="nav navbar-nav navbar-left">
-                                        <li><a data-toggle="modal" data-target="#addPost"><span class="glyphicon glyphicon-th-list"></span><b> Add post</b></a></li>
+                                        <li><a data-toggle="modal" data-target="#addPost"><span class="glyphicon glyphicon-comment"></span><b> Add post</b></a></li>
                                     </ul>
                                 </c:when>
                             </c:choose>
@@ -65,9 +65,7 @@
                             <c:choose>
                                 <c:when test="${sessionScope.user.isModeratorMode()}">
                                     <ul class="nav navbar-nav navbar-left">
-                                        <li><a href="CloseGroup?email=${sessionScope.user.getEmail()}&groupId=${groupPage.getGroupId()}">
-
-                                                <span class="glyphicon glyphicon-th-list"></span><b> Close group</b></a></li>
+                                        <li><a href="CloseGroup?email=${sessionScope.user.getEmail()}&groupId=${groupPage.getGroupId()}"><span class="glyphicon glyphicon-off"></span><b> Close group</b></a></li>
                                     </ul>
                                 </c:when>
                             </c:choose>

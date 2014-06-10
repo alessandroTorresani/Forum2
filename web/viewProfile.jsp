@@ -35,8 +35,8 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
                     <ul class="nav navbar-nav navbar-left">
-                        <li><a data-toggle="modal" data-target="#changeAvatar"><span class="glyphicon glyphicon-th-list"></span><b> Change avatar</b></a></li>
-                        <li><a data-toggle="modal" data-target="#changePassword"><span class="glyphicon glyphicon-th-list"></span><b> Change password</b></a></li>
+                        <li><a data-toggle="modal" data-target="#changeAvatar"><span class="glyphicon glyphicon-picture"></span><b> Change avatar</b></a></li>
+                        <li><a data-toggle="modal" data-target="#changePassword"><span class="glyphicon glyphicon-pencil"></span><b> Change password</b></a></li>
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">

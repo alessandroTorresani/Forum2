@@ -35,7 +35,7 @@
 
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-left">
-                        <li><a href="createGroup.jsp"><span class="glyphicon glyphicon-th-list"></span><b> Create group</b></a></li>
+                        <li><a href="createGroup.jsp"><span class="glyphicon glyphicon-plus-sign"></span><b> Create group</b></a></li>
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">
