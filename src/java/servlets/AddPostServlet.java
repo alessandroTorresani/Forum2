@@ -64,8 +64,10 @@ public class AddPostServlet extends HttpServlet {
 
         Boolean isSubscribed = null;
         int postId = 0;
+        
+        System.out.println(request.getContentType());
 
-        if (request.getMethod() == "POST" && request.getContentType() != "multipart/form-data") {
+        if (request.getMethod() == "POST" && request.getContentType().startsWith("multipart/form-data;")) {
 
             try {
                 multi = new MultipartRequest(request, request.getServletContext().getRealPath("/") + File.separator + "Files", 10 * 1024 * 1024, "ISO-8859-1", new DefaultFileRenamePolicy());

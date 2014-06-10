@@ -103,12 +103,12 @@ public class ForgotPasswordServlet extends HttpServlet {
                     response.sendRedirect(request.getContextPath() + "/");
                 } else {
                     log.info("Recovery request not done - inserted different or non legal password for email: " + email);
-                    System.out.println("password non corrette");
+                    response.sendRedirect(request.getContextPath() + "/?password=failure");
                 }
 
             } else {
                 log.info("Recovery password request for email: " + email + ", but email does not exist");
-                System.out.println("Email non esistente"); // gestione errore
+                 response.sendRedirect(request.getContextPath() + "/?email=failure");
             }
         } catch (SQLException ex) {
             log.error(ex.toString());
