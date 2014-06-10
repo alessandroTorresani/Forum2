@@ -128,7 +128,7 @@
                                 <c:when test="${g.isIsClosed()==false}">
                                     <td>
                                         <a href="CloseGroup?email=${sessionScope.user.getEmail()}&groupId=${g.getGroupId()}">
-                                            Close</button
+                                            Close
                                         </a>
                                     </td>
                                 </c:when>

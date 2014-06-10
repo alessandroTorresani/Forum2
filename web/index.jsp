@@ -49,9 +49,7 @@
                                 </div>
                                 <button type="submit" class="btn btn-default">Login</button>
                             </form>
-                            <button type="button" data-toggle="modal" data-target="#forgetPassword" class="btn btn-primary navbar-btn">Forgot password</button>
-
-
+                            
                             <ul class="nav navbar-nav navbar-right">
                                 <li><a  data-toggle="modal" data-target="#forgetPassword">Forgot password</a></li>
                                 <li><a  href="registration.jsp">Sign up</a></li>
@@ -117,13 +115,6 @@
             </c:choose>
 
             <br>
-            <c:choose>
-                <c:when test="${sessionScope.user != null}">
-                    <a href="createGroup.jsp" class="btn btn-primary" role="button" >Create group</a>
-                    <br>
-                    <br>
-                </c:when>
-            </c:choose>
 
             <div class="panel panel-default">
                 <!-- Table -->
