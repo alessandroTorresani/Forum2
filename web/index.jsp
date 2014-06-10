@@ -49,7 +49,7 @@
                                 </div>
                                 <button type="submit" class="btn btn-default">Login</button>
                             </form>
-                            
+
                             <ul class="nav navbar-nav navbar-right">
                                 <li><a  data-toggle="modal" data-target="#forgetPassword">Forgot password</a></li>
                                 <li><a  href="registration.jsp">Sign up</a></li>
@@ -110,6 +110,12 @@
                         <c:when test="${param.login == 'failure'}">
                             <div class="alert alert-danger">You inserted a non valid username and/or an invalid password using message</div>
                         </c:when>
+                        <c:when test="${param.email=='failure'}">
+                            <div class="alert alert-danger">You inserted an email that does not exist</div>
+                        </c:when>
+                        <c:when test="${param.password=='failure'}">
+                            <div class="alert alert-danger">You inserted an invalid password or passwords do not coincide</div>
+                        </c:when>
                     </c:choose>
                 </c:when>
             </c:choose>
@@ -123,8 +129,8 @@
                     <th> Owner </th>
                     <th> Created at </th>
                     <th> Status </th>
-                    
-                        <c:forEach items="${publicGroups}" var="publicGroup">
+
+                    <c:forEach items="${publicGroups}" var="publicGroup">
 
                         <c:choose>
                             <c:when test="${publicGroup.isIsClosed()==true}">
@@ -146,19 +152,19 @@
                             <td>${publicGroup.getCreationDate()}</td>
                             <td>Public</td>
                             <td>
-                            <c:choose>
-                            <c:when test="${publicGroup.isIsClosed()==true}">
-                            <span class="glyphicon glyphicon-ban-circle"></span>
-                                </c:when>
-                                <c:otherwise>
-                                    <c:choose>
-                                        <c:when test="${publicGroup.isUpdated()}" >
-                                            <span class="glyphicon glyphicon-exclamation-sign"></span>
-                                        </c:when>
-                                    </c:choose>
-                                </c:otherwise>
-                            </c:choose>
-                           </td>
+                                <c:choose>
+                                    <c:when test="${publicGroup.isIsClosed()==true}">
+                                        <span class="glyphicon glyphicon-ban-circle"></span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:choose>
+                                            <c:when test="${publicGroup.isUpdated()}" >
+                                                <span class="glyphicon glyphicon-exclamation-sign"></span>
+                                            </c:when>
+                                        </c:choose>
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
                         </tr>
 
                     </c:forEach>
@@ -168,7 +174,7 @@
                                 <tr class="danger">
                                 </c:when>
                                 <c:otherwise>
-                                     <c:choose>
+                                    <c:choose>
                                         <c:when test="${privateGroup.isUpdated()}" >
                                         <tr  style="font-weight:bold;">
                                         </c:when>
@@ -183,19 +189,19 @@
                             <td>${privateGroup.getCreationDate()}</td>
                             <td>Private</td>
                             <td>
-                            <c:choose>
-                            <c:when test="${privateGroup.isIsClosed()==true}">
-                            <span class="glyphicon glyphicon-ban-circle"></span>
-                                </c:when>
-                                <c:otherwise>
-                                    <c:choose>
-                                        <c:when test="${privateGroup.isUpdated()}" >
-                                            <span class="glyphicon glyphicon-exclamation-sign"></span>
-                                        </c:when>
-                                    </c:choose>
-                                </c:otherwise>
-                            </c:choose>
-                           </td>
+                                <c:choose>
+                                    <c:when test="${privateGroup.isIsClosed()==true}">
+                                        <span class="glyphicon glyphicon-ban-circle"></span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:choose>
+                                            <c:when test="${privateGroup.isUpdated()}" >
+                                                <span class="glyphicon glyphicon-exclamation-sign"></span>
+                                            </c:when>
+                                        </c:choose>
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
                         </tr>
 
                     </c:forEach>
