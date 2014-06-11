@@ -40,7 +40,7 @@
         <url-pattern>/EditGroup</url-pattern>
         <url-pattern>/PreEditGroup</url-pattern>
         <url-pattern>/editGroup.jsp</url-pattern>
-        <url-pattern>/Logout</url-pattern>      
+        <url-pattern>/Logout</url-pattern>
     </filter-mapping>
     <filter>
         <filter-name>profileFilter</filter-name>
@@ -70,7 +70,6 @@
         <url-pattern>/editGroup.jsp</url-pattern>
         <url-pattern>/PreEditGroup</url-pattern>
     </filter-mapping>
-    
     <filter>
         <filter-name>groupFilter</filter-name>
         <filter-class>filters.GroupFilter</filter-class>
@@ -125,10 +124,6 @@
     <servlet>
         <servlet-name>ForgotPassword</servlet-name>
         <servlet-class>servlets.ForgotPasswordServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ControlRequest</servlet-name>
-        <servlet-class>servlets.ControlRequestServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>RestorePassword</servlet-name>
@@ -205,10 +200,6 @@
     <servlet-mapping>
         <servlet-name>ForgotPassword</servlet-name>
         <url-pattern>/ForgotPassword</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ControlRequest</servlet-name>
-        <url-pattern>/ControlRequest</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>RestorePassword</servlet-name>
