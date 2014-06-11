@@ -56,18 +56,16 @@ public class AddPostServlet extends HttpServlet {
         User user = (User) session.getAttribute("user");
 
         int groupId = Integer.parseInt(request.getParameter("groupId"));
-        String message = request.getParameter("message");
+        String message = request.getParameter("message"); //content of the post
 
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //date for the post's creation
         Date date = new Date();
         MultipartRequest multi = null;
 
         Boolean isSubscribed = null;
         int postId = 0;
-        
-        System.out.println(request.getContentType());
 
-        if (request.getMethod() == "POST" && request.getContentType().startsWith("multipart/form-data;")) {
+        if (request.getMethod() == "POST" && request.getContentType().startsWith("multipart/form-data;")) { //if the request is multipart
 
             try {
                 multi = new MultipartRequest(request, request.getServletContext().getRealPath("/") + File.separator + "Files", 10 * 1024 * 1024, "ISO-8859-1", new DefaultFileRenamePolicy());
@@ -86,20 +84,20 @@ public class AddPostServlet extends HttpServlet {
                 }
 
                 try {
-                    isSubscribed = manager.isSubscribed(user.getUserId(), groupId);
+                    isSubscribed = manager.isSubscribed(user.getUserId(), groupId); //check if the user is subscribed and can insert a post
                 } catch (SQLException ex) {
                     log.error(ex.toString());
                     throw new ServletException(ex);
                 }
 
-                if (message.length() < 4000) {
+                if (message.length() < 4000) { //check the message lenght
                     if (isSubscribed) {
                         try {
-                            message = MyUtility.cleanHTMLTags(message);
-                            message = MyUtility.checkMultiLink(message);
-                            message = message.replaceAll("[\n\r]+", "<br>");
+                            message = MyUtility.cleanHTMLTags(message); //clean from html tags
+                            message = MyUtility.checkMultiLink(message); //check for links
+                            message = message.replaceAll("[\n\r]+", "<br>");//new line
 
-                            postId = manager.addPost(user.getUserId(), groupId, message, dateFormat.format(date));
+                            postId = manager.addPost(user.getUserId(), groupId, message, dateFormat.format(date)); //add the post
                             File f = null;
 
                             if (postId > 0) {
@@ -120,7 +118,7 @@ public class AddPostServlet extends HttpServlet {
                                     } 
                                 }
                             } else if (f != null) {
-                                //in caso of post failure, delete anyway the file uploaded
+                                //in case of post failure, delete anyway the file uploaded
                                 f.delete();
                             }
                             response.sendRedirect(request.getContextPath() + "/LoadPost?groupId=" + groupId);
@@ -135,7 +133,6 @@ public class AddPostServlet extends HttpServlet {
                     response.sendRedirect(request.getContextPath() + "/LoadPost?groupId=" + groupId + "&addPost=error-messageLenght");
                 }
             } else {
-                //rimandare alla groupPage con errore
                 response.sendRedirect(request.getContextPath() + "/LoadPost?groupId=" + groupId + "&result=" + URLEncoder.encode("fileSizeError", "UTF-8"));
             }
         } else {

@@ -33,13 +33,11 @@ public class GroupFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         this.filterConfig = filterConfig;
     }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 
         HttpSession session = ((HttpServletRequest) request).getSession();
         this.manager = (DBManager) request.getServletContext().getAttribute("dbmanager");
@@ -64,7 +62,7 @@ public class GroupFilter implements Filter {
 
             if (g != null) {
                 
-                if (g.isIsPrivate()) {
+                if (g.isIsPrivate()) { //if the group is private check if the user is subscribed or is in moderator mode
                     try {
                         if ((user!=null)&&((manager.isSubscribed(user.getUserId(), groupId))||((user.getIsModerator())&&(user.isModeratorMode())))) {
                             chain.doFilter(request, response);
@@ -75,7 +73,7 @@ public class GroupFilter implements Filter {
                         log.error(ex.toString());
                         throw new ServletException(ex);
                     }
-                } else {
+                } else { //if the group is public do nothing
                     chain.doFilter(request, response);
                 }
             
@@ -90,7 +88,6 @@ public class GroupFilter implements Filter {
 
     @Override
     public void destroy() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

@@ -28,16 +28,14 @@ public class LoginFilter implements Filter {
     static Logger log = Logger.getLogger(ProfileFilter.class.getName());
 
     public void init(FilterConfig filterConfig) throws ServletException {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         this.filterConfig = filterConfig;
     }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         HttpSession session = ((HttpServletRequest) request).getSession();
         User user = (User) ((HttpServletRequest) request).getSession().getAttribute("user");
-        if (user != null){
+        if (user != null){ //check if there is a logged user
             chain.doFilter(request, response);
         } else {
             ((HttpServletResponse) response).sendRedirect(((HttpServletRequest) request).getContextPath() + "/Start");
@@ -46,7 +44,6 @@ public class LoginFilter implements Filter {
 
     @Override
     public void destroy() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

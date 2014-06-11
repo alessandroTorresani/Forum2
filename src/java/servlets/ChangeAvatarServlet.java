@@ -55,8 +55,7 @@ public class ChangeAvatarServlet extends HttpServlet {
         User user = (User) session.getAttribute("user");
         MultipartRequest multi = null;
 
-        if (request.getMethod() == "POST" && request.getContentType() != "multipart/form-data") {
-
+        if (request.getMethod() == "POST" && request.getContentType().startsWith("multipart/form-data;")) { //check if is multipart
             try {
                 multi = new MultipartRequest(request, request.getServletContext().getRealPath("/") + File.separator + "Avatars", 10 * 1024 * 1024, "ISO-8859-1", new DefaultFileRenamePolicy());
             } catch (Exception ex) {
@@ -72,7 +71,7 @@ public class ChangeAvatarServlet extends HttpServlet {
                     String type = multi.getContentType(name);
                     File f = multi.getFile(name);
                     if (f != null) {
-                        if (type.startsWith("image")) {
+                        if (type.startsWith("image")) { //check file type
                             Path source = f.toPath(); //path to the uploaded file
                             File tmp = new File(request.getServletContext().getRealPath("/") + File.separator + "Avatars" + File.separator + user.getUserId() + ".jpg");
                             if (tmp.isFile()) {

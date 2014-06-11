@@ -21,10 +21,10 @@ public class Mailer {
 
     public boolean sendEmail(String email, String title, String text) throws MessagingException {
 
-        final String username = "webforum2014@gmail.com";
-        final String password = "forum2014";
+        final String username = "webforum2014@gmail.com"; //sender email
+        final String password = "forum2014"; //password email
 
-        Properties props = System.getProperties();
+        Properties props = System.getProperties(); //mail properties
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", "smtp.gmail.com");
@@ -38,17 +38,17 @@ public class Mailer {
 
         boolean sent = false;
         try {
-            // Nuovo messaggio
+            // New message
             Message message = new MimeMessage(session);
-            // Mittente
+            // Sender
             message.setFrom(new InternetAddress("webforum2014"));
-            // Destinatario
+            // Recipient
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
-            // Inserisce l'oggetto del messaggio
+            // Insert message content
             message.setSubject(title);
-            // Setta il tipo del messaggio e il testo
+            // Set type of message
             message.setContent(text, "text/html");
-            // Invia il messaggio
+            // Send message
             Transport.send(message);
         } catch (MessagingException e) {
             log.error(e);

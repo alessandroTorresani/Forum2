@@ -45,13 +45,13 @@ public class ViewProfileServlet extends HttpServlet {
             throws ServletException, IOException {
         
         ServletContext sc = getServletContext();
-        String imgUrl = "0.jpg";
+        String imgUrl = "0.jpg"; //default avatar url
         HttpSession session = request.getSession();
         
         User user = (User) session.getAttribute("user");
         
         File tmp = new File(request.getServletContext().getRealPath("/") + File.separator + "Avatars" + File.separator + user.getUserId()+".jpg");
-        if (tmp.isFile()){
+        if (tmp.isFile()){ //if there is a specific avatar get the path
             imgUrl = ""+user.getUserId() + ".jpg";
         }
         request.setAttribute("imgUrl", imgUrl);

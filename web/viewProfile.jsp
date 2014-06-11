@@ -78,7 +78,7 @@
         <div style="width:80%; margin:0 auto;">
             <c:choose>
                 <c:when test="${param.changePassword=='error'}">
-                    <div class="alert alert-danger">You inserted a non valid password, or passwords don't coincide</div>
+                    <div class="alert alert-danger">You inserted an invalid password, or passwords don't coincide</div>
                 </c:when>
                 <c:when test="${param.changePassword=='success'}">
                     <div class="alert alert-success">Password changed successfully</div>

@@ -28,7 +28,7 @@ public class EditGroupServlet extends HttpServlet {
     private DBManager manager;
     static Logger log = Logger.getLogger(StartServlet.class.getName());
     private String GROUPNAME_REGEX = "^[a-zA-Z0-9_-]{3,20}$";
-    private String GROUPNAME_REGEX1 = "^[[a-zA-Z0-9_-]+(\\s[a-zA-Z0-9_-]+)*]{3,20}$"; //how limit to 20 characters?
+    private String GROUPNAME_REGEX1 = "^[[a-zA-Z0-9_-]+(\\s[a-zA-Z0-9_-]+)*]{3,20}$"; 
 
     public void init() throws ServletException {
         this.manager = (DBManager) super.getServletContext().getAttribute("dbmanager");
@@ -70,16 +70,16 @@ public class EditGroupServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/GetOwnerGroups?email=" + user.getEmail());
             }
         } else {
-            System.out.println("Errore nome o id");
+            System.out.println("Name or id of the group incorrect");
             response.sendRedirect(request.getContextPath() + "/GetOwnerGroups?email=" + user.getEmail()+"&groupName=error");
         }
 
         if ((res) && (checkbox_params != null)) {
-            for (int x = 0; x < checkbox_params.length; x++) { // metto i dati in una List<String> per la funzione sendbids
+            for (int x = 0; x < checkbox_params.length; x++) { // fill the list
                 bids.add(checkbox_params[x]);
             }
             try {
-                manager.sendBids(bids, groupId, user.getUserId());
+                manager.sendBids(bids, groupId, user.getUserId()); //send bids
             } catch (SQLException ex) {
                 log.error(ex.toString());
                 throw new ServletException();

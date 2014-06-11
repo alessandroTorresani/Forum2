@@ -108,7 +108,7 @@
                 <c:when test="${sessionScope.user == null}">
                     <c:choose>
                         <c:when test="${param.login == 'failure'}">
-                            <div class="alert alert-danger">You inserted a non valid username and/or an invalid password using message</div>
+                            <div class="alert alert-danger">You inserted an invalid username and/or an invalid password using message</div>
                         </c:when>
                         <c:when test="${param.email=='failure'}">
                             <div class="alert alert-danger">You inserted an email that does not exist</div>

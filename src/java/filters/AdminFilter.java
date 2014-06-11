@@ -24,7 +24,7 @@ import org.apache.log4j.Logger;
  *
  * @author Alessandro
  */
-public class AdminFilter implements Filter {
+public class AdminFilter implements Filter { 
 
     private FilterConfig filterConfig;
     private DBManager manager;
@@ -32,13 +32,11 @@ public class AdminFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         this.filterConfig = filterConfig;
     }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         HttpSession session = ((HttpServletRequest) request).getSession();
         this.manager = (DBManager) request.getServletContext().getAttribute("dbmanager");
         User user = (User) ((HttpServletRequest) request).getSession().getAttribute("user");
@@ -46,7 +44,7 @@ public class AdminFilter implements Filter {
         boolean isAdmin = false;
 
         try {
-            isAdmin = manager.isAdmin(user.getUserId(), groupId);
+            isAdmin = manager.isAdmin(user.getUserId(), groupId); //check if the user is admin of the group
         } catch (SQLException ex) {
             log.error(ex.toString());
             throw new ServletException(ex);
@@ -61,7 +59,6 @@ public class AdminFilter implements Filter {
 
     @Override
     public void destroy() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

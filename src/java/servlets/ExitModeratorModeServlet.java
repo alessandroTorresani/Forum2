@@ -45,7 +45,7 @@ public class ExitModeratorModeServlet extends HttpServlet {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         
-        user.setModeratorMode(false);
+        user.setModeratorMode(false); //exit moderator mode
         log.info("User" + user.getEmail() + " exited from moderator mode");
         response.sendRedirect(request.getContextPath() + "/");
     }

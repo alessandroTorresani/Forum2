@@ -34,13 +34,11 @@ public class ModeratorFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         this.filterConfig = filterConfig;
     }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         HttpSession session = ((HttpServletRequest) request).getSession();
         this.manager = (DBManager) request.getServletContext().getAttribute("dbmanager");
         String email = request.getParameter("email");
@@ -55,7 +53,7 @@ public class ModeratorFilter implements Filter {
             throw new ServletException(ex);
         }
         
-        if ((isModerator == true)&&(user.isModeratorMode())){ //if the user is modetator AND is in moderatorMode
+        if ((isModerator == true)&&(user.isModeratorMode())){ //check if the user is modetator AND is in moderatorMode
              chain.doFilter(request, response);
         } else {
             ((HttpServletResponse) response).sendRedirect(((HttpServletRequest) request).getContextPath() + "/Start");
@@ -64,7 +62,6 @@ public class ModeratorFilter implements Filter {
 
     @Override
     public void destroy() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

@@ -50,7 +50,7 @@ public class LoadPostServlet extends HttpServlet {
 
         ServletContext sc = getServletContext();
 
-        List<Post> posts = null;
+        List<Post> posts = null; //list of posts
         int groupId = Integer.parseInt(request.getParameter("groupId"));
 
         Group groupPage;
@@ -62,7 +62,7 @@ public class LoadPostServlet extends HttpServlet {
         User user = (User) session.getAttribute("user");
 
         try {
-            posts = manager.getPosts(groupId);
+            posts = manager.getPosts(groupId); //get the posts
             groupPage = manager.getGroup(groupId);
         } catch (SQLException ex) {
             log.error(ex.toString());
@@ -71,12 +71,12 @@ public class LoadPostServlet extends HttpServlet {
 
         for (int x = 0; x < posts.size(); x++) {
             File tmp = new File(request.getServletContext().getRealPath("/") + File.separator + "Avatars" + File.separator + posts.get(x).getUserId() + ".jpg"); //imgUrl manage
-            if (tmp.isFile()) {
+            if (tmp.isFile()) { //if there is an avatar save the path
                 posts.get(x).setImgUrl(posts.get(x).getUserId() + ".jpg");
             } else {
-                posts.get(x).setImgUrl(imgUrl);
+                posts.get(x).setImgUrl(imgUrl); //else use the default avatar
             }
-            List<String> filePaths = null;
+            List<String> filePaths = null; //file paths for posts
 
             try {
                 filePaths = manager.getAllFilesFromPostId(posts.get(x).getPostId());
@@ -85,7 +85,7 @@ public class LoadPostServlet extends HttpServlet {
                 throw new ServletException(ex);
             }
 
-            if (filePaths != null) {
+            if (filePaths != null) { //if there are file paths link them in the post entity
                 posts.get(x).setFileUrls(filePaths);
             } else {
                 posts.get(x).setFileUrls(null);
@@ -99,14 +99,16 @@ public class LoadPostServlet extends HttpServlet {
         }
 
         //is_subscibed for the current user and group
-        if (user != null) {
-            
+        if (user != null) { //check the user because in this servlet it can be null
+
             List<String> updatedGroups = (List<String>) session.getAttribute("updatedGroups"); //get the updated groups
-            updatedGroups.remove("" + groupId); //remove this groups
-            session.setAttribute("updatedGroups", updatedGroups); //repost the updatedGroups session attribute
-            
+            if (updatedGroups != null) {
+                updatedGroups.remove("" + groupId); //remove this groups from updated groups
+                session.setAttribute("updatedGroups", updatedGroups); //repost the updatedGroups session attribute
+            }
+
             try {
-                isSubscribed = manager.isSubscribed(user.getUserId(), groupId);
+                isSubscribed = manager.isSubscribed(user.getUserId(), groupId); //check if the user is subscribed
             } catch (SQLException ex) {
                 log.error(ex.toString());
                 throw new ServletException(ex);

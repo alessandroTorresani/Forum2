@@ -50,9 +50,9 @@ public class AcceptBidsServlet extends HttpServlet {
         String[] acceptedBids = request.getParameterValues("accepted"); //checkbox params
         String[] refusedBids = request.getParameterValues("refused");
 
-        List<String> accBids = null; //lists for bids ids
-        List<String> refBids = null;
-        List<String> conflicts = null;
+        List<String> accBids = null;//list of accepted bids
+        List<String> refBids = null; //list of refused bids
+        List<String> conflicts = null; //list of conflicts
 
         if (acceptedBids != null) { //fill accepting list
             accBids = new ArrayList(acceptedBids.length);

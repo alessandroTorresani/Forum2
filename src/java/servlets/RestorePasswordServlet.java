@@ -56,17 +56,17 @@ public class RestorePasswordServlet extends HttpServlet {
         int userId = 0;
 
         try {
-            String requestTime = manager.getPasswordRequestTimebyRequestId(requestId);
-            if (requestTime != null) { //if was done a request using the specified userId, and exists a request date
+            String requestTime = manager.getPasswordRequestTimebyRequestId(requestId); //get request time by requestId
+            if (requestTime != null){  //if was done a request using the specified userId, and exists a request date
                 try {
-                    requestDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(requestTime);
+                    requestDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(requestTime); //parsing request date
                 } catch (ParseException pex) {
                     log.error(pex.toString());
                     throw new ServletException(pex);
                 }
                 long secondsAfterRequest = (actualDate.getTime() - requestDate.getTime()) / 1000; // get the second between the change password request and the visit of the link to change the password
 
-                if (secondsAfterRequest <= 90) {
+                if (secondsAfterRequest <= 90) { //if the gap is less than 90 seconds process the request
                     userId = manager.getUserIdByRequestId(requestId);
                     if (userId > 0) {
                         String tempPassword = manager.getTempPasswordByUserId(userId);

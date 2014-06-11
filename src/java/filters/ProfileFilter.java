@@ -33,13 +33,11 @@ public class ProfileFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         this.filterConfig = filterConfig;
     }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         HttpSession session = ((HttpServletRequest) request).getSession();
         User user = (User) ((HttpServletRequest) request).getSession().getAttribute("user");
         this.manager = (DBManager) request.getServletContext().getAttribute("dbmanager");
@@ -47,7 +45,7 @@ public class ProfileFilter implements Filter {
         int userId = 0;
 
         try {
-            userId = manager.getUserIdByEmail(email);
+            userId = manager.getUserIdByEmail(email); //check if the current user email is equal to the given email 
         } catch (SQLException ex) {
             log.error(ex.toString());
         }
@@ -60,7 +58,6 @@ public class ProfileFilter implements Filter {
 
     @Override
     public void destroy() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

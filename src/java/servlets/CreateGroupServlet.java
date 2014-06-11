@@ -57,33 +57,7 @@ public class CreateGroupServlet extends HttpServlet {
         User user = (User) session.getAttribute("user");
         int groupId = 0;
 
-        //accenti
-        System.out.println(groupName);
-
-        groupName = groupName.replace("Ã ", "à");
-        groupName = groupName.replace("Ã¡", "á");
-        groupName = groupName.replace("Ã¢", "â");
-        groupName = groupName.replace("Ã¤", "ä");
-        groupName = groupName.replace("Ã¨", "è");
-        groupName = groupName.replace("Ã©", "é");
-        groupName = groupName.replace("Ãª", "ê");
-        groupName = groupName.replace("Ã«", "ë");
-        groupName = groupName.replace("Ã¬", "ì");
-        groupName = groupName.replace("Ã­", "í");
-        groupName = groupName.replace("Ã®", "î");
-        groupName = groupName.replace("Ã¯", "ï");
-        groupName = groupName.replace("Ã²", "ò");
-        groupName = groupName.replace("Ã³", "ó");
-        groupName = groupName.replace("Ã´", "ô");
-        groupName = groupName.replace("Ã¶", "ö");
-        groupName = groupName.replace("Ã¹", "ù");
-        groupName = groupName.replace("Ãº", "ú");
-        groupName = groupName.replace("Ã»", "û");
-        groupName = groupName.replace("Ã¼", "ü");
-
-        System.out.println(groupName);
-
-        if ((groupName != null) && (groupName.matches(GROUPNAME_REGEX))) {
+        if ((groupName != null) && (groupName.matches(GROUPNAME_REGEX))) { //check group name
             try {
                 groupId = manager.createGroup(user.getUserId(), groupName, dateFormat.format(date), is_private);
             } catch (SQLException ex) {

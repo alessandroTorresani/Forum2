@@ -52,7 +52,7 @@ public class ModeratorPageServlet extends HttpServlet {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
 
-        List<Group> groups = new ArrayList<Group>();
+        List<Group> groups = new ArrayList<Group>(); //list of all groups
 
         try {
             groups = manager.getAllGroup();
@@ -63,8 +63,8 @@ public class ModeratorPageServlet extends HttpServlet {
 
         for (int x = 0; x < groups.size(); x++) {
             try {
-                groups.get(x).setSubscribers(manager.getAllSubscribers(groups.get(x).getGroupId()));
-                groups.get(x).setNrPosts(manager.getAllPosts(groups.get(x).getGroupId()));
+                groups.get(x).setSubscribers(manager.getAllSubscribers(groups.get(x).getGroupId())); //given the group, get the number of subscribers and store it in the group entity
+                groups.get(x).setNrPosts(manager.getAllPosts(groups.get(x).getGroupId())); //given the group, get the number of posts and store it in the group entity
             } catch (SQLException ex) {
                 log.error(ex.toString());
                 throw new ServletException(ex);

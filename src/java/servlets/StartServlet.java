@@ -48,10 +48,10 @@ public class StartServlet extends HttpServlet {
             throws ServletException, IOException {
 
         ServletContext sc = getServletContext();
-        List<Group> publicGroups = null;
-        List<Group> privateGroups = null;
-        List<Bid> bids = null;
-        List<String> updatedGroups = new ArrayList<String>();
+        List<Group> publicGroups = null; //list of public groups
+        List<Group> privateGroups = null; //list of private groups
+        List<Bid> bids = null; //list of bids
+        List<String> updatedGroups = new ArrayList<String>(); //list of updated groups
 
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
@@ -61,11 +61,11 @@ public class StartServlet extends HttpServlet {
             publicGroups = manager.getPublicGroups(); // get all public groups
 
             if (user != null) {
-                privateGroups = manager.getPrivateGroups(user.getUserId());
-                bids = manager.getBids(user.getUserId());
+                privateGroups = manager.getPrivateGroups(user.getUserId()); //get all private groups
+                bids = manager.getBids(user.getUserId()); //get the bids
                 request.setAttribute("bids", bids);
 
-               for (int x =0; x < publicGroups.size(); x++){
+               for (int x =0; x < publicGroups.size(); x++){ //check for updated public groups
                    if (updatedGroups.contains(""+publicGroups.get(x).getGroupId())){
                        publicGroups.get(x).setUpdated(true);
                    }
@@ -74,7 +74,7 @@ public class StartServlet extends HttpServlet {
                    }
                }
                
-               for (int x =0; x < privateGroups.size(); x++){
+               for (int x =0; x < privateGroups.size(); x++){ //check for updated private groups
                    if (updatedGroups.contains(""+privateGroups.get(x).getGroupId())){
                        privateGroups.get(x).setUpdated(true);
                    }

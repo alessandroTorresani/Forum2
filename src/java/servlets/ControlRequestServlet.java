@@ -55,7 +55,7 @@ public class ControlRequestServlet extends HttpServlet {
 
         try {
             String requestTime = manager.getPasswordRequestTimebyRequestId(RequestId);
-            System.out.println(requestTime);
+         
             if (requestTime != null) { //if was done a request using the specified userId, and exists a request date
                 try {
                     requestDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(requestTime);
@@ -65,16 +65,15 @@ public class ControlRequestServlet extends HttpServlet {
                 }
 
                 long secondsAfterRequest = (actualDate.getTime() - requestDate.getTime()) / 1000; // get the second between the change password request and the visit of the link to change the password
-                System.out.println("gap:" + secondsAfterRequest);
 
                 if (secondsAfterRequest <= 1000) {
                     request.setAttribute("correctRequest", true);
-                    RequestDispatcher rd = sc.getRequestDispatcher("/changePassword.jsp?requestId=" + RequestId); // change password ??is really necessary the userId here?
+                    RequestDispatcher rd = sc.getRequestDispatcher("/changePassword.jsp?requestId=" + RequestId);
                     rd.forward(request, response);
                 } else {
                     request.setAttribute("errorMessage", "Request out of time");
                     manager.deletePasswordRequest(RequestId);
-                    RequestDispatcher rd = sc.getRequestDispatcher("/changePassword.jsp"); // change password ??is really necessary the userId here?
+                    RequestDispatcher rd = sc.getRequestDispatcher("/changePassword.jsp"); 
                     rd.forward(request, response);
                 }
             } else {

@@ -84,7 +84,7 @@ public class LoginServlet extends HttpServlet {
                 lastPosts = new ArrayList<Post>(); 
 
                 try {
-                    lastPosts = manager.getLastPosts(user.getUserId(), lastLogin); //get the last posts of the groups subscribed by the user
+                    lastPosts = manager.getLastPosts(user.getUserId(), lastLogin); //get the last post of every groups where the user is subscribed
                 } catch (SQLException ex) {
                     log.error(ex.toString());
                     throw new ServletException(ex);
@@ -112,10 +112,10 @@ public class LoginServlet extends HttpServlet {
                         }
                     }
                 }
-                session.setAttribute("updatedGroups", updatedGroups);
+                session.setAttribute("updatedGroups", updatedGroups); //public the list of updated groups in the session
             }
             
-            session.setAttribute("user", user);
+            session.setAttribute("user", user); 
             result = "success";
             log.info("login corretto, user:" + user.getEmail());
         } else {

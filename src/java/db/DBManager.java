@@ -36,24 +36,24 @@ public class DBManager implements Serializable {
             this.user = user;
             this.password = password;
 
-            Class.forName("org.apache.derby.jdbc.ClientDriver", true, getClass().getClassLoader()); // carico driver
+            Class.forName("org.apache.derby.jdbc.ClientDriver", true, getClass().getClassLoader()); // laod the driver
 
         } catch (Exception e) {
             throw new RuntimeException(e.toString(), e);
         }
-        Connection con = DriverManager.getConnection(url, user, password); // connessione al database
+        Connection con = DriverManager.getConnection(url, user, password); // conncection to the database
         this.con = con;
     }
 
     public static void shutdown() {
         try {
-            DriverManager.getConnection("jdbc:derby:;shutdown=true"); // chiudo la connessione
+            DriverManager.getConnection("jdbc:derby:;shutdown=true"); // close the connection
         } catch (SQLException ex) {
             Logger.getLogger(DBManager.class.getName()).info(ex.getMessage());
         }
     }
 
-    public User authenticate(String email, String password) throws SQLException {
+    public User authenticate(String email, String password) throws SQLException { //authenticate the user
 
         PreparedStatement stm = con.prepareStatement("SELECT * FROM users WHERE email = ? AND password = ?");
         try {
@@ -84,7 +84,7 @@ public class DBManager implements Serializable {
         }
     }
 
-    public String checkUserPassword(int userId, String password) throws SQLException {
+    public String checkUserPassword(int userId, String password) throws SQLException { //check user password
         PreparedStatement stm = con.prepareStatement("SELECT email FROM users WHERE user_id = ? AND password = ?");
         String email = null;
         try {
@@ -104,7 +104,7 @@ public class DBManager implements Serializable {
         return email;
     }
 
-    public String setLoginDate(int userId, String loginDate) throws SQLException {
+    public String setLoginDate(int userId, String loginDate) throws SQLException { //set login date
 
         String lastLogin = null;
         PreparedStatement stm = con.prepareStatement("SELECT last_login FROM users WHERE user_id = ?");
@@ -133,7 +133,7 @@ public class DBManager implements Serializable {
         return lastLogin;
     }
 
-    public List<Post> getLastPosts(int userId, String lastLogin) throws SQLException {
+    public List<Post> getLastPosts(int userId, String lastLogin) throws SQLException { //given an userId, get a list of all last post of every groups where the user is subscribed and creation date > lastLogin
         List<Integer> subscribedGroups = new ArrayList<Integer>();
         List<Post> lastPosts = new ArrayList<Post>();
 
@@ -176,7 +176,7 @@ public class DBManager implements Serializable {
         return lastPosts;
     }
 
-    public boolean checkEmail(String email) throws SQLException {
+    public boolean checkEmail(String email) throws SQLException { //check if the email is already present
         int resultLenght = 0;
         PreparedStatement stm = con.prepareStatement("SELECT email  FROM users WHERE email= ?");
         try {
@@ -195,7 +195,7 @@ public class DBManager implements Serializable {
         return resultLenght == 0;
     }
 
-    public int getUserIdByEmail(String email) throws SQLException {
+    public int getUserIdByEmail(String email) throws SQLException { //get the userid
         int userId = 0;
         PreparedStatement stm = con.prepareStatement("SELECT user_id FROM users WHERE email=?");
         try {
@@ -214,7 +214,7 @@ public class DBManager implements Serializable {
         return userId;
     }
 
-    public Boolean getIsModeratorByEmail(String email) throws SQLException {
+    public Boolean getIsModeratorByEmail(String email) throws SQLException { //check if email corrispond to a moderator
         Boolean isModerator = false;
         PreparedStatement stm = con.prepareCall("SELECT is_Moderator FROM users WHERE email=?");
         try {
@@ -234,7 +234,7 @@ public class DBManager implements Serializable {
         return isModerator;
     }
 
-    public String getUsernameByUserId(int userId) throws SQLException {
+    public String getUsernameByUserId(int userId) throws SQLException { //get username
         String username = null;
         PreparedStatement stm = con.prepareCall("SELECT username FROM users WHERE user_id=?");
         try {
@@ -253,7 +253,7 @@ public class DBManager implements Serializable {
         return username;
     }
 
-    public int registerUser(String username, String email, String password) throws SQLException {
+    public int registerUser(String username, String email, String password) throws SQLException { //insert a new user in db
         PreparedStatement stm = con.prepareStatement("INSERT INTO users ( username,password,email) VALUES (?,?,?)", Statement.RETURN_GENERATED_KEYS);
         int userID = 0;
         try {
@@ -275,7 +275,7 @@ public class DBManager implements Serializable {
         return userID;
     }
 
-    public boolean checkPasswordRequest(int userId) throws SQLException {
+    public boolean checkPasswordRequest(int userId) throws SQLException { //check if there a userId linked to a request password recovery
         int resultLenght = 0;
         PreparedStatement stm = con.prepareStatement("SELECT user_id  FROM forgotten_passwords WHERE user_id= ?");
         try {
@@ -294,7 +294,7 @@ public class DBManager implements Serializable {
         return resultLenght > 0;
     }
 
-    public void updatePasswordRequest(int userId, String requestTime, String requestId, String tempPassword) throws SQLException {
+    public void updatePasswordRequest(int userId, String requestTime, String requestId, String tempPassword) throws SQLException { //updated password recovery request
         PreparedStatement stm = con.prepareStatement("UPDATE forgotten_passwords  SET request_time = ?, request_id = ?, temp_password = ?  WHERE user_id = ?");
         try {
             stm.setString(1, requestTime);
@@ -308,7 +308,7 @@ public class DBManager implements Serializable {
         }
     }
 
-    public void insertPasswordRequest(int userId, String requestTime, String requestId, String tempPassword) throws SQLException {
+    public void insertPasswordRequest(int userId, String requestTime, String requestId, String tempPassword) throws SQLException { //create new password recovery request
         PreparedStatement stm = con.prepareStatement("INSERT INTO forgotten_passwords (user_id, request_time, request_id, temp_password) VALUES(?,?,?,?)");
         try {
             stm.setInt(1, userId);
@@ -321,7 +321,7 @@ public class DBManager implements Serializable {
         }
     }
 
-    public String getPasswordRequestTimebyRequestId(String requestId) throws SQLException {
+    public String getPasswordRequestTimebyRequestId(String requestId) throws SQLException { //get the request time linked to a requestId
         String requestTime = null;
         PreparedStatement stm = con.prepareCall("SELECT request_time FROM forgotten_passwords WHERE request_id = ?");
         try {
@@ -340,7 +340,7 @@ public class DBManager implements Serializable {
         return requestTime;
     }
 
-    public String getPasswordRequestIdbyUserId(int userId) throws SQLException {
+    public String getPasswordRequestIdbyUserId(int userId) throws SQLException { //get the requestId 
         String requestId = null;
         PreparedStatement stm = con.prepareCall("SELECT request_id FROM forgotten_passwords WHERE user_id = ?");
         try {
@@ -359,7 +359,7 @@ public class DBManager implements Serializable {
         return requestId;
     }
 
-    public String getTempPasswordByUserId(int userId) throws SQLException {
+    public String getTempPasswordByUserId(int userId) throws SQLException { //get the temporary password linked to a recovery password request
         String tempPassword = null;
         PreparedStatement stm = con.prepareCall("SELECT temp_password FROM forgotten_passwords WHERE user_id = ?");
         try {
@@ -378,7 +378,7 @@ public class DBManager implements Serializable {
         return tempPassword;
     }
 
-    public void changeUserPassword(int userId, String password) throws SQLException {
+    public void changeUserPassword(int userId, String password) throws SQLException { //change password
         PreparedStatement stm = con.prepareCall("UPDATE users SET password = ? WHERE user_id = ?");
         try {
             stm.setString(1, password);
@@ -389,7 +389,7 @@ public class DBManager implements Serializable {
         }
     }
 
-    public void deletePasswordRequest(String requestId) throws SQLException {
+    public void deletePasswordRequest(String requestId) throws SQLException { //delete password recovery request
         PreparedStatement stm = con.prepareCall("DELETE  FROM forgotten_passwords WHERE request_id = ?");
         try {
             stm.setString(1, requestId);
@@ -399,7 +399,7 @@ public class DBManager implements Serializable {
         }
     }
 
-    public int getUserIdByRequestId(String requestId) throws SQLException {
+    public int getUserIdByRequestId(String requestId) throws SQLException { //get userId linked to a recovery password request
         int userId = 0;
         PreparedStatement stm = con.prepareCall("SELECT user_id FROM forgotten_passwords WHERE request_id = ?");
         try {
@@ -418,7 +418,7 @@ public class DBManager implements Serializable {
         return userId;
     }
 
-    public void subscribeAdmin(int groupId, int adminId) throws SQLException {
+    public void subscribeAdmin(int groupId, int adminId) throws SQLException { //subscribe administrator
         PreparedStatement stm = con.prepareStatement("INSERT INTO users_groups (user_id, group_id, is_administrator) VALUES (?,?,?)");
         try {
             stm.setInt(1, adminId);
@@ -430,7 +430,7 @@ public class DBManager implements Serializable {
         }
     }
 
-    public List<User> getAllInvitableUser(int groupId) throws SQLException {
+    public List<User> getAllInvitableUser(int groupId) throws SQLException { //get all invitable users
         List<User> users = new ArrayList<User>();
         PreparedStatement stm = con.prepareStatement("SELECT * FROM users WHERE user_id NOT IN ((SELECT user_id FROM users_groups WHERE group_id = ? )UNION(SELECT user_id FROM bids WHERE group_id = ? ))");
         try {
@@ -453,7 +453,7 @@ public class DBManager implements Serializable {
         return users;
     }
 
-    public List<Group> getPublicGroups() throws SQLException {
+    public List<Group> getPublicGroups() throws SQLException { //get public groups
         List<Group> publicGroups = new ArrayList<Group>();
         String adminUsername;
         PreparedStatement stm = con.prepareStatement("SELECT * FROM groups WHERE is_private = ?");
@@ -483,7 +483,7 @@ public class DBManager implements Serializable {
         return publicGroups;
     }
 
-    public List<Group> getPrivateGroups(int userId) throws SQLException {
+    public List<Group> getPrivateGroups(int userId) throws SQLException { //get private groups
         List<Group> privateGroups = new ArrayList<Group>();
         PreparedStatement stm = con.prepareStatement("SELECT * FROM users_groups JOIN groups ON users_groups.group_id = groups.group_id WHERE user_id = ? AND is_private=?");
         String adminUsername;
@@ -514,7 +514,7 @@ public class DBManager implements Serializable {
         return privateGroups;
     }
 
-    public int createGroup(int userId, String groupName, String creationDate, boolean isPrivate) throws SQLException {
+    public int createGroup(int userId, String groupName, String creationDate, boolean isPrivate) throws SQLException { //create a group
 
         int groupId = 0;
         PreparedStatement stm = con.prepareStatement("INSERT INTO groups (administrator_id, groupname,creation_date,is_private, is_closed) VALUES (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
@@ -539,7 +539,7 @@ public class DBManager implements Serializable {
         return groupId;
     }
 
-    public void editGroup(int groupId, String groupName, boolean status) throws SQLException {
+    public void editGroup(int groupId, String groupName, boolean status) throws SQLException { //edti a group
         PreparedStatement stm = con.prepareStatement("UPDATE groups SET groupname = ?, is_private = ? WHERE group_id = ? ");
         try {
             stm.setString(1, groupName);
@@ -551,7 +551,7 @@ public class DBManager implements Serializable {
         }
     }
 
-    public List<Group> getOwnerGroups(int userId) throws SQLException {
+    public List<Group> getOwnerGroups(int userId) throws SQLException { //get the administrator of a group
         List<Group> groups = new ArrayList<Group>();
         PreparedStatement stm = con.prepareStatement("SELECT * FROM groups WHERE administrator_id = ?");
         try {
@@ -576,7 +576,7 @@ public class DBManager implements Serializable {
         return groups;
     }
 
-    public Boolean checkGroup(int groupId) throws SQLException {
+    public Boolean checkGroup(int groupId) throws SQLException { //check is a group is closed
 
         Boolean isClosed = false;
         PreparedStatement stm = con.prepareStatement("SELECT is_closed FROM groups WHERE group_id=?");
@@ -597,7 +597,7 @@ public class DBManager implements Serializable {
         return isClosed;
     }
 
-    public Group getGroup(int groupId) throws SQLException {
+    public Group getGroup(int groupId) throws SQLException { //get a group
         Group g = null;
         String adminUsername = null;
         PreparedStatement stm = con.prepareStatement("SELECT * FROM groups JOIN users ON users.user_id = groups.administrator_id WHERE group_id = ?");
@@ -625,7 +625,7 @@ public class DBManager implements Serializable {
         return g;
     }
 
-    public List<Group> getAllGroup() throws SQLException {
+    public List<Group> getAllGroup() throws SQLException { //get a list of all groups
         List<Group> groups = new ArrayList<Group>();;
         String adminUsername = null;
         PreparedStatement stm = con.prepareStatement("SELECT * FROM groups");
@@ -650,7 +650,7 @@ public class DBManager implements Serializable {
         return groups;
     }
 
-    public String getGroupPage(int groupId) throws SQLException {
+    public String getGroupPage(int groupId) throws SQLException { //get group name
         String groupName = null;
         PreparedStatement stm = con.prepareStatement("SELECT groupname FROM groups WHERE group_id = ?");
         try {
@@ -669,7 +669,7 @@ public class DBManager implements Serializable {
         return groupName;
     }
 
-    public void closeGroup(int groupId) throws SQLException {
+    public void closeGroup(int groupId) throws SQLException { //close a group
 
         PreparedStatement stm = con.prepareStatement("UPDATE groups SET is_closed=? WHERE group_id=?");
         try {
@@ -682,7 +682,7 @@ public class DBManager implements Serializable {
 
     }
 
-    public boolean isSubscribed(int userId, int groupId) throws SQLException {
+    public boolean isSubscribed(int userId, int groupId) throws SQLException { //check if the user is subscribed to a group
         int res = 0;
         PreparedStatement stm = con.prepareStatement("SELECT group_id FROM users_groups WHERE user_id = ? AND group_id = ?");
         try {
@@ -702,7 +702,7 @@ public class DBManager implements Serializable {
         return res == 1;
     }
 
-    public boolean isAdmin(int userId, int groupId) throws SQLException {
+    public boolean isAdmin(int userId, int groupId) throws SQLException { //check if a user is admin of a group
         boolean isAdmin = false;
         PreparedStatement stm = con.prepareStatement("SELECT administrator_id FROM groups WHERE group_id = ?");
         try {
@@ -721,7 +721,7 @@ public class DBManager implements Serializable {
         return isAdmin;
     }
 
-    public void sendBids(List<String> ids, int groupId, int adminId) throws SQLException {
+    public void sendBids(List<String> ids, int groupId, int adminId) throws SQLException { //send bids
         PreparedStatement stm = con.prepareStatement("INSERT INTO bids (user_id, group_id, administrator_id) VALUES (?,?,?)");
         try {
             stm.setInt(2, groupId);
@@ -735,7 +735,7 @@ public class DBManager implements Serializable {
         }
     }
 
-    public List<Bid> getBids(int userId) throws SQLException {
+    public List<Bid> getBids(int userId) throws SQLException { //get a list of bids linked to a user
         List<Bid> bids = new ArrayList<Bid>();
         String groupName = null;
         String adminUsername = null;
@@ -765,7 +765,7 @@ public class DBManager implements Serializable {
         return bids;
     }
 
-    public boolean checkBids(int userId, int bidId) throws SQLException {
+    public boolean checkBids(int userId, int bidId) throws SQLException { //check if there exists a bid with userId and bidId
         PreparedStatement stm = con.prepareStatement("SELECT user_id FROM bids WHERE bid_id = ? and user_id = ?");
         int numBids = 0;
         try {
@@ -785,7 +785,7 @@ public class DBManager implements Serializable {
         return numBids == 0;
     }
 
-    public void AcceptBids(List<String> bids, int userId) throws SQLException {
+    public void AcceptBids(List<String> bids, int userId) throws SQLException { //accept the bid
         PreparedStatement stm = con.prepareStatement("INSERT INTO users_groups (user_id, group_id, is_administrator) VALUES (?,?,?)");
         int groupId = 0;
         try {
@@ -814,7 +814,7 @@ public class DBManager implements Serializable {
         }
     }
 
-    public void deleteBids(List<String> bids) throws SQLException {
+    public void deleteBids(List<String> bids) throws SQLException { //delete the bid
         PreparedStatement stm = con.prepareStatement("DELETE FROM bids WHERE bid_id=?");
         try {
             for (int x = 0; x < bids.size(); x++) {
@@ -826,7 +826,7 @@ public class DBManager implements Serializable {
         }
     }
 
-    public List<Post> getPosts(int groupId) throws SQLException {
+    public List<Post> getPosts(int groupId) throws SQLException { //get a list of all posts
 
         List<Post> posts = new ArrayList<Post>();
         List<Post> tmp = new ArrayList<Post>();
@@ -859,7 +859,7 @@ public class DBManager implements Serializable {
         return posts;
     }
 
-    public int addPost(int userId, int groupId, String message, String creationDate) throws SQLException {
+    public int addPost(int userId, int groupId, String message, String creationDate) throws SQLException { //create a post
 
         int postId = 0;
         PreparedStatement stm = con.prepareStatement("INSERT INTO posts (user_id, group_id, message,creation_date) VALUES (?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
@@ -884,8 +884,8 @@ public class DBManager implements Serializable {
         return postId;
     }
 
-    public int getAllPosts(int groupId) throws SQLException {
-        int nrPosts = 0;
+    public int getAllPosts(int groupId) throws SQLException { //get the number of posts
+        int nrPosts = 0; 
         PreparedStatement stm = con.prepareStatement("SELECT * FROM posts WHERE group_id=?");
         try {
             stm.setInt(1, groupId);
@@ -901,7 +901,7 @@ public class DBManager implements Serializable {
         return nrPosts;
     }
 
-    public int getAllSubscribers(int groupId) throws SQLException {
+    public int getAllSubscribers(int groupId) throws SQLException { //get the number of subscribers to a group
         int nrSubscribers = 0;
         PreparedStatement stm = con.prepareStatement("SELECT * FROM users_groups WHERE group_id=?");
         try {
@@ -919,7 +919,7 @@ public class DBManager implements Serializable {
 
     }
 
-    public void addFileToPost(int postId, String filename) throws SQLException {
+    public void addFileToPost(int postId, String filename) throws SQLException { //add file path to a post
         PreparedStatement stm = con.prepareStatement("INSERT INTO post_files (post_id, filename) VALUES (?,?)");
         try {
             stm.setInt(1, postId);
@@ -930,7 +930,7 @@ public class DBManager implements Serializable {
         }
     }
 
-    public List<String> getAllFilesFromPostId(int postId) throws SQLException {
+    public List<String> getAllFilesFromPostId(int postId) throws SQLException { //get all files linked to a post
         List<String> filePaths = new ArrayList<String>();
         PreparedStatement stm = con.prepareStatement("SELECT filename FROM post_files WHERE post_id = ?");
         try {

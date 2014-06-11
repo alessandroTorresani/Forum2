@@ -31,11 +31,9 @@ public class ClosedFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         this.filterConfig = filterConfig;
     }
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         HttpSession session = ((HttpServletRequest) request).getSession();
         this.manager = (DBManager) request.getServletContext().getAttribute("dbmanager");
         
@@ -43,7 +41,7 @@ public class ClosedFilter implements Filter {
         boolean isClosed = false;
 
         try {
-            isClosed = manager.checkGroup(groupId);
+            isClosed = manager.checkGroup(groupId); //check the group is closed
         } catch (SQLException ex) {
             log.error(ex.toString());
             throw new ServletException(ex);
@@ -58,7 +56,6 @@ public class ClosedFilter implements Filter {
 
     @Override
     public void destroy() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 

@@ -77,7 +77,7 @@
             
              <c:choose>
                 <c:when test="${param.groupName == 'error'}">
-                    <div class="alert alert-danger">You inserted a non valid group name, try with another</div>
+                    <div class="alert alert-danger">You inserted an invalid group name, try with another</div>
                 </c:when>
             </c:choose>
 

@@ -6,7 +6,7 @@
     </context-param>
     <context-param>
         <param-name>DBPWD</param-name>
-        <param-value>forum2</param-value>
+        <param-value>forum2p</param-value>
     </context-param>
     <context-param>
         <param-name>DBURL</param-name>

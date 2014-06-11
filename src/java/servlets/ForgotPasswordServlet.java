@@ -56,12 +56,11 @@ public class ForgotPasswordServlet extends HttpServlet {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
 
-        //invio email (bisogna inviare anche la password inserita??) evitare false richieste
         try {
             userId = manager.getUserIdByEmail(email);
-            if (userId > 0) { //if user which that email exits
+            if (userId > 0) { //if user exits
                 log.info("Recovery password request for email:" + email + ", email exists");
-                if ((password1 != null) && (password2 != null) && (password1.matches(PASSWORD_REGEX)) && (password2.matches(PASSWORD_REGEX)) && (password1.equals(password2))) {
+                if ((password1 != null) && (password2 != null) && (password1.matches(PASSWORD_REGEX)) && (password2.matches(PASSWORD_REGEX)) && (password1.equals(password2))) { //check passwords
                     String requestId = UUID.randomUUID().toString(); // generate random requestId
                     try {
                         if (manager.checkPasswordRequest(userId)) { //if the user had already done a request
@@ -76,19 +75,19 @@ public class ForgotPasswordServlet extends HttpServlet {
                         throw new ServletException(ex);
                     }
 
-                    String recoveryLink = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/RestorePassword?requestId=" + requestId;
-                    String mailBody = "<div style='font-size: 16px; font-family:\\\"Helvetica Neue\\\", Helvetica, Arial, \\\"Lucida Grande\\\", sans-serif;'>"
+                    String recoveryLink = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/RestorePassword?requestId=" + requestId; //recovery link
+                    String mailBody = "<div style='font-size: 16px; font-family:\\\"Helvetica Neue\\\", Helvetica, Arial, \\\"Lucida Grande\\\", sans-serif;'>" //mail body
                             + "Hi " + manager.getUsernameByUserId(userId) + ", <br/><br/>"
                             + "It seems that you requested a password change, using this password: <b>" + password1 + "</b>. <br/><br/>"
                             + "if you didn't requested this change simply ignore this message <br/><br/>"
                             + "Otherwise check the inserted password and click the link to validate the changes <br/><br/> "
-                            + recoveryLink + "<br/><br/>"
+                            + "<a href='"+recoveryLink +"'>"+recoveryLink +"</a><br/><br/>"
                             + "Best regards </div>";
 
                     Mailer mail = new Mailer();
                     boolean res;
                     try {
-                        mail.sendEmail(email, "Password recovery", mailBody);
+                        mail.sendEmail(email, "Password recovery", mailBody); //send the email
                         res = true;
                     } catch (MessagingException mex) {
                         log.error(mex.toString());
@@ -98,8 +97,8 @@ public class ForgotPasswordServlet extends HttpServlet {
                     
                     if (res == true) {
                         log.info("Email send to: " + email + " with the recovery link");
-                    }
-
+                    } 
+                    
                     response.sendRedirect(request.getContextPath() + "/");
                 } else {
                     log.info("Recovery request not done - inserted different or non legal password for email: " + email);

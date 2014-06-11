@@ -130,15 +130,11 @@ public class RegistrationServlet extends HttpServlet {
                     request.setAttribute("equalEmail", false);
                 }
                 isAllRight = usernameCheck && pass1Check && pass2Check && email1Check && email2Check && equalEmail && equalPass;
-                System.out.println("prova "+("ciao".equals("oaic")));
             }
 
-            /*if ((isAllRight)&&(username != null) && (password1 != null) && (password2 != null) && (username.matches(USERNAME_REGEX))
-             && (password1.matches(PASSWORD_REGEX)) && (password2.matches(PASSWORD_REGEX)) && (password1.equals(password2))
-             && (email1 != null) && (email2 != null) && (email1.matches(EMAIL_REGEX)) && (email2.matches(EMAIL_REGEX)) && (email1.equals(email2)))*/
             if (isAllRight) {
                 try {
-                    if (manager.checkEmail(email1)) {
+                    if (manager.checkEmail(email1)) { //check if the email is not already used
                         userID = manager.registerUser(username, email1, password1);
                     } else {
                         log.warn("Registration failure, email already used: " + email1);
@@ -165,7 +161,7 @@ public class RegistrationServlet extends HttpServlet {
                 rd.forward(request, response);
             }
 
-            if (userID > 0) {
+            if (userID > 0) { //if the creation of the user was done correctly
                 Enumeration files = multi.getFileNames(); //file management
                 while (files.hasMoreElements()) {
                     String name = (String) files.nextElement();

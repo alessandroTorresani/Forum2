@@ -50,16 +50,12 @@ public class ChangePasswordServlet extends HttpServlet {
         String currentPassword = request.getParameter("currentPassword");
         String password1 = request.getParameter("password1");
         String password2 = request.getParameter("password2");
-
-        System.out.println(password1 + " " + password2 + " " + currentPassword);
-        System.out.println(manager.checkUserPassword(user.getUserId(), currentPassword));
         
         if ((user.getEmail().equals(manager.checkUserPassword(user.getUserId(), currentPassword))) && (password1 != null) && (password2 != null) && (password1.matches(PASSWORD_REGEX)) && (password2.matches(PASSWORD_REGEX)) && (password1.equals(password2))){
-            //funzione manager che modifica la password
             
             boolean res;
             try {
-            manager.changeUserPassword(user.getUserId(), password1);
+            manager.changeUserPassword(user.getUserId(), password1); //if the password inserted was the old one, change the password
             res = true;
             } catch (SQLException ex){
                 res = false;

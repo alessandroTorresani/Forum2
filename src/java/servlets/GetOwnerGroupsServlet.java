@@ -50,7 +50,7 @@ public class GetOwnerGroupsServlet extends HttpServlet {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
 
-        List<Group> ownerGroups = null;
+        List<Group> ownerGroups = null; //groups where the user is administrator
         try {
             ownerGroups = manager.getOwnerGroups(user.getUserId());
         } catch (SQLException ex) {

@@ -46,7 +46,7 @@ public class PreEditGroupServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException { //get the data to pass to the editgroup.jsps
+            throws ServletException, IOException {
 
         HttpSession session = request.getSession();
         ServletContext sc = getServletContext();
@@ -57,14 +57,14 @@ public class PreEditGroupServlet extends HttpServlet {
         List<User> invitableUser = null;
 
         try {
-            g = manager.getGroup(groupId);
+            g = manager.getGroup(groupId); //get the group data
         } catch (SQLException ex) {
             log.error(ex.toString());
             throw new ServletException(ex);
         }
 
         try {
-            invitableUser = manager.getAllInvitableUser(groupId); //invitable users
+            invitableUser = manager.getAllInvitableUser(groupId); //get invitable users
         } catch (SQLException ex) {
             log.error(ex.toString());
             throw new ServletException(ex);
